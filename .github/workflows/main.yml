@@ -1,0 +1,147 @@
+name: Mauzl Workflow
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+  # Runs on any pull request
+  pull_request:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # Build mauzl-ui job
+  mauzl-ui-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mauzl-ui
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "20"
+
+      - name: Get Node version
+        id: node-version
+        run: echo "version=$(node -v)" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: |
+          npm install --frozen-lockfile --prefer-offline
+
+      - name: Cache CI files
+        id: ci-cache
+        uses: actions/cache@v3
+        with:
+          path: .cicache
+          key: ${{ runner.os }}-ci-${{ steps.node-version.outputs.version }}-${{ hashFiles('/mauzl-ui/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-ci-
+
+      - name: Cache Next cache
+        id: next-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('/mauzl-ui/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('/mauzl-ui/package-lock.json') }}-
+
+      - name: Check package.json
+        run: |
+          echo Checking if package.json is normalized by installing and removing a new package
+          npm i --loglevel warn --ignore-scripts dedupe@4.0.1
+          npm rm --loglevel warn dedupe
+          git diff --exit-code package.json package-lock.json || (echo Your package.json or package-lock.json file is not normalize. Did you add a package manually without npm ? && exit 1)
+
+      - name: Test
+        run: |
+          npm run lint
+          npm run test:snap --cacheDirectory .cicache/jest-snap
+          npm run test:coverage --cacheDirectory .cicache/jest
+
+      - name: Report Coverage
+        uses: romeovs/lcov-reporter-action@v0.2.21
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_BUILD_ID: ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}
+          NEXT_PUBLIC_BUILD_DATE: $(date --utc +'%Y-%m-%dT%H:%M:%SZ')
+          NEXT_PUBLIC_BUILD_SHA: $GITHUB_SHA
+        run: |
+          npm run build:export
+
+  # Build mauzl-ui job
+  mauzl-api-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mauzl-api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "20"
+
+      - name: Get Node version
+        id: node-version
+        run: echo "version=$(node -v)" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: |
+          npm install --frozen-lockfile --prefer-offline
+
+      - name: Cache CI files
+        id: ci-cache
+        uses: actions/cache@v4
+        with:
+          path: .cicache
+          key: ${{ runner.os }}-ci-${{ steps.node-version.outputs.version }}-${{ hashFiles('/mauzl-api/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-ci-
+
+      - name: Check package.json
+        run: |
+          echo Checking if package.json is normalized by installing and removing a new package
+          npm i --loglevel warn --ignore-scripts dedupe@4.0.1
+          npm rm --loglevel warn dedupe
+          git diff --exit-code package.json package-lock.json || (echo Your package.json or package-lock.json file is not normalize. Did you add a package manually without npm ? && exit 1)
+
+      - name: Test
+        run: |
+          tsc
+          npm run lint
+          npm run test:cov -- --cacheDirectory .cicache/jest
+
+      - name: Report Coverage
+        uses: romeovs/lcov-reporter-action@v0.2.21
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Cache Build files
+        id: build-cache
+        uses: actions/cache@v4
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-build-${{ steps.node-version.outputs.version }}-${{ hashFiles('/mauzl-api/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build
+        run: |
+          npm run build
