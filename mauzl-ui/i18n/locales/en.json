@@ -1,0 +1,53 @@
+{
+  "common": {
+    "appName": "Mauzl",
+    "shopNow": "Shop Now"
+  },
+  "home": {
+    "quote": "Where every sip is a hug in a mug"
+  },
+  "signup": {
+    "title": "Sign Up"
+  },
+  "services": {
+    "home": {
+      "title": "Home",
+      "createYourOwn": "Create your own",
+      "quote": "Make your style & see it on the mirror",
+      "description": "What’s more, we do it right! A full administration printing background. Print shirts for yourself or your online business",
+      "printForEveryone": "T-SHIRT Printing for Everyone",
+      "printForEveryoneDesc": "What’s more, we do it right!",
+      "topQuality": "Top quality",
+      "topQualityDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "mixMatch": "Mix and match",
+      "mixMatchDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "shipping": "Shipping",
+      "shippingDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "highQuality": "High quality offset printing",
+      "collentions": {
+        "man": "Men's Collection",
+        "child": "Kid's Collection",
+        "woman": "Women's Collection"
+      },
+      "footer": "Take a Flavor Trip"
+    },
+    "shop": {
+      "title": "Shop",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Send a Yummy Surprise"
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Mauzl Pass"
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Mug Reservations"
+    }
+  },
+  "footer": {
+    "copyright": "Mauzl © 2024 All rights reserved"
+  }
+}
