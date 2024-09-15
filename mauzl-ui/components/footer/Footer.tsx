@@ -39,8 +39,8 @@ const Footer = () => {
             </Typography>
           </Link>
           <Stack direction="row" flexWrap="wrap" gap={3}>
-            {services.map((service) => (
-              <Link href={`${service}`} key={service}>
+            {services.map(({ name, link }) => (
+              <Link href={link} key={name}>
                 <Typography
                   component="div"
                   color="primary"
@@ -50,7 +50,7 @@ const Footer = () => {
                 >
                   <TranslateMessage
                     txKey={
-                      txKeys.services[service as keyof typeof txKeys.services]
+                      txKeys.services[name as keyof typeof txKeys.services]
                         .title
                     }
                   />
