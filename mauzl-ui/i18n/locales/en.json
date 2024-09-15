@@ -1,7 +1,13 @@
 {
   "common": {
     "appName": "Mauzl",
-    "shopNow": "Shop Now"
+    "shopNow": "Shop Now",
+    "search": {
+      "label": "Search products..."
+    },
+    "filter": {
+      "label": "Filter"
+    }
   },
   "home": {
     "quote": "Where every sip is a hug in a mug"
@@ -34,7 +40,64 @@
     "shop": {
       "title": "Shop",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-      "footer": "Send a Yummy Surprise"
+      "footer": "Send a Yummy Surprise",
+      "categories": {
+        "title": "Product categories",
+        "list": {
+          "hoodie": {
+            "name": "Hoodie"
+          },
+          "tshirt": {
+            "name": "T-shirt"
+          },
+          "sweater": {
+            "name": "Sweater"
+          },
+          "longsleeves": {
+            "name": "Long Sleeves"
+          }
+        }
+      },
+      "price": {
+        "title": "Filter by price"
+      },
+      "status": {
+        "title": "Stock status",
+        "list": {
+          "onSale": {
+            "name": "On sale"
+          },
+          "inStock": {
+            "name": "In stock"
+          },
+          "outOfStock": {
+            "name": "Out of stock"
+          },
+          "onBackOrder": {
+            "name": "On back order"
+          }
+        }
+      },
+      "sort": {
+        "title": "Sort by",
+        "list": {
+          "popularity": {
+            "name": "Popularity"
+          },
+          "averageRating": {
+            "name": "Average rating"
+          },
+          "latest": {
+            "name": "Latest"
+          },
+          "lowToHigh": {
+            "name": "Price: low to high"
+          },
+          "highToLow": {
+            "name": "Price: high to low"
+          }
+        }
+      }
     },
     "blog": {
       "title": "Blog",

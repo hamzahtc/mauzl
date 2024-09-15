@@ -4,7 +4,7 @@ import Image from "next/image";
 import Button from "../common/Button";
 import { theme } from "@/styles/stylesheet";
 
-const Card = () => {
+const Product = () => {
   return (
     <Stack gap={2}>
       <Stack alignItems="center" sx={{ position: "relative" }}>
@@ -15,8 +15,8 @@ const Card = () => {
           height={0}
           sizes="100vw"
           style={{
-            width: "330px",
-            height: "440px",
+            width: "300px",
+            height: "400px",
             aspectRatio: "1/1",
             objectFit: "cover",
             borderRadius: 8,
@@ -27,7 +27,7 @@ const Card = () => {
           sx={{
             position: "absolute",
             top: "15px",
-            left: "-15px",
+            left: "15px",
           }}
         >
           <Button
@@ -64,4 +64,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default Product;

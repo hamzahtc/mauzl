@@ -20,9 +20,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Navbar />
-          <Box px={30} py={10}>
-            {children}
-          </Box>
+          <Box>{children}</Box>
           <Footer />
         </Providers>
       </body>

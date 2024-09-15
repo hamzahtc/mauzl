@@ -6,7 +6,7 @@ const NavbarMenu: React.FC = () => {
   return (
     <Stack direction="row" gap={10}>
       {services.map((service) => (
-        <NavbarMenuItem key={service} service={service} />
+        <NavbarMenuItem key={service.name} service={service} />
       ))}
     </Stack>
   );

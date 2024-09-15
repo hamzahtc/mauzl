@@ -14,7 +14,7 @@ export default function Home() {
   const translate = useTranslation();
 
   return (
-    <Stack direction="column" gap={10}>
+    <Stack direction="column" gap={10} px={30} py={10}>
       <Stack direction="row" gap={6} flexWrap="wrap">
         <Stack flex={1} gap={4} justifyContent="center">
           <Box>
