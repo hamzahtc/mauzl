@@ -41,6 +41,7 @@
       "title": "Shop",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
       "footer": "Send a Yummy Surprise",
+      "addToChart": "Add To Cart",
       "categories": {
         "title": "Product categories",
         "list": {
@@ -97,6 +98,15 @@
             "name": "Price: high to low"
           }
         }
+      },
+      "sizes": {
+        "3xl": "3XL",
+        "2xl": "2XL",
+        "xl": "XL",
+        "l": "L",
+        "m": "M",
+        "s": "S",
+        "xs": "XS"
       }
     },
     "blog": {
