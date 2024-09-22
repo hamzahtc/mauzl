@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15
+    container_name: mauzl-db-service
+    restart: always
+    environment:
+      POSTGRES_USER: mauzl_user
+      POSTGRES_PASSWORD: mauzl_password
+      POSTGRES_DB: mauzl_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - mauzl_data:/var/lib/postgresql/data
+
+volumes:
+  mauzl_data:
