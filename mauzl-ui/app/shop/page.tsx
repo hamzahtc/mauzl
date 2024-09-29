@@ -30,7 +30,7 @@ export default function Shop() {
         </Box>
       </Stack>
 
-      <Stack px={30} py={10} direction="row" flexWrap="wrap">
+      <Stack px={10} py={10} direction="row" flexWrap="wrap">
         <Box flex={1}>
           <Filter />
         </Box>
