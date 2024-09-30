@@ -1,8 +1,11 @@
 import * as React from "react";
 import { Box, Pagination, Stack } from "@mui/material";
 import Product from "./Product";
+import { useProductsControllerFindAll } from "@/generated/hooks";
 
 const Products = () => {
+  const products = useProductsControllerFindAll();
+  if (products.isLoading) return <></>;
   return (
     <Stack alignItems="center" gap={4}>
       <Stack
@@ -13,8 +16,8 @@ const Products = () => {
         flexWrap="wrap"
         px={2}
       >
-        {[...Array(6).keys()].map((key) => (
-          <Product key={key} />
+        {products.data?.data.map((product) => (
+          <Product product={product} key={product.id} />
         ))}
       </Stack>
       <Box>

@@ -138,7 +138,7 @@ export default function Home() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack direction="row" gap={4}>
+      <Stack direction="row" gap={4} justifyContent="center">
         <Box sx={{ position: "relative", width: "400px" }}>
           <Image
             alt="models"

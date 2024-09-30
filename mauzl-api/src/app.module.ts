@@ -15,6 +15,8 @@ import { ClientsModule } from './clients/clients.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './images/image.module';
+import { classes } from '@automapper/classes';
+import { AutomapperModule } from '@automapper/nestjs';
 
 @Module({
   imports: [
@@ -31,6 +33,9 @@ import { ImageModule } from './images/image.module';
     MinioClientModule,
     ImageModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -12,7 +12,7 @@ const Cards = () => {
       flexWrap="wrap"
       px={2}
     >
-      {[...Array(6).keys()].map((key) => (
+      {[...Array(3).keys()].map((key) => (
         <Card key={key} />
       ))}
     </Stack>

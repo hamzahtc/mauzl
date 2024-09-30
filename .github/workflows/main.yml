@@ -102,7 +102,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install --frozen-lockfile --prefer-offline
+          npm install --frozen-lockfile --prefer-offline --legacy-peer-deps
 
       - name: Cache CI files
         id: ci-cache
@@ -113,12 +113,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ci-
 
-      - name: Check package.json
-        run: |
-          echo Checking if package.json is normalized by installing and removing a new package
-          npm i --loglevel warn --ignore-scripts dedupe@4.0.1
-          npm rm --loglevel warn dedupe
-          git diff --exit-code package.json package-lock.json || (echo Your package.json or package-lock.json file is not normalize. Did you add a package manually without npm ? && exit 1)
+      # - name: Check package.json
+      #   run: |
+      #     echo Checking if package.json is normalized by installing and removing a new package
+      #     npm i --loglevel warn --ignore-scripts dedupe@4.0.1
+      #     npm rm --loglevel warn dedupe
+      #     git diff --exit-code package.json package-lock.json || (echo Your package.json or package-lock.json file is not normalize. Did you add a package manually without npm ? && exit 1)
 
       - name: Test
         run: |

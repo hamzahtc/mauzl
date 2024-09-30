@@ -5,8 +5,15 @@ import Button from "../common/Button";
 import txKeys from "@/i18n/translations";
 import ColorInput from "./ColorInput";
 import SizeInput from "./SizeInput";
+import { ProductDto } from "@/models";
 
-const ProductShopDetails = () => {
+interface ProductShopDetailsProps {
+  product?: ProductDto;
+}
+
+const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
+  const { name, description } = product || {};
+
   return (
     <Stack gap={4}>
       <Box>
@@ -17,15 +24,12 @@ const ProductShopDetails = () => {
           component="div"
           color="black"
         >
-          Hoodie - Pullover Hoodie Sweatshirt
+          Hoodie - {name}
         </Typography>
       </Box>
       <Box>
         <Typography component="div" color="grey" lineHeight={2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique
-          malesuada elit, ut facilisis tellus elementum id. Nullam id
-          consectetur diam. Pellentesque nec tristique sapien etiam non augue
-          lacus.
+          {description}
         </Typography>
       </Box>
       <Stack gap={2}>
