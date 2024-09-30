@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 import { ProductImage } from '~product-images/entities/product-image.entity';
 import { Category } from '~categories/entities/category.entity';
 import { MinioClientModule } from '~minio-client/minio-client.module';
+import { ProductMapper } from './product.mapper';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { MinioClientModule } from '~minio-client/minio-client.module';
     MinioClientModule,
   ],
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [ProductsService, ProductMapper],
 })
 export class ProductsModule {}

@@ -14,6 +14,9 @@ import { ProductImage } from '~product-images/entities/product-image.entity';
 import { Category } from '~categories/entities/category.entity';
 import { MinioClientService } from '~minio-client/minio-client.service';
 import { BufferedFile } from '~minio-client/file.model';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { ProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -25,6 +28,8 @@ export class ProductsService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     private minioClientService: MinioClientService,
+    @InjectMapper()
+    private readonly mapper: Mapper,
   ) {
     this.logger = new Logger('ProductService');
   }
@@ -65,25 +70,28 @@ export class ProductsService {
     return savedProduct;
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.productRepository.find({ relations: ['category'] });
+  async findAll(): Promise<ProductDto[]> {
+    const products = await this.productRepository.find({
+      relations: ['category'],
+    });
+    return this.mapper.mapArray(products, Product, ProductDto);
   }
 
-  async findOne(id: number): Promise<Product> {
+  async findOne(id: number): Promise<ProductDto> {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: ['category'],
+      relations: ['category', 'images'],
     });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    return product;
+    return this.mapper.map(product, Product, ProductDto);
   }
 
   async update(
     id: number,
     updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
+  ): Promise<ProductDto> {
     await this.productRepository.update(id, updateProductDto);
     return this.findOne(id);
   }

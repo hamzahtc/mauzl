@@ -14,8 +14,11 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { BufferedFile } from '~minio-client/file.model';
+import { ProductDto } from './dto/product.dto';
+import { ApiExtraModels, ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('products')
+@ApiExtraModels(ProductDto)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -29,11 +32,13 @@ export class ProductsController {
   }
 
   @Get()
+  @ApiOkResponse({ type: [ProductDto] })
   findAll() {
     return this.productsService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: ProductDto })
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }

@@ -12,13 +12,13 @@ const PlusJakartaSans = localFont({
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#2EBB77",
+      main: "#B479D9",
     },
     secondary: {
       main: "#FFFFFF",
     },
     info: {
-      main: "#B479D9",
+      main: "#2EBB77",
     },
   },
   typography: {

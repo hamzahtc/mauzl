@@ -6,7 +6,6 @@ import txKeys from "@/i18n/translations";
 import LanguageSelect from "./LanguageSelect";
 import { theme } from "@/styles/stylesheet";
 import NavbarMenu from "./NavbarMenu";
-import Button from "../common/Button";
 
 const Navbar = () => {
   return (
@@ -36,10 +35,10 @@ const Navbar = () => {
             </Stack>
             <NavbarMenu />
             <Stack direction="row" alignItems="center">
-              <Button
+              {/* <Button
                 text={txKeys.signup.title}
                 sx={{ backgroundColor: "black" }}
-              />
+              /> */}
               <LanguageSelect />
             </Stack>
           </Stack>

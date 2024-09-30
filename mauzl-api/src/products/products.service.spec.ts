@@ -32,6 +32,14 @@ describe('ProductsService', () => {
             uploadFile: jest.fn(),
           },
         },
+        {
+          provide: 'automapper:nestjs:default',
+          useValue: {
+            createMap: jest.fn(),
+            forMember: jest.fn(),
+            mapFrom: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
