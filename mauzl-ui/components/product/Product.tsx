@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import Image from "next/image";
-import Button from "../common/Button";
 import { theme } from "@/styles/stylesheet";
 import { ProductDto } from "@/models";
 import Link from "next/link";
+import PrimaryButton from "../common/PrimaryButton";
+import TextTypography from "../common/TextTypography";
 
 interface ProductProps {
   product: ProductDto;
@@ -17,7 +18,7 @@ const Product = ({ product }: ProductProps) => {
         <Stack alignItems="center" sx={{ position: "relative" }}>
           <Image
             alt="models"
-            src="/images/woman.png"
+            src={product.images[0]}
             width={0}
             height={0}
             sizes="100vw"
@@ -37,7 +38,7 @@ const Product = ({ product }: ProductProps) => {
               left: "15px",
             }}
           >
-            <Button
+            <PrimaryButton
               text="-10%"
               size="small"
               variant="contained"
@@ -45,7 +46,7 @@ const Product = ({ product }: ProductProps) => {
                 backgroundColor: theme.palette.primary.main,
               }}
             />
-            <Button
+            <PrimaryButton
               text="New"
               size="small"
               variant="contained"
@@ -56,16 +57,8 @@ const Product = ({ product }: ProductProps) => {
           </Stack>
         </Stack>
         <Stack alignItems="center">
-          <Box>
-            <Typography fontWeight="bold" component="div" color="black">
-              {product.name}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography fontWeight="bold" component="div" color="black">
-              ${product.price}
-            </Typography>
-          </Box>
+          <TextTypography text={product.name} fontWeight="bold" />
+          <TextTypography text={`$${product.price}`} fontWeight="bold" />
         </Stack>
       </Stack>
     </Link>

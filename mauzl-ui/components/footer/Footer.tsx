@@ -1,10 +1,10 @@
 import { services } from "@/common/contants";
-import TranslateMessage from "@/i18n/TranslateMessage";
 import txKeys from "@/i18n/translations";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import Link from "next/link";
 import { WhatsApp, Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { theme } from "@/styles/stylesheet";
+import TextTypography from "../common/TextTypography";
 
 const socialMediaList = [
   { Icon: Instagram, link: "https://www.instagram.com/" },
@@ -26,35 +26,28 @@ const Footer = () => {
       >
         <Stack direction="row" gap={6} alignItems="center" flexWrap="wrap">
           <Link href="/">
-            <Typography
+            <TextTypography
+              text={txKeys.common.appName}
               variant="h6"
-              component="div"
               color="primary"
               sx={{
                 transition: "color 0.5s",
-                "&:hover": { color: "black" },
+                "&:hover": { color: theme.typography.body1.color },
               }}
-            >
-              <TranslateMessage txKey={txKeys.common.appName} />
-            </Typography>
+            />
           </Link>
           <Stack direction="row" flexWrap="wrap" gap={3}>
             {services.map(({ name, link }) => (
               <Link href={link} key={name}>
-                <Typography
-                  component="div"
+                <TextTypography
+                  text={
+                    txKeys.services[name as keyof typeof txKeys.services].title
+                  }
                   color="primary"
                   sx={{
-                    "&:hover": { color: "black" },
+                    "&:hover": { color: theme.typography.body1.color },
                   }}
-                >
-                  <TranslateMessage
-                    txKey={
-                      txKeys.services[name as keyof typeof txKeys.services]
-                        .title
-                    }
-                  />
-                </Typography>
+                />
               </Link>
             ))}
           </Stack>
@@ -63,10 +56,10 @@ const Footer = () => {
           {socialMediaList.map(({ Icon, link }) => (
             <Link href={`${link}`} key={link}>
               <Icon
+                color="primary"
                 sx={{
-                  color: "black",
                   transition: "color 0.5s",
-                  "&:hover": { color: "theme.palette.primary.main" },
+                  "&:hover": { color: theme.typography.body1.color },
                 }}
               />
             </Link>
@@ -74,9 +67,7 @@ const Footer = () => {
         </Stack>
       </Stack>
       <Stack gap={1}>
-        <Typography component="div" sx={{ color: "black" }}>
-          <TranslateMessage txKey={txKeys.footer.copyright} />
-        </Typography>
+        <TextTypography text={txKeys.footer.copyright} />
         <Divider sx={{ bgcolor: theme.palette.secondary.main }} />
       </Stack>
     </Stack>

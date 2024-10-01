@@ -41,7 +41,8 @@
       "title": "Shop",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
       "footer": "Send a Yummy Surprise",
-      "addToChart": "Add To Cart",
+      "addToBag": "Add to Bag",
+      "wishlist": "Wishlist",
       "categories": {
         "title": "Product categories",
         "list": {
@@ -108,6 +109,9 @@
         "s": "S",
         "xs": "XS"
       }
+    },
+    "bag": {
+      "title": "Your Bag"
     },
     "blog": {
       "title": "Blog",

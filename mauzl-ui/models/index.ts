@@ -5,13 +5,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from "./categoryDto";
 export * from "./createCategoryDto";
 export * from "./createOrderDto";
 export * from "./createProductDto";
 export * from "./createUserDto";
+export * from "./paginatedProductDto";
 export * from "./productDto";
+export * from "./productsControllerFindAllParams";
 export * from "./updateCategoryDto";
 export * from "./updateOrderDto";
 export * from "./updateProductDto";
 export * from "./updateUserDto";
-export * from "./categoryDto";

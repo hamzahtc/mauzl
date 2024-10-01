@@ -1,12 +1,11 @@
 "use client";
 
+import ShoppingBag from "@/components/bag/ShoppingBag";
 import TextTypography from "@/components/common/TextTypography";
-import Filter from "@/components/filter/Filter";
-import Products from "@/components/product/Products";
 import txKeys from "@/i18n/translations";
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
-export default function Shop() {
+export default function Bag() {
   return (
     <Stack>
       <Stack
@@ -18,20 +17,14 @@ export default function Shop() {
         zIndex={2}
       >
         <TextTypography
-          text={txKeys.services.shop.title}
+          text={txKeys.services.bag.title}
           variant="h5"
           textTransform="uppercase"
           fontWeight="bold"
         />
       </Stack>
-
-      <Stack px={10} py={10} direction="row" flexWrap="wrap">
-        <Box flex={1}>
-          <Filter />
-        </Box>
-        <Box flex={3}>
-          <Products />
-        </Box>
+      <Stack px={30} py={10}>
+        <ShoppingBag />
       </Stack>
     </Stack>
   );

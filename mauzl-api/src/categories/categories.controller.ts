@@ -10,6 +10,8 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { CategoryDto } from './dto/category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -21,11 +23,13 @@ export class CategoriesController {
   }
 
   @Get()
+  @ApiOkResponse({ type: [CategoryDto] })
   findAll() {
     return this.categoriesService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: CategoryDto })
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }

@@ -18,10 +18,34 @@ export const theme = createTheme({
       main: "#FFFFFF",
     },
     info: {
-      main: "#2EBB77",
+      main: "#f5c06a",
     },
   },
   typography: {
     fontFamily: PlusJakartaSans.style.fontFamily,
+    h1: {
+      color: "#14141f",
+    },
+    h2: {
+      color: "#14141f",
+    },
+    h3: {
+      color: "#14141f",
+    },
+    h4: {
+      color: "#14141f",
+    },
+    h5: {
+      color: "#14141f",
+    },
+    h6: {
+      color: "#14141f",
+    },
+    body1: {
+      color: "#40404f",
+    },
+    body2: {
+      color: "#545464",
+    },
   },
 });

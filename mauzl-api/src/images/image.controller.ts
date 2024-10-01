@@ -20,8 +20,8 @@ export class ImageController {
     return await this.imageService.uploadImage(image);
   }
 
-  @Get('download/:image')
-  async getDownloadLink(@Param('image') fileName: string) {
-    return this.imageService.getDownloadLink(fileName);
+  @Get(':image')
+  async getImageLink(@Param('image') fileName: string) {
+    return this.imageService.getImageLink(fileName);
   }
 }

@@ -15,6 +15,14 @@ describe('CategoriesService', () => {
           provide: getRepositoryToken(Category),
           useValue: Repository,
         },
+        {
+          provide: 'automapper:nestjs:default',
+          useValue: {
+            createMap: jest.fn(),
+            forMember: jest.fn(),
+            mapFrom: jest.fn(),
+          },
+        },
       ],
     }).compile();
 

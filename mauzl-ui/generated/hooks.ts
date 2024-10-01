@@ -20,11 +20,14 @@ import type {
 import axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import type {
+  CategoryDto,
   CreateCategoryDto,
   CreateOrderDto,
   CreateProductDto,
   CreateUserDto,
+  PaginatedProductDto,
   ProductDto,
+  ProductsControllerFindAllParams,
   UpdateCategoryDto,
   UpdateOrderDto,
   UpdateProductDto,
@@ -698,7 +701,7 @@ export const useCategoriesControllerCreate = <
 
 export const categoriesControllerFindAll = (
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
+): Promise<AxiosResponse<CategoryDto[]>> => {
   return axios.get(`http://localhost:4000/api/categories`, options);
 };
 
@@ -823,7 +826,7 @@ export function useCategoriesControllerFindAll<
 export const categoriesControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
+): Promise<AxiosResponse<CategoryDto>> => {
   return axios.get(`http://localhost:4000/api/categories/${id}`, options);
 };
 
@@ -1174,36 +1177,49 @@ export const useProductsControllerCreate = <
 };
 
 export const productsControllerFindAll = (
+  params?: ProductsControllerFindAllParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<ProductDto[]>> => {
-  return axios.get(`http://localhost:4000/api/products`, options);
+): Promise<AxiosResponse<PaginatedProductDto>> => {
+  return axios.get(`http://localhost:4000/api/products`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
 };
 
-export const getProductsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/products`] as const;
+export const getProductsControllerFindAllQueryKey = (
+  params?: ProductsControllerFindAllParams,
+) => {
+  return [
+    `http://localhost:4000/api/products`,
+    ...(params ? [params] : []),
+  ] as const;
 };
 
 export const getProductsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
   TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof productsControllerFindAll>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
+>(
+  params?: ProductsControllerFindAllParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productsControllerFindAll>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getProductsControllerFindAllQueryKey();
+    queryOptions?.queryKey ?? getProductsControllerFindAllQueryKey(params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof productsControllerFindAll>>
-  > = ({ signal }) => productsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) =>
+    productsControllerFindAll(params, { signal, ...axiosOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof productsControllerFindAll>>,
@@ -1220,73 +1236,88 @@ export type ProductsControllerFindAllQueryError = AxiosError<unknown>;
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
   TError = AxiosError<unknown>,
->(options: {
-  query: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof productsControllerFindAll>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      DefinedInitialDataOptions<
+>(
+  params: undefined | ProductsControllerFindAllParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
         Awaited<ReturnType<typeof productsControllerFindAll>>,
         TError,
         TData
-      >,
-      "initialData"
-    >;
-  axios?: AxiosRequestConfig;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof productsControllerFindAll>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
   TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof productsControllerFindAll>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      UndefinedInitialDataOptions<
+>(
+  params?: ProductsControllerFindAllParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
         Awaited<ReturnType<typeof productsControllerFindAll>>,
         TError,
         TData
-      >,
-      "initialData"
-    >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof productsControllerFindAll>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
   TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof productsControllerFindAll>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+>(
+  params?: ProductsControllerFindAllParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productsControllerFindAll>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
   TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof productsControllerFindAll>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getProductsControllerFindAllQueryOptions(options);
+>(
+  params?: ProductsControllerFindAllParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof productsControllerFindAll>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getProductsControllerFindAllQueryOptions(
+    params,
+    options,
+  );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3471,29 +3502,26 @@ export const useImageControllerUploadImage = <
   return useMutation(mutationOptions);
 };
 
-export const imageControllerGetDownloadLink = (
+export const imageControllerGetImageLink = (
   image: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(
-    `http://localhost:4000/api/images/download/${image}`,
-    options,
-  );
+  return axios.get(`http://localhost:4000/api/images/${image}`, options);
 };
 
-export const getImageControllerGetDownloadLinkQueryKey = (image: string) => {
-  return [`http://localhost:4000/api/images/download/${image}`] as const;
+export const getImageControllerGetImageLinkQueryKey = (image: string) => {
+  return [`http://localhost:4000/api/images/${image}`] as const;
 };
 
-export const getImageControllerGetDownloadLinkQueryOptions = <
-  TData = Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+export const getImageControllerGetImageLinkQueryOptions = <
+  TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
   TError = AxiosError<unknown>,
 >(
   image: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+        Awaited<ReturnType<typeof imageControllerGetImageLink>>,
         TError,
         TData
       >
@@ -3504,12 +3532,12 @@ export const getImageControllerGetDownloadLinkQueryOptions = <
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getImageControllerGetDownloadLinkQueryKey(image);
+    queryOptions?.queryKey ?? getImageControllerGetImageLinkQueryKey(image);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof imageControllerGetDownloadLink>>
+    Awaited<ReturnType<typeof imageControllerGetImageLink>>
   > = ({ signal }) =>
-    imageControllerGetDownloadLink(image, { signal, ...axiosOptions });
+    imageControllerGetImageLink(image, { signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -3517,33 +3545,33 @@ export const getImageControllerGetDownloadLinkQueryOptions = <
     enabled: !!image,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+    Awaited<ReturnType<typeof imageControllerGetImageLink>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type ImageControllerGetDownloadLinkQueryResult = NonNullable<
-  Awaited<ReturnType<typeof imageControllerGetDownloadLink>>
+export type ImageControllerGetImageLinkQueryResult = NonNullable<
+  Awaited<ReturnType<typeof imageControllerGetImageLink>>
 >;
-export type ImageControllerGetDownloadLinkQueryError = AxiosError<unknown>;
+export type ImageControllerGetImageLinkQueryError = AxiosError<unknown>;
 
-export function useImageControllerGetDownloadLink<
-  TData = Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+export function useImageControllerGetImageLink<
+  TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
   TError = AxiosError<unknown>,
 >(
   image: string,
   options: {
     query: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+        Awaited<ReturnType<typeof imageControllerGetImageLink>>,
         TError,
         TData
       >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+          Awaited<ReturnType<typeof imageControllerGetImageLink>>,
           TError,
           TData
         >,
@@ -3552,22 +3580,22 @@ export function useImageControllerGetDownloadLink<
     axios?: AxiosRequestConfig;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useImageControllerGetDownloadLink<
-  TData = Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+export function useImageControllerGetImageLink<
+  TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
   TError = AxiosError<unknown>,
 >(
   image: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+        Awaited<ReturnType<typeof imageControllerGetImageLink>>,
         TError,
         TData
       >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+          Awaited<ReturnType<typeof imageControllerGetImageLink>>,
           TError,
           TData
         >,
@@ -3576,15 +3604,15 @@ export function useImageControllerGetDownloadLink<
     axios?: AxiosRequestConfig;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useImageControllerGetDownloadLink<
-  TData = Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+export function useImageControllerGetImageLink<
+  TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
   TError = AxiosError<unknown>,
 >(
   image: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+        Awaited<ReturnType<typeof imageControllerGetImageLink>>,
         TError,
         TData
       >
@@ -3593,15 +3621,15 @@ export function useImageControllerGetDownloadLink<
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-export function useImageControllerGetDownloadLink<
-  TData = Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+export function useImageControllerGetImageLink<
+  TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
   TError = AxiosError<unknown>,
 >(
   image: string,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof imageControllerGetDownloadLink>>,
+        Awaited<ReturnType<typeof imageControllerGetImageLink>>,
         TError,
         TData
       >
@@ -3609,7 +3637,7 @@ export function useImageControllerGetDownloadLink<
     axios?: AxiosRequestConfig;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getImageControllerGetDownloadLinkQueryOptions(
+  const queryOptions = getImageControllerGetImageLinkQueryOptions(
     image,
     options,
   );

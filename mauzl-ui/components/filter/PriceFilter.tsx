@@ -1,8 +1,8 @@
 import React from "react";
-import { Slider, Stack, Typography } from "@mui/material";
-import TranslateMessage from "@/i18n/TranslateMessage";
+import { Slider, Stack } from "@mui/material";
 import txKeys from "@/i18n/translations";
-import Button from "../common/Button";
+import PrimaryButton from "../common/PrimaryButton";
+import TextTypography from "../common/TextTypography";
 
 const PriceFilter = () => {
   const [value, setValue] = React.useState<number[]>([100, 299]);
@@ -13,16 +13,13 @@ const PriceFilter = () => {
 
   return (
     <Stack gap={1}>
-      <Typography
-        component="div"
+      <TextTypography
+        text={txKeys.services.shop.price.title}
         variant="h6"
         sx={{
-          color: "black",
-          "&:hover": { color: "black", cursor: "pointer" },
+          "&:hover": { cursor: "pointer" },
         }}
-      >
-        <TranslateMessage txKey={txKeys.services.shop.price.title} />
-      </Typography>
+      />
       <Slider
         getAriaLabel={() => "Temperature range"}
         value={value}
@@ -32,16 +29,8 @@ const PriceFilter = () => {
         max={1000}
       />
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          component="div"
-          fontSize="15px"
-          sx={{
-            color: "black",
-          }}
-        >
-          Price: $10 — $160
-        </Typography>
-        <Button text={txKeys.common.filter.label} size="small" />
+        <TextTypography text="Price: 10 MAD — 160 MAD" fontSize="15px" />
+        <PrimaryButton text={txKeys.common.filter.label} size="small" />
       </Stack>
     </Stack>
   );

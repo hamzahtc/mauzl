@@ -1,8 +1,7 @@
-import TranslateMessage from "@/i18n/TranslateMessage";
 import txKeys from "@/i18n/translations";
 import { theme } from "@/styles/stylesheet";
-import { Typography } from "@mui/material";
 import Link from "next/link";
+import TextTypography from "../common/TextTypography";
 
 interface Props {
   service: { name: string; link: string };
@@ -14,16 +13,13 @@ const NavbarMenuItem = ({ service: { name, link } }: Props) => {
 
   return (
     <Link href={link}>
-      <Typography
-        component="div"
-        color="black"
+      <TextTypography
+        text={serviceTranslation}
         sx={{
           transition: "color 0.5s",
           "&:hover": { color: theme.palette.primary.main, cursor: "pointer" },
         }}
-      >
-        <TranslateMessage txKey={serviceTranslation} />
-      </Typography>
+      />
     </Link>
   );
 };
