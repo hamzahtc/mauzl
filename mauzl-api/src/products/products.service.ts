@@ -17,6 +17,7 @@ import { BufferedFile } from '~minio-client/file.model';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { ProductDto } from './dto/product.dto';
+import { ImageService } from '~images/image.service';
 
 @Injectable()
 export class ProductsService {
@@ -30,6 +31,7 @@ export class ProductsService {
     private minioClientService: MinioClientService,
     @InjectMapper()
     private readonly mapper: Mapper,
+    private imageService: ImageService,
   ) {
     this.logger = new Logger('ProductService');
   }
@@ -70,11 +72,24 @@ export class ProductsService {
     return savedProduct;
   }
 
-  async findAll(): Promise<ProductDto[]> {
-    const products = await this.productRepository.find({
-      relations: ['category'],
+  async findAll(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    const [products, total] = await this.productRepository.findAndCount({
+      relations: ['category', 'images'],
+      take: limit,
+      skip: offset,
     });
-    return this.mapper.mapArray(products, Product, ProductDto);
+
+    const productDtos = this.mapper.mapArray(products, Product, ProductDto);
+    await Promise.all(
+      productDtos.map(async (product) => {
+        product.images = await Promise.all(
+          product.images.map((image) => this.imageService.getImageLink(image)),
+        );
+      }),
+    );
+    return { products: productDtos, total };
   }
 
   async findOne(id: number): Promise<ProductDto> {
@@ -85,7 +100,11 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    return this.mapper.map(product, Product, ProductDto);
+    const productDto = this.mapper.map(product, Product, ProductDto);
+    productDto.images = await Promise.all(
+      productDto.images.map((image) => this.imageService.getImageLink(image)),
+    );
+    return productDto;
   }
 
   async update(

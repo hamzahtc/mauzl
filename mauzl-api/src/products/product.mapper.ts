@@ -6,7 +6,10 @@ import { ProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductMapper extends AutomapperProfile {
-  constructor(@InjectMapper() mapper: Mapper) {
+  constructor(
+    @InjectMapper()
+    mapper: Mapper,
+  ) {
     super(mapper);
   }
 

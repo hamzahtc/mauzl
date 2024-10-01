@@ -22,5 +22,5 @@
       "@automapper/*": ["./node_modules/@automapper/*"]
     }
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts", "db/migrations/**/*.ts"]
 }

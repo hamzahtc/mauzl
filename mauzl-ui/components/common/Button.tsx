@@ -1,5 +1,5 @@
-import TranslateMessage from "@/i18n/TranslateMessage";
-import { ButtonProps, Button as MuiButton, Typography } from "@mui/material";
+import { ButtonProps, Button as MuiButton } from "@mui/material";
+import TextTypography from "./TextTypography";
 
 interface Props extends ButtonProps {
   text: string;
@@ -8,18 +8,17 @@ interface Props extends ButtonProps {
 
 const Button = ({ text, textColor = "white", ...muiButtonProps }: Props) => {
   return (
-    <MuiButton variant="contained" {...muiButtonProps}>
-      <Typography
+    <MuiButton variant="contained" disableElevation {...muiButtonProps}>
+      <TextTypography
+        text={text}
         textTransform="none"
-        component="div"
         sx={{
           whiteSpace: "nowrap",
           transition: "color 0.5s",
+          boxShadow: "none",
           color: textColor,
         }}
-      >
-        <TranslateMessage txKey={text} />
-      </Typography>
+      />
     </MuiButton>
   );
 };

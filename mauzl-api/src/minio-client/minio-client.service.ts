@@ -75,12 +75,7 @@ export class MinioClientService {
 
   async generatePresignedUrl(objectName: string) {
     try {
-      const expiry = 60 * 60 * 24;
-      return this.client.presignedGetObject(
-        this.bucketName,
-        objectName,
-        expiry,
-      );
+      return this.client.presignedGetObject(this.bucketName, objectName);
     } catch (err) {
       this.logger.error('Error occurred while generating url', err);
       throw new HttpException(

@@ -1,31 +1,22 @@
 import React from "react";
-import {
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Stack,
-  Typography,
-} from "@mui/material";
-import TranslateMessage from "@/i18n/TranslateMessage";
+import { Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
 import txKeys from "@/i18n/translations";
 import { status } from "@/common/contants";
 import { useTranslation } from "@/i18n/useTranslation";
+import TextTypography from "../common/TextTypography";
 
 const StatusFilter = () => {
   const translate = useTranslation();
 
   return (
     <Stack gap={1}>
-      <Typography
-        component="div"
+      <TextTypography
+        text={txKeys.services.shop.status.title}
         variant="h6"
         sx={{
-          color: "black",
-          "&:hover": { color: "black", cursor: "pointer" },
+          "&:hover": { cursor: "pointer" },
         }}
-      >
-        <TranslateMessage txKey={txKeys.services.shop.status.title} />
-      </Typography>
+      />
       <FormGroup>
         {status.map(({ name }) => (
           <FormControlLabel

@@ -10,7 +10,7 @@ export class ImageService {
     return await this.minioClientService.upload(image);
   }
 
-  async getDownloadLink(image: string) {
+  async getImageLink(image: string) {
     return this.minioClientService.generatePresignedUrl(image);
   }
 }

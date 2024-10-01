@@ -1,11 +1,12 @@
-import { Box, Stack, Toolbar, Typography } from "@mui/material";
+import { Box, Stack, Toolbar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Link from "next/link";
-import TranslateMessage from "@/i18n/TranslateMessage";
 import txKeys from "@/i18n/translations";
 import LanguageSelect from "./LanguageSelect";
 import { theme } from "@/styles/stylesheet";
 import NavbarMenu from "./NavbarMenu";
+import { FaBagShopping } from "react-icons/fa6";
+import TextTypography from "../common/TextTypography";
 
 const Navbar = () => {
   return (
@@ -20,25 +21,25 @@ const Navbar = () => {
           >
             <Stack>
               <Link href="/">
-                <Typography
+                <TextTypography
+                  text={txKeys.common.appName}
                   variant="h6"
-                  component="div"
-                  color="black"
                   sx={{
                     transition: "color 0.5s",
                     "&:hover": { color: theme.palette.primary.main },
                   }}
-                >
-                  <TranslateMessage txKey={txKeys.common.appName} />
-                </Typography>
+                />
               </Link>
             </Stack>
             <NavbarMenu />
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" justifyContent="center">
               {/* <Button
                 text={txKeys.signup.title}
                 sx={{ backgroundColor: "black" }}
               /> */}
+              <Link href="/bag">
+                <FaBagShopping color="#B479D9" />
+              </Link>
               <LanguageSelect />
             </Stack>
           </Stack>

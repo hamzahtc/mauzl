@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Category } from '~categories/entities/category.entity';
 import { ProductImage } from '~product-images/entities/product-image.entity';
 import { Product } from './entities/product.entity';
+import { ImageService } from '~images/image.service';
 
 describe('ProductsService', () => {
   let service: ProductsService;
@@ -38,6 +39,12 @@ describe('ProductsService', () => {
             createMap: jest.fn(),
             forMember: jest.fn(),
             mapFrom: jest.fn(),
+          },
+        },
+        {
+          provide: ImageService,
+          useValue: {
+            getImageLink: jest.fn().mockResolvedValue('mocked_image_link'),
           },
         },
       ],

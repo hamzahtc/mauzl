@@ -1,14 +1,15 @@
 "use client";
 
 import Button from "@/components/common/Button";
-import TranslateMessage from "@/i18n/TranslateMessage";
 import txKeys from "@/i18n/translations";
 import { useTranslation } from "@/i18n/useTranslation";
 import { theme } from "@/styles/stylesheet";
-import { Box, Chip, Stack, Typography } from "@mui/material";
+import { Box, Chip, Stack } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
 import Image from "next/image";
 import Cards from "@/components/product/Cards";
+import PrimaryButton from "@/components/common/PrimaryButton";
+import TextTypography from "@/components/common/TextTypography";
 
 export default function Home() {
   const translate = useTranslation();
@@ -21,33 +22,24 @@ export default function Home() {
             <Chip
               label={translate(txKeys.services.home.createYourOwn)}
               sx={{
+                bgcolor: "white",
+                border: `1px solid ${theme.palette.info.main}`,
                 color: theme.palette.info.main,
                 fontWeight: "bold",
               }}
             />
           </Box>
+          <TextTypography
+            textTransform="uppercase"
+            text={txKeys.services.home.quote}
+            variant="h3"
+            fontWeight="bold"
+          />
+          <TextTypography text={txKeys.services.home.description} />
           <Box>
-            <Typography
-              variant="h3"
-              textTransform="uppercase"
-              fontWeight="bold"
-              component="div"
-              color="black"
-            >
-              <TranslateMessage txKey={txKeys.services.home.quote} />
-            </Typography>
-          </Box>
-          <Box>
-            <Typography component="div" color="grey">
-              <TranslateMessage txKey={txKeys.services.home.description} />
-            </Typography>
-          </Box>
-          <Box>
-            <Button
+            <PrimaryButton
               text={txKeys.common.shopNow}
-              size="large"
-              endIcon={<EastIcon sx={{ color: "white" }} />}
-              sx={{ backgroundColor: theme.palette.primary.main }}
+              endIcon={<EastIcon />}
             />
           </Box>
         </Stack>
@@ -69,16 +61,11 @@ export default function Home() {
         </Stack>
       </Stack>
       <Stack direction="column" alignItems="center" gap={4}>
-        <Box>
-          <Typography
-            variant="h3"
-            component="div"
-            fontWeight="bold"
-            color="black"
-          >
-            <TranslateMessage txKey={txKeys.services.home.printForEveryone} />
-          </Typography>
-        </Box>
+        <TextTypography
+          text={txKeys.services.home.printForEveryone}
+          variant="h3"
+          fontWeight="bold"
+        />
         <Stack
           direction="row"
           gap={6}
@@ -86,55 +73,32 @@ export default function Home() {
           flexWrap={{ xs: "wrap", md: "nowrap" }}
         >
           <Stack gap={2}>
-            <Box>
-              <Typography
-                fontWeight="bold"
-                component="div"
-                variant="h5"
-                color="black"
-              >
-                <TranslateMessage txKey={txKeys.services.home.topQuality} />
-              </Typography>
-            </Box>
-            <Box>
-              <Typography component="div" color="grey">
-                <TranslateMessage txKey={txKeys.services.home.topQualityDesc} />
-              </Typography>
-            </Box>
+            <TextTypography
+              text={txKeys.services.home.topQuality}
+              fontWeight="bold"
+              variant="h5"
+            />
+            <TextTypography
+              text={txKeys.services.home.topQualityDesc}
+              component="div"
+              color="body2"
+            />
           </Stack>
           <Stack gap={2}>
-            <Box>
-              <Typography
-                fontWeight="bold"
-                component="div"
-                variant="h5"
-                color="black"
-              >
-                <TranslateMessage txKey={txKeys.services.home.mixMatch} />
-              </Typography>
-            </Box>
-            <Box>
-              <Typography component="div" color="grey">
-                <TranslateMessage txKey={txKeys.services.home.mixMatchDesc} />
-              </Typography>
-            </Box>
+            <TextTypography
+              text={txKeys.services.home.mixMatch}
+              fontWeight="bold"
+              variant="h5"
+            />
+            <TextTypography text={txKeys.services.home.mixMatchDesc} />
           </Stack>
           <Stack gap={2}>
-            <Box>
-              <Typography
-                fontWeight="bold"
-                component="div"
-                variant="h5"
-                color="black"
-              >
-                <TranslateMessage txKey={txKeys.services.home.shipping} />
-              </Typography>
-            </Box>
-            <Box>
-              <Typography component="div" color="grey">
-                <TranslateMessage txKey={txKeys.services.home.shippingDesc} />
-              </Typography>
-            </Box>
+            <TextTypography
+              text={txKeys.services.home.shipping}
+              fontWeight="bold"
+              variant="h5"
+            />
+            <TextTypography text={txKeys.services.home.shippingDesc} />
           </Stack>
         </Stack>
       </Stack>
@@ -218,21 +182,17 @@ export default function Home() {
         </Box>
       </Stack>
       <Stack alignItems="center">
-        <Box>
-          <Typography
-            fontWeight="bold"
-            textTransform="uppercase"
-            component="div"
-            variant="h3"
-            sx={{
-              background: "linear-gradient(to right, #2EBB77, #B479D9)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            <TranslateMessage txKey={txKeys.services.home.highQuality} />
-          </Typography>
-        </Box>
+        <TextTypography
+          text={txKeys.services.home.highQuality}
+          fontWeight="bold"
+          textTransform="uppercase"
+          variant="h3"
+          sx={{
+            background: "linear-gradient(to right, #f5c06a, #B479D9)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        />
       </Stack>
       <Stack>
         <Cards />

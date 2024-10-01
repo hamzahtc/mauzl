@@ -5,12 +5,12 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Typography,
 } from "@mui/material";
 import i18n, { changeLanguage } from "@/i18n/i18n";
 import { Language } from "@/i18n/types";
 import { useState } from "react";
 import { theme } from "@/styles/stylesheet";
+import TextTypography from "../common/TextTypography";
 
 const LanguageSelect = () => {
   const [language, setLanguage] = useState<Language>(i18n.language as Language);
@@ -54,14 +54,10 @@ const LanguageSelect = () => {
         }}
       >
         <MenuItem value={Language.EN}>
-          <Typography fontSize={16} textTransform="capitalize" color="black">
-            {Language.EN}
-          </Typography>
+          <TextTypography text={Language.EN} fontSize={16} />
         </MenuItem>
         <MenuItem value={Language.FR}>
-          <Typography fontSize={16} textTransform="capitalize" color="black">
-            {Language.FR}
-          </Typography>
+          <TextTypography text={Language.FR} fontSize={16} />
         </MenuItem>
       </Select>
     </FormControl>

@@ -1,12 +1,10 @@
 "use client";
 
+import TextTypography from "@/components/common/TextTypography";
 import ProductDetails from "@/components/product/ProductDetails";
-import { Box, Stack, Typography } from "@mui/material";
-import { useParams } from "next/navigation";
+import { Stack } from "@mui/material";
 
 const Product = () => {
-  const params = useParams<{ productId: string }>();
-
   return (
     <Stack>
       <Stack
@@ -17,17 +15,14 @@ const Product = () => {
         alignItems="center"
         zIndex={2}
       >
-        <Box>
-          <Typography
-            variant="h5"
-            textTransform="uppercase"
-            fontWeight="bold"
-            component="div"
-            color="black"
-          >
-            Hoodie - Pullover Hoodie Sweatshirt - {params.productId}
-          </Typography>
-        </Box>
+        <TextTypography
+          text="Hoodie - Pullover Hoodie Sweatshirt"
+          variant="h5"
+          textTransform="uppercase"
+          fontWeight="bold"
+          component="div"
+          color="black"
+        />
       </Stack>
       <Stack px={30} py={10}>
         <Stack direction="row">

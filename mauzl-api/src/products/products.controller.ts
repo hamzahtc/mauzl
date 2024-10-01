@@ -8,6 +8,7 @@ import {
   Patch,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -15,7 +16,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { BufferedFile } from '~minio-client/file.model';
 import { ProductDto } from './dto/product.dto';
-import { ApiExtraModels, ApiOkResponse } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
+import { PaginatedProductDto } from './dto/products.dto';
 
 @Controller('products')
 @ApiExtraModels(ProductDto)
@@ -32,9 +34,11 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOkResponse({ type: [ProductDto] })
-  findAll() {
-    return this.productsService.findAll();
+  @ApiOkResponse({ type: PaginatedProductDto })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.productsService.findAll(page, limit);
   }
 
   @Get(':id')

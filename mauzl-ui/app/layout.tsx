@@ -17,11 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Providers>
           <Navbar />
-          <Box>{children}</Box>
+          <Box className="flex-grow">{children}</Box>
           <Footer />
+          {/* Tailwind styles for footer */}
         </Providers>
       </body>
     </html>

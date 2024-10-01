@@ -6,10 +6,29 @@
  */
 import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
-import type { ProductDto } from "../models";
+import type { CategoryDto, PaginatedProductDto, ProductDto } from "../models";
 
-export const getProductsControllerFindAllResponseMock = (): ProductDto[] =>
+export const getCategoriesControllerFindAllResponseMock = (): CategoryDto[] =>
   Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    id: faker.number.int({ min: undefined, max: undefined }),
+    name: faker.word.sample(),
+  }));
+
+export const getCategoriesControllerFindOneResponseMock = (
+  overrideResponse: Partial<CategoryDto> = {},
+): CategoryDto => ({
+  id: faker.number.int({ min: undefined, max: undefined }),
+  name: faker.word.sample(),
+  ...overrideResponse,
+});
+
+export const getProductsControllerFindAllResponseMock = (
+  overrideResponse: Partial<PaginatedProductDto> = {},
+): PaginatedProductDto => ({
+  products: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
@@ -26,7 +45,10 @@ export const getProductsControllerFindAllResponseMock = (): ProductDto[] =>
     name: faker.word.sample(),
     price: faker.number.int({ min: undefined, max: undefined }),
     stock: faker.number.int({ min: undefined, max: undefined }),
-  }));
+  })),
+  total: faker.number.int({ min: undefined, max: undefined }),
+  ...overrideResponse,
+});
 
 export const getProductsControllerFindOneResponseMock = (
   overrideResponse: Partial<ProductDto> = {},
@@ -161,33 +183,47 @@ export const getCategoriesControllerCreateMockHandler = (
 
 export const getCategoriesControllerFindAllMockHandler = (
   overrideResponse?:
-    | void
+    | CategoryDto[]
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
+      ) => Promise<CategoryDto[]> | CategoryDto[]),
 ) => {
   return http.get("*/categories", async (info) => {
     await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCategoriesControllerFindAllResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
 export const getCategoriesControllerFindOneMockHandler = (
   overrideResponse?:
-    | void
+    | CategoryDto
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
+      ) => Promise<CategoryDto> | CategoryDto),
 ) => {
   return http.get("*/categories/:id", async (info) => {
     await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCategoriesControllerFindOneResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
@@ -241,10 +277,10 @@ export const getProductsControllerCreateMockHandler = (
 
 export const getProductsControllerFindAllMockHandler = (
   overrideResponse?:
-    | ProductDto[]
+    | PaginatedProductDto
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<ProductDto[]> | ProductDto[]),
+      ) => Promise<PaginatedProductDto> | PaginatedProductDto),
 ) => {
   return http.get("*/products", async (info) => {
     await delay(1000);
@@ -573,14 +609,14 @@ export const getImageControllerUploadImageMockHandler = (
   });
 };
 
-export const getImageControllerGetDownloadLinkMockHandler = (
+export const getImageControllerGetImageLinkMockHandler = (
   overrideResponse?:
     | void
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.get("*/images/download/:image", async (info) => {
+  return http.get("*/images/:image", async (info) => {
     await delay(1000);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
@@ -621,5 +657,5 @@ export const getMauzlAPIMock = () => [
   getClientsControllerFindAllMockHandler(),
   getClientsControllerFindOneMockHandler(),
   getImageControllerUploadImageMockHandler(),
-  getImageControllerGetDownloadLinkMockHandler(),
+  getImageControllerGetImageLinkMockHandler(),
 ];

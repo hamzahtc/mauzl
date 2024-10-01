@@ -1,41 +1,32 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { sort } from "@/common/contants";
-import TranslateMessage from "@/i18n/TranslateMessage";
 import txKeys from "@/i18n/translations";
+import TextTypography from "../common/TextTypography";
 
 const SortFilter = () => {
   return (
     <Stack gap={2}>
-      <Typography
-        component="div"
+      <TextTypography
+        text={txKeys.services.shop.sort.title}
         variant="h6"
         sx={{
-          color: "black",
-          "&:hover": { color: "black", cursor: "pointer" },
+          "&:hover": { cursor: "pointer" },
         }}
-      >
-        <TranslateMessage txKey={txKeys.services.shop.sort.title} />
-      </Typography>
+      />
       {sort.map(({ name }) => (
         <Stack key={name}>
-          <Box>
-            <Typography
-              component="div"
-              sx={{
-                color: "#7E7E7E",
-                "&:hover": { color: "black", cursor: "pointer" },
-              }}
-            >
-              <TranslateMessage
-                txKey={
-                  txKeys.services.shop.sort.list[
-                    name as keyof typeof txKeys.services.shop.sort.list
-                  ].name
-                }
-              />
-            </Typography>
-          </Box>
+          <TextTypography
+            text={
+              txKeys.services.shop.sort.list[
+                name as keyof typeof txKeys.services.shop.sort.list
+              ].name
+            }
+            sx={{
+              color: "#7E7E7E",
+              "&:hover": { color: "black", cursor: "pointer" },
+            }}
+          />
         </Stack>
       ))}
     </Stack>
