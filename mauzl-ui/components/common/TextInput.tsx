@@ -1,37 +1,60 @@
 import * as React from "react";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { DeepKeys, Field, useForm } from "@tanstack/react-form";
-import { CreateOrderDto } from "@/models";
+import { Field, FieldMeta, FormApi } from "@tanstack/react-form";
+import TextTypography from "./TextTypography";
+import { Box, Stack } from "@mui/material";
+import { ZodValidator } from "@tanstack/zod-form-adapter";
 
-type TextInputProps = TextFieldProps & {
-  name: DeepKeys<CreateOrderDto>;
+type TextInputProps<T> = TextFieldProps & {
+  name: string;
   label: string;
   placeholder: string;
-  form: ReturnType<typeof useForm<CreateOrderDto>>;
+  form: FormApi<T, ZodValidator>;
 };
 
-export default function TextInput({
+export default function TextInput<T>({
   name,
   label,
   placeholder,
   form,
   ...muiTextFieldProps
-}: TextInputProps) {
+}: TextInputProps<T>) {
   return (
-    // @ts-expect-error Field component has internal typing issues
+    // @ts-expect-error ignore field name
     <Field name={name} form={form}>
-      {({ handleChange, handleBlur }) => (
-        <TextField
-          label={label}
-          sx={{ minWidth: "300px" }}
-          size="small"
-          defaultValue={""}
-          onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleBlur}
-          placeholder={placeholder}
-          {...muiTextFieldProps}
-        />
+      {({ state, handleChange, handleBlur }) => (
+        <Stack gap={1}>
+          <TextField
+            label={label}
+            sx={{ minWidth: "300px" }}
+            size="small"
+            defaultValue={""}
+            // @ts-expect-error ignore type
+            onChange={(e) => handleChange(e.target.value)}
+            onBlur={handleBlur}
+            placeholder={placeholder}
+            {...muiTextFieldProps}
+          />
+          <FieldInfo fieldMeta={state.meta} />
+        </Stack>
       )}
     </Field>
   );
+}
+
+function FieldInfo({ fieldMeta }: { fieldMeta: FieldMeta | undefined }) {
+  if (!fieldMeta) return null;
+
+  if (fieldMeta.isTouched && fieldMeta.errors.length)
+    return (
+      <Box pl={2}>
+        <TextTypography
+          text={fieldMeta.errors.join(",")}
+          variant="body2"
+          color="#FF4C4C"
+        />
+      </Box>
+    );
+
+  return <></>;
 }
