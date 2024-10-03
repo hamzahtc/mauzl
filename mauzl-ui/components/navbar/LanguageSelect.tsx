@@ -54,10 +54,18 @@ const LanguageSelect = () => {
         }}
       >
         <MenuItem value={Language.EN}>
-          <TextTypography text={Language.EN} fontSize={16} />
+          <TextTypography
+            text={Language.EN}
+            textTransform="capitalize"
+            fontSize={16}
+          />
         </MenuItem>
         <MenuItem value={Language.FR}>
-          <TextTypography text={Language.FR} fontSize={16} />
+          <TextTypography
+            text={Language.FR}
+            textTransform="capitalize"
+            fontSize={16}
+          />
         </MenuItem>
       </Select>
     </FormControl>

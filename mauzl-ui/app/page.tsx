@@ -11,7 +11,7 @@ import Cards from "@/components/product/Cards";
 import PrimaryButton from "@/components/common/PrimaryButton";
 import TextTypography from "@/components/common/TextTypography";
 
-export default function Home() {
+export default function HomePage() {
   const translate = useTranslation();
 
   return (

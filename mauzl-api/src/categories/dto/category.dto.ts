@@ -1,12 +1,12 @@
-import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class CategoryDto {
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   id: number;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   name: string;
 }

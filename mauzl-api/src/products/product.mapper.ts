@@ -1,34 +1,34 @@
-import { createMap, forMember, mapFrom, Mapper } from '@automapper/core';
-import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { Product } from './entities/product.entity';
 import { ProductDto } from './dto/product.dto';
+import { ProductImage } from '~product-images/entities/product-image.entity';
+import { CategoryMapper } from '~categories/category.mapper';
 
-@Injectable()
-export class ProductMapper extends AutomapperProfile {
-  constructor(
-    @InjectMapper()
-    mapper: Mapper,
-  ) {
-    super(mapper);
+export class ProductMapper {
+  static toDto(product: Product): ProductDto {
+    const productDto = plainToInstance(ProductDto, product, {
+      excludeExtraneousValues: true,
+    });
+
+    productDto.category = CategoryMapper.toDto(product.category);
+    productDto.images = product.images.map((image: ProductImage) => image.name);
+
+    return productDto;
   }
 
-  override get profile() {
-    return (mapper) => {
-      createMap(
-        mapper,
-        Product,
-        ProductDto,
-        forMember(
-          (productDto) => productDto.category,
-          mapFrom((product) => product.category),
-        ),
-        forMember(
-          (productDto) => productDto.images,
-          mapFrom((product) => product.images.map((image) => image.name)),
-        ),
-      );
-      createMap(mapper, ProductDto, Product);
-    };
+  static toEntity(productDto: ProductDto): Product {
+    const product = plainToInstance(Product, productDto, {
+      excludeExtraneousValues: true,
+    });
+
+    return product;
+  }
+
+  static toDtoArray(products: Product[]): ProductDto[] {
+    return products.map((product) => this.toDto(product));
+  }
+
+  static toEntityArray(productDtos: ProductDto[]): Product[] {
+    return productDtos.map((productDto) => this.toEntity(productDto));
   }
 }

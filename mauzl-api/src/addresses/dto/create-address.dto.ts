@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateOrderItemDto {
+export class CreateAddressDto {
   @ApiProperty()
-  productId: number;
+  addressLine: string;
 
   @ApiProperty()
-  quantity: number;
+  city: string;
 }

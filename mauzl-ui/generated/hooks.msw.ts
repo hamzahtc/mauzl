@@ -593,6 +593,86 @@ export const getClientsControllerFindOneMockHandler = (
   });
 };
 
+export const getAddressesControllerCreateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/addresses", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getAddressesControllerFindAllMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/addresses", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAddressesControllerFindOneMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/addresses/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAddressesControllerUpdateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.patch("*/addresses/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAddressesControllerRemoveMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.delete("*/addresses/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
 export const getImageControllerUploadImageMockHandler = (
   overrideResponse?:
     | void
@@ -656,6 +736,11 @@ export const getMauzlAPIMock = () => [
   getReviewsControllerFindOneMockHandler(),
   getClientsControllerFindAllMockHandler(),
   getClientsControllerFindOneMockHandler(),
+  getAddressesControllerCreateMockHandler(),
+  getAddressesControllerFindAllMockHandler(),
+  getAddressesControllerFindOneMockHandler(),
+  getAddressesControllerUpdateMockHandler(),
+  getAddressesControllerRemoveMockHandler(),
   getImageControllerUploadImageMockHandler(),
   getImageControllerGetImageLinkMockHandler(),
 ];

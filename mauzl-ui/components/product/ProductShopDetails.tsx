@@ -11,6 +11,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import PrimaryButton from "../common/PrimaryButton";
 import SecondaryButton from "../common/SecondaryButton";
 import TextTypography from "../common/TextTypography";
+import { theme } from "@/styles/stylesheet";
 
 interface ProductShopDetailsProps {
   product?: ProductDto;
@@ -45,7 +46,7 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
           text={`${price} MAD`}
           variant="h5"
           fontWeight="bold"
-          color="primary"
+          color="info"
         />
         <TextTypography text="$34.00" sx={{ textDecoration: "line-through" }} />
       </Stack>
@@ -58,7 +59,7 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
             onClick={() => undefined}
             text={txKeys.services.shop.wishlist}
             size="small"
-            endIcon={<FaRegHeart />}
+            endIcon={<FaRegHeart color={theme.palette.primary.main} />}
             fullWidth
           />
           <PrimaryButton
