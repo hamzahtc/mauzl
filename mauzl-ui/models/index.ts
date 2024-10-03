@@ -6,14 +6,18 @@
  */
 
 export * from "./categoryDto";
+export * from "./createAddressDto";
 export * from "./createCategoryDto";
+export * from "./createClientDto";
 export * from "./createOrderDto";
 export * from "./createProductDto";
 export * from "./createUserDto";
 export * from "./paginatedProductDto";
 export * from "./productDto";
 export * from "./productsControllerFindAllParams";
+export * from "./updateAddressDto";
 export * from "./updateCategoryDto";
 export * from "./updateOrderDto";
 export * from "./updateProductDto";
 export * from "./updateUserDto";
+export * from "./createOrderItemDto";

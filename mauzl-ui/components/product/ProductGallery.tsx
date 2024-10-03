@@ -20,6 +20,7 @@ const ProductGallery = ({ images = [] }: ProductGalleryProps) => {
           height={0}
           sizes="100vw"
           style={{
+            minWidth: "300px",
             aspectRatio: "1/1",
             height: "600px",
             objectFit: "cover",

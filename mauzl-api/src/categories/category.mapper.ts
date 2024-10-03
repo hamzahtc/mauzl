@@ -1,22 +1,25 @@
-import { createMap, Mapper } from '@automapper/core';
-import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { Category } from './entities/category.entity';
 import { CategoryDto } from './dto/category.dto';
 
-@Injectable()
-export class CategoryMapper extends AutomapperProfile {
-  constructor(
-    @InjectMapper()
-    mapper: Mapper,
-  ) {
-    super(mapper);
+export class CategoryMapper {
+  static toDto(category: Category): CategoryDto {
+    return plainToInstance(CategoryDto, category, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  override get profile() {
-    return (mapper) => {
-      createMap(mapper, Category, CategoryDto);
-      createMap(mapper, CategoryDto, Category);
-    };
+  static toEntity(categoryDto: CategoryDto): Category {
+    return plainToInstance(Category, categoryDto, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  static toDtoArray(categories: Category[]): CategoryDto[] {
+    return categories.map((category) => this.toDto(category));
+  }
+
+  static toEntityArray(categoryDtos: CategoryDto[]): Category[] {
+    return categoryDtos.map((categoryDto) => this.toEntity(categoryDto));
   }
 }

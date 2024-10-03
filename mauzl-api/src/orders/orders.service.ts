@@ -58,8 +58,6 @@ export class OrdersService {
       }),
     );
 
-    // const savedOrderItems = this.orderItemRepository.save(orderItems);
-
     const order = this.orderRepository.create({
       client: client,
       items: orderItems,

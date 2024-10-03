@@ -14,10 +14,9 @@ import { ProductImage } from '~product-images/entities/product-image.entity';
 import { Category } from '~categories/entities/category.entity';
 import { MinioClientService } from '~minio-client/minio-client.service';
 import { BufferedFile } from '~minio-client/file.model';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
 import { ProductDto } from './dto/product.dto';
 import { ImageService } from '~images/image.service';
+import { ProductMapper } from './product.mapper';
 
 @Injectable()
 export class ProductsService {
@@ -29,8 +28,6 @@ export class ProductsService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     private minioClientService: MinioClientService,
-    @InjectMapper()
-    private readonly mapper: Mapper,
     private imageService: ImageService,
   ) {
     this.logger = new Logger('ProductService');
@@ -81,7 +78,7 @@ export class ProductsService {
       skip: offset,
     });
 
-    const productDtos = this.mapper.mapArray(products, Product, ProductDto);
+    const productDtos = ProductMapper.toDtoArray(products);
     await Promise.all(
       productDtos.map(async (product) => {
         product.images = await Promise.all(
@@ -100,7 +97,7 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    const productDto = this.mapper.map(product, Product, ProductDto);
+    const productDto = ProductMapper.toDto(product);
     productDto.images = await Promise.all(
       productDto.images.map((image) => this.imageService.getImageLink(image)),
     );

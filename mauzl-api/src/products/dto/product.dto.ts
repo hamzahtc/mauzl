@@ -1,33 +1,33 @@
-import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { CategoryDto } from '~categories/dto/category.dto';
 
 export class ProductDto {
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   id: number;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   name: string;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   description: string;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   price: number;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   stock: number;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   category: CategoryDto;
 
-  @AutoMap()
+  @Expose()
   @ApiProperty()
   images: string[];
 }

@@ -13,7 +13,7 @@ const ProductDetails = () => {
 
   return (
     <Stack gap={4}>
-      <Stack direction="row" gap={6}>
+      <Stack direction="row" gap={6} flexWrap="wrap">
         <Stack flex={1}>
           <ProductGallery images={product?.data.images} />
         </Stack>

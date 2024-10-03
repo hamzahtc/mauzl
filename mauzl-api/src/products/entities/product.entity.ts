@@ -1,4 +1,3 @@
-import { AutoMap } from '@automapper/classes';
 import {
   Column,
   CreateDateColumn,
@@ -13,23 +12,18 @@ import { ProductImage } from '~product-images/entities/product-image.entity';
 
 @Entity()
 export class Product {
-  @AutoMap()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @AutoMap()
   @Column()
   name: string;
 
-  @AutoMap()
   @Column()
   description: string;
 
-  @AutoMap()
   @Column('decimal')
   price: number;
 
-  @AutoMap()
   @Column()
   stock: number;
 

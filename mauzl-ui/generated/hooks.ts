@@ -21,6 +21,7 @@ import axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import type {
   CategoryDto,
+  CreateAddressDto,
   CreateCategoryDto,
   CreateOrderDto,
   CreateProductDto,
@@ -28,6 +29,7 @@ import type {
   PaginatedProductDto,
   ProductDto,
   ProductsControllerFindAllParams,
+  UpdateAddressDto,
   UpdateCategoryDto,
   UpdateOrderDto,
   UpdateProductDto,
@@ -3434,6 +3436,483 @@ export function useClientsControllerFindOne<
 
   return query;
 }
+
+export const addressesControllerCreate = (
+  createAddressDto: CreateAddressDto,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.post(
+    `http://localhost:4000/api/addresses`,
+    createAddressDto,
+    options,
+  );
+};
+
+export const getAddressesControllerCreateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerCreate>>,
+    TError,
+    { data: CreateAddressDto },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addressesControllerCreate>>,
+  TError,
+  { data: CreateAddressDto },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addressesControllerCreate>>,
+    { data: CreateAddressDto }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return addressesControllerCreate(data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddressesControllerCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addressesControllerCreate>>
+>;
+export type AddressesControllerCreateMutationBody = CreateAddressDto;
+export type AddressesControllerCreateMutationError = AxiosError<unknown>;
+
+export const useAddressesControllerCreate = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerCreate>>,
+    TError,
+    { data: CreateAddressDto },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof addressesControllerCreate>>,
+  TError,
+  { data: CreateAddressDto },
+  TContext
+> => {
+  const mutationOptions = getAddressesControllerCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const addressesControllerFindAll = (
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.get(`http://localhost:4000/api/addresses`, options);
+};
+
+export const getAddressesControllerFindAllQueryKey = () => {
+  return [`http://localhost:4000/api/addresses`] as const;
+};
+
+export const getAddressesControllerFindAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof addressesControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAddressesControllerFindAllQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof addressesControllerFindAll>>
+  > = ({ signal }) => addressesControllerFindAll({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof addressesControllerFindAll>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AddressesControllerFindAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof addressesControllerFindAll>>
+>;
+export type AddressesControllerFindAllQueryError = AxiosError<unknown>;
+
+export function useAddressesControllerFindAll<
+  TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
+  TError = AxiosError<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof addressesControllerFindAll>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof addressesControllerFindAll>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  axios?: AxiosRequestConfig;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAddressesControllerFindAll<
+  TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof addressesControllerFindAll>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof addressesControllerFindAll>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAddressesControllerFindAll<
+  TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof addressesControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAddressesControllerFindAll<
+  TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof addressesControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAddressesControllerFindAllQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const addressesControllerFindOne = (
+  id: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.get(`http://localhost:4000/api/addresses/${id}`, options);
+};
+
+export const getAddressesControllerFindOneQueryKey = (id: string) => {
+  return [`http://localhost:4000/api/addresses/${id}`] as const;
+};
+
+export const getAddressesControllerFindOneQueryOptions = <
+  TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
+  TError = AxiosError<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof addressesControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAddressesControllerFindOneQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof addressesControllerFindOne>>
+  > = ({ signal }) =>
+    addressesControllerFindOne(id, { signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof addressesControllerFindOne>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AddressesControllerFindOneQueryResult = NonNullable<
+  Awaited<ReturnType<typeof addressesControllerFindOne>>
+>;
+export type AddressesControllerFindOneQueryError = AxiosError<unknown>;
+
+export function useAddressesControllerFindOne<
+  TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
+  TError = AxiosError<unknown>,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof addressesControllerFindOne>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof addressesControllerFindOne>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAddressesControllerFindOne<
+  TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
+  TError = AxiosError<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof addressesControllerFindOne>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof addressesControllerFindOne>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAddressesControllerFindOne<
+  TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
+  TError = AxiosError<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof addressesControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAddressesControllerFindOne<
+  TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
+  TError = AxiosError<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof addressesControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAddressesControllerFindOneQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const addressesControllerUpdate = (
+  id: string,
+  updateAddressDto: UpdateAddressDto,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.patch(
+    `http://localhost:4000/api/addresses/${id}`,
+    updateAddressDto,
+    options,
+  );
+};
+
+export const getAddressesControllerUpdateMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerUpdate>>,
+    TError,
+    { id: string; data: UpdateAddressDto },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addressesControllerUpdate>>,
+  TError,
+  { id: string; data: UpdateAddressDto },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addressesControllerUpdate>>,
+    { id: string; data: UpdateAddressDto }
+  > = (props) => {
+    const { id, data } = props ?? {};
+
+    return addressesControllerUpdate(id, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddressesControllerUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addressesControllerUpdate>>
+>;
+export type AddressesControllerUpdateMutationBody = UpdateAddressDto;
+export type AddressesControllerUpdateMutationError = AxiosError<unknown>;
+
+export const useAddressesControllerUpdate = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerUpdate>>,
+    TError,
+    { id: string; data: UpdateAddressDto },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof addressesControllerUpdate>>,
+  TError,
+  { id: string; data: UpdateAddressDto },
+  TContext
+> => {
+  const mutationOptions = getAddressesControllerUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const addressesControllerRemove = (
+  id: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.delete(`http://localhost:4000/api/addresses/${id}`, options);
+};
+
+export const getAddressesControllerRemoveMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerRemove>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addressesControllerRemove>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addressesControllerRemove>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return addressesControllerRemove(id, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddressesControllerRemoveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addressesControllerRemove>>
+>;
+
+export type AddressesControllerRemoveMutationError = AxiosError<unknown>;
+
+export const useAddressesControllerRemove = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addressesControllerRemove>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof addressesControllerRemove>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationOptions = getAddressesControllerRemoveMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 
 export const imageControllerUploadImage = (
   options?: AxiosRequestConfig,

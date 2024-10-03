@@ -1,5 +1,15 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { CreateAddressDto } from '~addresses/dto/create-address.dto';
+import { CreateClientDto } from '~clients/dto/create-client.dto';
+import { CreateOrderItemDto } from '~order-items/dto/create-order-item.dto';
+
 export class CreateOrderDto {
-  items: { productId: number; quantity: number }[];
-  client: { username: string; email: string; phoneNumber: string };
-  address: { addressLine: string; city: string };
+  @ApiProperty({ type: [CreateOrderItemDto] })
+  items: CreateOrderItemDto[];
+
+  @ApiProperty()
+  client: CreateClientDto;
+
+  @ApiProperty()
+  address: CreateAddressDto;
 }

@@ -4,7 +4,12 @@
  * Mauzl API
  * OpenAPI spec version: 1.0.0
  */
+import type { CreateAddressDto } from "./createAddressDto";
+import type { CreateClientDto } from "./createClientDto";
+import type { CreateOrderItemDto } from "./createOrderItemDto";
 
 export interface CreateOrderDto {
-  [key: string]: unknown;
+  address: CreateAddressDto;
+  client: CreateClientDto;
+  items: CreateOrderItemDto[];
 }

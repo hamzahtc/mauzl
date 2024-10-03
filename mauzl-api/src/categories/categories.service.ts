@@ -4,17 +4,13 @@ import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
-import { CategoryDto } from './dto/category.dto';
+import { CategoryMapper } from './category.mapper';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-    @InjectMapper()
-    private readonly mapper: Mapper,
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
@@ -24,7 +20,7 @@ export class CategoriesService {
 
   async findAll() {
     const categories = await this.categoryRepository.find();
-    return this.mapper.mapArray(categories, Category, CategoryDto);
+    return CategoryMapper.toDtoArray(categories);
   }
 
   async findOne(id: number): Promise<Category> {
