@@ -1,0 +1,34 @@
+{
+  "common": {
+    "appName": "Mauzl"
+  },
+  "home": {
+    "quote": "FR Where every sip is a hug in a mug"
+  },
+  "services": {
+    "home": {
+      "title": "FR Home",
+      "createYourOwn": "FR Create your own",
+      "description": "FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "FR Take a Flavor Trip"
+    },
+    "shop": {
+      "title": "FR Shop",
+      "description": "FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "FR Send a Yummy Surprise"
+    },
+    "blog": {
+      "title": "FR Blog",
+      "description": "FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "FR Mauzl Pass"
+    },
+    "contact": {
+      "title": "FR Contact",
+      "description": "FR Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "FR Mug Reservations"
+    }
+  },
+  "footer": {
+    "copyright": "FR Mauzl © 2024 All rights reserved"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "common": {
+    "appName": "Mauzl",
+    "shopNow": "Shop Now",
+    "search": {
+      "label": "Search products..."
+    },
+    "filter": {
+      "label": "Filter"
+    }
+  },
+  "home": {
+    "quote": "Where every sip is a hug in a mug"
+  },
+  "signup": {
+    "title": "Sign Up"
+  },
+  "services": {
+    "home": {
+      "title": "Home",
+      "createYourOwn": "Create your own",
+      "quote": "Make your style & see it on the mirror",
+      "description": "What’s more, we do it right! A full administration printing background. Print shirts for yourself or your online business",
+      "printForEveryone": "T-SHIRT Printing for Everyone",
+      "printForEveryoneDesc": "What’s more, we do it right!",
+      "topQuality": "Top quality",
+      "topQualityDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "mixMatch": "Mix and match",
+      "mixMatchDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "shipping": "Shipping",
+      "shippingDesc": "Lorem ipsum det, consec tetur  adipiscing elit duis nec fringi",
+      "highQuality": "High quality offset printing",
+      "collentions": {
+        "man": "Men's Collection",
+        "child": "Kid's Collection",
+        "woman": "Women's Collection"
+      },
+      "footer": "Take a Flavor Trip"
+    },
+    "shop": {
+      "title": "Shop",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Send a Yummy Surprise",
+      "addToBag": "Add to Bag",
+      "wishlist": "Wishlist",
+      "categories": {
+        "title": "Product categories",
+        "list": {
+          "hoodie": {
+            "name": "Hoodie"
+          },
+          "tshirt": {
+            "name": "T-shirt"
+          },
+          "sweater": {
+            "name": "Sweater"
+          },
+          "longsleeves": {
+            "name": "Long Sleeves"
+          }
+        }
+      },
+      "price": {
+        "title": "Filter by price"
+      },
+      "status": {
+        "title": "Stock status",
+        "list": {
+          "onSale": {
+            "name": "On sale"
+          },
+          "inStock": {
+            "name": "In stock"
+          },
+          "outOfStock": {
+            "name": "Out of stock"
+          },
+          "onBackOrder": {
+            "name": "On back order"
+          }
+        }
+      },
+      "sort": {
+        "title": "Sort by",
+        "list": {
+          "popularity": {
+            "name": "Popularity"
+          },
+          "averageRating": {
+            "name": "Average rating"
+          },
+          "latest": {
+            "name": "Latest"
+          },
+          "lowToHigh": {
+            "name": "Price: low to high"
+          },
+          "highToLow": {
+            "name": "Price: high to low"
+          }
+        }
+      },
+      "sizes": {
+        "3xl": "3XL",
+        "2xl": "2XL",
+        "xl": "XL",
+        "l": "L",
+        "m": "M",
+        "s": "S",
+        "xs": "XS"
+      }
+    },
+    "bag": {
+      "title": "Your Bag",
+      "checkout": "Go to checkout"
+    },
+    "checkout": {
+      "title": "Checkout"
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Mauzl Pass"
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "footer": "Mug Reservations"
+    }
+  },
+  "footer": {
+    "copyright": "Mauzl © 2024 All rights reserved"
+  }
+}
