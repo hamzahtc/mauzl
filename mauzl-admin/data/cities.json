@@ -1,0 +1,470 @@
+[
+  {
+    "label": "Casablanca",
+    "value": "Casablanca"
+  },
+  {
+    "label": "Fès",
+    "value": "Fès"
+  },
+  {
+    "label": "Marrakech",
+    "value": "Marrakech"
+  },
+  {
+    "label": "Tangier",
+    "value": "Tangier"
+  },
+  {
+    "label": "Sale",
+    "value": "Sale"
+  },
+  {
+    "label": "Rabat",
+    "value": "Rabat"
+  },
+  {
+    "label": "Meknès",
+    "value": "Meknès"
+  },
+  {
+    "label": "Oujda",
+    "value": "Oujda"
+  },
+  {
+    "label": "Kenitra",
+    "value": "Kenitra"
+  },
+  {
+    "label": "Agadir",
+    "value": "Agadir"
+  },
+  {
+    "label": "Tétouan",
+    "value": "Tétouan"
+  },
+  {
+    "label": "Taourirt",
+    "value": "Taourirt"
+  },
+  {
+    "label": "Temara",
+    "value": "Temara"
+  },
+  {
+    "label": "Safi",
+    "value": "Safi"
+  },
+  {
+    "label": "Khénifra",
+    "value": "Khénifra"
+  },
+  {
+    "label": "El Jadid",
+    "value": "El Jadida"
+  },
+  {
+    "label": "Laâyoune",
+    "value": "Laâyoune"
+  },
+  {
+    "label": "Mohammedia",
+    "value": "Mohammedia"
+  },
+  {
+    "label": "Kouribga",
+    "value": "Kouribga"
+  },
+  {
+    "label": "Béni Mellal",
+    "value": "Béni Mellal"
+  },
+  {
+    "label": "Ait Melloul",
+    "value": "Ait Melloul"
+  },
+  {
+    "label": "Nador",
+    "value": "Nador"
+  },
+  {
+    "label": "Taza",
+    "value": "Taza"
+  },
+  {
+    "label": "Settat",
+    "value": "Settat"
+  },
+  {
+    "label": "Barrechid",
+    "value": "Barrechid"
+  },
+  {
+    "label": "Al Khmissat",
+    "value": "Al Khmissat"
+  },
+  {
+    "label": "Inezgane",
+    "value": "Inezgane"
+  },
+  {
+    "label": "Ksar El Kebir",
+    "value": "Ksar El Kebir"
+  },
+  {
+    "label": "Larache",
+    "value": "Larache"
+  },
+  {
+    "label": "Guelmim",
+    "value": "Guelmim"
+  },
+  {
+    "label": "Berkane",
+    "value": "Berkane"
+  },
+  {
+    "label": "Ad Dakhla",
+    "value": "Ad Dakhla"
+  },
+  {
+    "label": "Bouskoura",
+    "value": "Bouskoura"
+  },
+  {
+    "label": "Al Fqih Ben Çalah",
+    "value": "Al Fqih Ben Çalah"
+  },
+  {
+    "label": "Oued Zem",
+    "value": "Oued Zem"
+  },
+  {
+    "label": "Sidi Slimane",
+    "value": "Sidi Slimane"
+  },
+  {
+    "label": "Errachidia",
+    "value": "Errachidia"
+  },
+  {
+    "label": "Guercif",
+    "value": "Guercif"
+  },
+  {
+    "label": "Oulad Teïma",
+    "value": "Oulad Teïma"
+  },
+  {
+    "label": "Ben Guerir",
+    "value": "Ben Guerir"
+  },
+  {
+    "label": "Wislane",
+    "value": "Wislane"
+  },
+  {
+    "label": "Tiflet",
+    "value": "Tiflet"
+  },
+  {
+    "label": "Lqoliaa",
+    "value": "Lqoliaa"
+  },
+  {
+    "label": "Taroudannt",
+    "value": "Taroudannt"
+  },
+  {
+    "label": "Sefrou",
+    "value": "Sefrou"
+  },
+  {
+    "label": "Essaouira",
+    "value": "Essaouira"
+  },
+  {
+    "label": "Fnidq",
+    "value": "Fnidq"
+  },
+  {
+    "label": "Ait Ali",
+    "value": "Ait Ali"
+  },
+  {
+    "label": "Sidi Qacem",
+    "value": "Sidi Qacem"
+  },
+  {
+    "label": "Tiznit",
+    "value": "Tiznit"
+  },
+  {
+    "label": "Moulay Abdallah",
+    "value": "Moulay Abdallah"
+  },
+  {
+    "label": "Tan-Tan",
+    "value": "Tan-Tan"
+  },
+  {
+    "label": "Warzat",
+    "value": "Warzat"
+  },
+  {
+    "label": "Youssoufia",
+    "value": "Youssoufia"
+  },
+  {
+    "label": "Sa’ada",
+    "value": "Sa’ada"
+  },
+  {
+    "label": "Martil",
+    "value": "Martil"
+  },
+  {
+    "label": "Aïn Harrouda",
+    "value": "Aïn Harrouda"
+  },
+  {
+    "label": "Souq Sebt",
+    "value": "Souq Sebt"
+  },
+  {
+    "label": "Skhirate",
+    "value": "Skhirate"
+  },
+  {
+    "label": "Ouezzane",
+    "value": "Ouezzane"
+  },
+  {
+    "label": "Sidi Yahya Zaer",
+    "value": "Sidi Yahya Zaer"
+  },
+  {
+    "label": "Benslimane",
+    "value": "Benslimane"
+  },
+  {
+    "label": "Semara",
+    "value": "Semara"
+  },
+  {
+    "label": "Al Hoceïma",
+    "value": "Al Hoceïma"
+  },
+  {
+    "label": "Beni Enzar",
+    "value": "Beni Enzar"
+  },
+  {
+    "label": "M’diq",
+    "value": "M’diq"
+  },
+  {
+    "label": "Sidi Bennour",
+    "value": "Sidi Bennour"
+  },
+  {
+    "label": "Midalt",
+    "value": "Midalt"
+  },
+  {
+    "label": "Douar Ain Chkef",
+    "value": "Douar Ain Chkef"
+  },
+  {
+    "label": "Azrou",
+    "value": "Azrou"
+  },
+  {
+    "label": "El Kelaa des Srarhna",
+    "value": "El Kelaa des Srarhna"
+  },
+  {
+    "label": "Ain El Aouda",
+    "value": "Ain El Aouda"
+  },
+  {
+    "label": "Beni Yakhlef",
+    "value": "Beni Yakhlef"
+  },
+  {
+    "label": "Ad Darwa",
+    "value": "Ad Darwa"
+  },
+  {
+    "label": "Al Aaroui",
+    "value": "Al Aaroui"
+  },
+  {
+    "label": "Qasbat Tadla",
+    "value": "Qasbat Tadla"
+  },
+  {
+    "label": "Boujad",
+    "value": "Boujad"
+  },
+  {
+    "label": "Tinajdad",
+    "value": "Tinajdad"
+  },
+  {
+    "label": "Jerada",
+    "value": "Jerada"
+  },
+  {
+    "label": "Douar Bni Malek",
+    "value": "Douar Bni Malek"
+  },
+  {
+    "label": "Chefchaouene",
+    "value": "Chefchaouene"
+  },
+  {
+    "label": "Mrirt",
+    "value": "Mrirt"
+  },
+  {
+    "label": "Cabo Bojador",
+    "value": "Cabo Bojador"
+  },
+  {
+    "label": "Sidi Mohamed Lahmar",
+    "value": "Sidi Mohamed"
+  },
+  {
+    "label": "Tineghir",
+    "value": "Tineghir"
+  },
+  {
+    "label": "El Aïoun",
+    "value": "El Aïoun"
+  },
+  {
+    "label": "Azemmour",
+    "value": "Azemmour"
+  },
+  {
+    "label": "Temsia",
+    "value": "Temsia"
+  },
+  {
+    "label": "Zoumi",
+    "value": "Zoumi"
+  },
+  {
+    "label": "Douar Laouamra",
+    "value": "Douar Laouamra"
+  },
+  {
+    "label": "Zagora",
+    "value": "Zagora"
+  },
+  {
+    "label": "Ait Ourir",
+    "value": "Ait Ourir"
+  },
+  {
+    "label": "Sidi Bibi",
+    "value": "Sidi Bibi"
+  },
+  {
+    "label": "Aziylal",
+    "value": "Aziylal"
+  },
+  {
+    "label": "Sidi Yahia El Gharb",
+    "value": "Sidi Yahia El Gharb"
+  },
+  {
+    "label": "Biougra",
+    "value": "Biougra"
+  },
+  {
+    "label": "Taounate",
+    "value": "Taounate"
+  },
+  {
+    "label": "Bouznika",
+    "value": "Bouznika"
+  },
+  {
+    "label": "Aourir",
+    "value": "Aourir"
+  },
+  {
+    "label": "Zaïo",
+    "value": "Zaïo"
+  },
+  {
+    "label": "Aguelmous",
+    "value": "Aguelmous"
+  },
+  {
+    "label": "El Hajeb",
+    "value": "El Hajeb"
+  },
+  {
+    "label": "Dabouziya",
+    "value": "Dabouziya"
+  },
+  {
+    "label": "Mnasra",
+    "value": "Mnasra"
+  },
+  {
+    "label": "Zeghanghane",
+    "value": "Zeghanghane"
+  },
+  {
+    "label": "Imzouren",
+    "value": "Imzouren"
+  },
+  {
+    "label": "Oulad Zemam",
+    "value": "Oulad Zemam"
+  },
+  {
+    "label": "Ben Ahmed",
+    "value": "Ben Ahmed"
+  },
+  {
+    "label": "Tit Mellil",
+    "value": "Tit Mellil"
+  },
+  {
+    "label": "Arbaoua",
+    "value": "Arbaoua"
+  },
+  {
+    "label": "Douar Oulad Hssine",
+    "value": "Douar Oulad"
+  },
+  {
+    "label": "Bahharet Oulad Ayyad",
+    "value": "Bahharet Oulad"
+  },
+  {
+    "label": "Mechraa Bel Ksiri",
+    "value": "Mechraa Bel Ksiri"
+  },
+  {
+    "label": "Mograne",
+    "value": "Mograne"
+  },
+  {
+    "label": "Dar Ould Zidouh",
+    "value": "Dar Ould Zidouh"
+  },
+  {
+    "label": "Asilah",
+    "value": "Asilah"
+  },
+  {
+    "label": "Al ’Attawia",
+    "value": "Al ’Attawia"
+  }
+]
