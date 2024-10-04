@@ -13,6 +13,8 @@ import { Client } from '~clients/entities/client.entity';
 import { Address } from '~addresses/entities/address.entity';
 import { OrderItem } from '~order-items/entities/order-item.entity';
 import { Product } from '~products/entities/product.entity';
+import { OrderDto } from './dto/order.dto';
+import { OrderMapper } from './order.mapper';
 
 @Injectable()
 export class OrdersService {
@@ -70,8 +72,18 @@ export class OrdersService {
     return this.orderRepository.save(order);
   }
 
-  async findAll(): Promise<Order[]> {
-    return this.orderRepository.find({ relations: ['user', 'items'] });
+  async findAll(): Promise<OrderDto[]> {
+    const orders = await this.orderRepository.find({
+      relations: [
+        'client',
+        'client.address',
+        'items',
+        'items.product',
+        'items.product.category',
+      ],
+    });
+
+    return OrderMapper.toDtoArray(orders);
   }
 
   async findOne(id: number): Promise<Order> {
