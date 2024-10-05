@@ -8,4 +8,10 @@
 export type ProductsControllerFindAllParams = {
   page?: number;
   limit?: number;
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  categoryId?: number;
+  sortBy?: string;
+  statuses?: string;
 };

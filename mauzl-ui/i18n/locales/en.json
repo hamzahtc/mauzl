@@ -75,6 +75,9 @@
           "outOfStock": {
             "name": "Out of stock"
           },
+          "limitedStock": {
+            "name": "Limited stock"
+          },
           "onBackOrder": {
             "name": "On back order"
           }
@@ -89,14 +92,14 @@
           "averageRating": {
             "name": "Average rating"
           },
-          "latest": {
-            "name": "Latest"
+          "newest": {
+            "name": "Newest"
           },
           "lowToHigh": {
-            "name": "Price: low to high"
+            "name": "Low to High"
           },
           "highToLow": {
-            "name": "Price: high to low"
+            "name": "High to Low"
           }
         }
       },

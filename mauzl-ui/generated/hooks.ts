@@ -21,7 +21,6 @@ import axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import type {
   CategoryDto,
-  CreateAddressDto,
   CreateCategoryDto,
   CreateOrderDto,
   CreateProductDto,
@@ -29,7 +28,6 @@ import type {
   PaginatedProductDto,
   ProductDto,
   ProductsControllerFindAllParams,
-  UpdateAddressDto,
   UpdateCategoryDto,
   UpdateOrderDto,
   UpdateProductDto,
@@ -3437,76 +3435,6 @@ export function useClientsControllerFindOne<
   return query;
 }
 
-export const addressesControllerCreate = (
-  createAddressDto: CreateAddressDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(
-    `http://localhost:4000/api/addresses`,
-    createAddressDto,
-    options,
-  );
-};
-
-export const getAddressesControllerCreateMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addressesControllerCreate>>,
-    TError,
-    { data: CreateAddressDto },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addressesControllerCreate>>,
-  TError,
-  { data: CreateAddressDto },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addressesControllerCreate>>,
-    { data: CreateAddressDto }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return addressesControllerCreate(data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddressesControllerCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof addressesControllerCreate>>
->;
-export type AddressesControllerCreateMutationBody = CreateAddressDto;
-export type AddressesControllerCreateMutationError = AxiosError<unknown>;
-
-export const useAddressesControllerCreate = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addressesControllerCreate>>,
-    TError,
-    { data: CreateAddressDto },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof addressesControllerCreate>>,
-  TError,
-  { data: CreateAddressDto },
-  TContext
-> => {
-  const mutationOptions = getAddressesControllerCreateMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-
 export const addressesControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
@@ -3776,77 +3704,6 @@ export function useAddressesControllerFindOne<
 
   return query;
 }
-
-export const addressesControllerUpdate = (
-  id: string,
-  updateAddressDto: UpdateAddressDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.patch(
-    `http://localhost:4000/api/addresses/${id}`,
-    updateAddressDto,
-    options,
-  );
-};
-
-export const getAddressesControllerUpdateMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addressesControllerUpdate>>,
-    TError,
-    { id: string; data: UpdateAddressDto },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addressesControllerUpdate>>,
-  TError,
-  { id: string; data: UpdateAddressDto },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addressesControllerUpdate>>,
-    { id: string; data: UpdateAddressDto }
-  > = (props) => {
-    const { id, data } = props ?? {};
-
-    return addressesControllerUpdate(id, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddressesControllerUpdateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof addressesControllerUpdate>>
->;
-export type AddressesControllerUpdateMutationBody = UpdateAddressDto;
-export type AddressesControllerUpdateMutationError = AxiosError<unknown>;
-
-export const useAddressesControllerUpdate = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addressesControllerUpdate>>,
-    TError,
-    { id: string; data: UpdateAddressDto },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof addressesControllerUpdate>>,
-  TError,
-  { id: string; data: UpdateAddressDto },
-  TContext
-> => {
-  const mutationOptions = getAddressesControllerUpdateMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
 
 export const addressesControllerRemove = (
   id: string,
