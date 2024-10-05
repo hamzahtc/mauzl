@@ -19,7 +19,11 @@ const ShoppingBag = () => {
   if (products?.length === 0) return <></>;
 
   return (
-    <Stack direction={{ xs: "column", md: "row" }} gap={{ xs: 4, md: 10 }}>
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      gap={{ xs: 4, md: 10 }}
+      width="100%"
+    >
       <Stack flex="2" gap={2}>
         <TextTypography text={`${products?.length} products in total`} />
         <BagProducts products={products} />

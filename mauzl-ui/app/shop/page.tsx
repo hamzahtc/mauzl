@@ -27,7 +27,11 @@ export default function Shop() {
           />
         </Stack>
 
-        <Stack p={10} gap={4} direction={{ xs: "column", md: "row" }}>
+        <Stack
+          p={{ xs: 4, md: 10 }}
+          gap={4}
+          direction={{ xs: "column", md: "row" }}
+        >
           <Box flex={1}>
             <Filter />
           </Box>

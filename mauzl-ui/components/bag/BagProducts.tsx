@@ -16,11 +16,11 @@ export default function BagProducts({ products }: BagProductsProps) {
   return (
     <Stack gap={4} alignItems="center">
       {products?.map((product, index) => (
-        <Box key={product.id}>
+        <Box key={product.id} width="100%">
           <Box
             p={2}
             key={product.id}
-            minWidth="360px"
+            minWidth="330px"
             mb={4}
             sx={{
               bgcolor: "#f9f9fb",
