@@ -23,7 +23,7 @@ export default function BagPage() {
           fontWeight="bold"
         />
       </Stack>
-      <Stack px={{ xs: 10, md: 10 }} py={10}>
+      <Stack p={{ xs: 2, md: 10 }} py={10} alignItems="center" width="100%">
         <ShoppingBag />
       </Stack>
     </Stack>
