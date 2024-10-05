@@ -15,18 +15,15 @@ export const categories = [
 ];
 
 export const status = [
-  { name: "onSale" },
   { name: "inStock" },
   { name: "outOfStock" },
-  { name: "onBackOrder" },
+  { name: "limitedStock" },
 ];
 
-export const sort = [
-  { name: "popularity" },
-  { name: "averageRating" },
-  { name: "latest" },
-  { name: "lowToHigh" },
-  { name: "highToLow" },
+export const orders = [
+  { name: "newest", value: "newest" },
+  { name: "lowToHigh", value: "lowToHigh" },
+  { name: "highToLow", value: "highToLow" },
 ];
 
 export type sizeType = keyof typeof txKeys.services.shop.sizes;

@@ -18,6 +18,7 @@ import { BufferedFile } from '~minio-client/file.model';
 import { ProductDto } from './dto/product.dto';
 import { ApiExtraModels, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { PaginatedProductDto } from './dto/products.dto';
+import { ProductFilterDto, SortType } from './dto/product-filter.dto';
 
 @Controller('products')
 @ApiExtraModels(ProductDto)
@@ -37,8 +38,31 @@ export class ProductsController {
   @ApiOkResponse({ type: PaginatedProductDto })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
-    return this.productsService.findAll(page, limit);
+  @ApiQuery({ name: 'name', required: false })
+  @ApiQuery({ name: 'minPrice', required: false, type: Number })
+  @ApiQuery({ name: 'maxPrice', required: false, type: Number })
+  @ApiQuery({ name: 'categoryId', required: false, type: Number })
+  @ApiQuery({ name: 'sortBy', required: false })
+  @ApiQuery({ name: 'statuses', required: false })
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('name') name?: string,
+    @Query('minPrice') minPrice?: number,
+    @Query('maxPrice') maxPrice?: number,
+    @Query('categoryId') categoryId?: number,
+    @Query('sortBy') sortBy?: SortType,
+    @Query('statuses') statuses?: string,
+  ) {
+    const filters: ProductFilterDto = {
+      name,
+      minPrice,
+      maxPrice,
+      categoryId,
+      sortBy,
+      statuses,
+    };
+    return this.productsService.findAll(page, limit, filters);
   }
 
   @Get(':id')

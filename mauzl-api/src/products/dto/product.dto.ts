@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { CategoryDto } from '~categories/dto/category.dto';
+import { ProductStatusType } from '~products/product.util';
 
 export class ProductDto {
   @Expose()
@@ -22,6 +23,10 @@ export class ProductDto {
   @Expose()
   @ApiProperty()
   stock: number;
+
+  @Expose()
+  @ApiProperty()
+  status: ProductStatusType;
 
   @Expose()
   @ApiProperty()

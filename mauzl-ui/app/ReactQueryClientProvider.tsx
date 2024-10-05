@@ -11,12 +11,14 @@ const queryClientOptions = {
   },
 };
 
+export const QueryClientInstance = new QueryClient(queryClientOptions);
+
 export const ReactQueryClientProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [queryClient] = useState(() => new QueryClient(queryClientOptions));
+  const [queryClient] = useState(() => QueryClientInstance);
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );

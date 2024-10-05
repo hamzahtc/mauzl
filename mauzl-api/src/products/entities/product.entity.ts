@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Category } from '~categories/entities/category.entity';
 import { ProductImage } from '~product-images/entities/product-image.entity';
+import { ProductStatus, ProductStatusType } from '~products/product.util';
 
 @Entity()
 export class Product {
@@ -23,6 +24,9 @@ export class Product {
 
   @Column('decimal')
   price: number;
+
+  @Column({ default: ProductStatus.IN_STOCK })
+  status: ProductStatusType;
 
   @Column()
   stock: number;

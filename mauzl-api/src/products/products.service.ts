@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, ILike, In, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -17,6 +17,8 @@ import { BufferedFile } from '~minio-client/file.model';
 import { ProductDto } from './dto/product.dto';
 import { ImageService } from '~images/image.service';
 import { ProductMapper } from './product.mapper';
+import { ProductFilterDto } from './dto/product-filter.dto';
+import { statues } from './product.util';
 
 @Injectable()
 export class ProductsService {
@@ -69,13 +71,51 @@ export class ProductsService {
     return savedProduct;
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number, filters: ProductFilterDto) {
     const offset = (page - 1) * limit;
+    const statusArray = filters.statuses ? filters.statuses.split(',') : [];
+
+    const whereConditions: any = {};
+
+    if (filters.name) {
+      whereConditions.name = ILike(`%${filters.name}%`);
+    }
+
+    if (filters.minPrice && filters.maxPrice) {
+      whereConditions.price = Between(filters.minPrice, filters.maxPrice);
+    }
+
+    if (filters.categoryId) {
+      whereConditions.category = { id: filters.categoryId };
+    }
+
+    if (filters.statuses && statusArray.length > 0) {
+      const statusesValues = statusArray.map((status) => statues[status]);
+      whereConditions.status = In(statusesValues);
+    }
+
+    const order: any = {};
+    switch (filters.sortBy) {
+      case 'newest':
+        order.createdAt = 'DESC'; // Assuming you have a 'createdAt' field
+        break;
+      case 'lowToHigh':
+        order.price = 'ASC';
+        break;
+      case 'highToLow':
+        order.price = 'DESC';
+        break;
+      default:
+        // No specific sorting
+        break;
+    }
 
     const [products, total] = await this.productRepository.findAndCount({
+      where: whereConditions,
       relations: ['category', 'images'],
       take: limit,
       skip: offset,
+      order,
     });
 
     const productDtos = ProductMapper.toDtoArray(products);

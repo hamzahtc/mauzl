@@ -13,5 +13,6 @@ export interface ProductDto {
   images: string[];
   name: string;
   price: number;
+  status: string;
   stock: number;
 }

@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
-import { sort } from "@/common/contants";
+import { orders } from "@/common/contants";
 import txKeys from "@/i18n/translations";
 import TextTypography from "../common/TextTypography";
+import { theme } from "@/styles/stylesheet";
+import useQueryParamsRouter from "@/hooks/useQueryParamsRouter";
+import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
+import { getProductsControllerFindAllQueryKey } from "@/generated/hooks";
 
 const SortFilter = () => {
+  const [sortBy, setSortBy] = useState<string | undefined>(undefined);
+
+  const { setQueryParam, pushQueryParams, getQueryParam } =
+    useQueryParamsRouter();
+
+  const sortByParam = getQueryParam("sortBy") || undefined;
+
+  useEffect(() => {
+    setSortBy(sortByParam);
+  }, [sortByParam]);
+
+  const handleInputChange = (sortByValue: string) => {
+    setSortBy(sortByValue);
+    setQueryParam("sortBy", sortByValue);
+    pushQueryParams();
+    QueryClientInstance.refetchQueries({
+      queryKey: [getProductsControllerFindAllQueryKey],
+      exact: true,
+    });
+  };
+
   return (
     <Stack gap={2}>
       <TextTypography
@@ -14,8 +39,8 @@ const SortFilter = () => {
           "&:hover": { cursor: "pointer" },
         }}
       />
-      {sort.map(({ name }) => (
-        <Stack key={name}>
+      {orders.map(({ name, value }) => (
+        <Stack key={name} onClick={() => handleInputChange(value)}>
           <TextTypography
             text={
               txKeys.services.shop.sort.list[
@@ -23,7 +48,7 @@ const SortFilter = () => {
               ].name
             }
             sx={{
-              color: "#7E7E7E",
+              color: sortBy === value ? theme.palette.info.main : "#7E7E7E",
               "&:hover": { color: "black", cursor: "pointer" },
             }}
           />
