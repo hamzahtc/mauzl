@@ -883,7 +883,7 @@ const OrderTable = () => {
 
   return (
     <DashboardCard title="Orders">
-      <Box sx={{ overflow: "auto", width: { xs: "280px", sm: "auto" } }}>
+      <Box sx={{ overflow: "auto", width: { xs: "280px", md: "auto" } }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>

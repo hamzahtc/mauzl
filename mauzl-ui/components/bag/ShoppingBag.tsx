@@ -10,14 +10,16 @@ import PrimaryButton from "../common/PrimaryButton";
 import txKeys from "@/i18n/translations";
 import { IoBagCheckOutline } from "react-icons/io5";
 import BagProducts from "./BagProducts";
+import { useRouter } from "next/navigation";
 
 const ShoppingBag = () => {
   const products = useLiveQuery(() => db.products.toArray());
+  const { push } = useRouter();
 
   if (products?.length === 0) return <></>;
 
   return (
-    <Stack direction="row" gap={25}>
+    <Stack direction={{ xs: "column", md: "row" }} gap={{ xs: 4, md: 10 }}>
       <Stack flex="2" gap={2}>
         <TextTypography text={`${products?.length} products in total`} />
         <BagProducts products={products} />
@@ -30,7 +32,7 @@ const ShoppingBag = () => {
         </Stack>
         <Divider />
         <PrimaryButton
-          href="/checkout"
+          onClick={() => push("/checkout")}
           text={txKeys.services.bag.checkout}
           endIcon={<IoBagCheckOutline />}
         />

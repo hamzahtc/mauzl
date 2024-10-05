@@ -27,11 +27,11 @@ const Checkout = () => {
   if (isSuccess) return <ConfirmationDialog />;
 
   return (
-    <Stack direction="row" gap={4} flexWrap="wrap">
-      <Stack flex={2}>
+    <Stack direction={{ xs: "column", md: "row" }} gap={4} flexWrap="wrap">
+      <Stack flex={3}>
         <CheckoutForm products={products} createOrder={createOrder} />
       </Stack>
-      <Stack flex={1}>
+      <Stack flex={2}>
         <CheckoutSideBar products={products} />
       </Stack>
     </Stack>

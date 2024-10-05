@@ -26,7 +26,7 @@ export default function TextInput<T>({
         <Stack gap={1}>
           <TextField
             label={label}
-            sx={{ minWidth: "300px" }}
+            sx={{ minWidth: "270px" }}
             size="small"
             defaultValue={""}
             // @ts-expect-error ignore type

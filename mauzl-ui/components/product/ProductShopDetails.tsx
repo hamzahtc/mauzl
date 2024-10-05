@@ -50,11 +50,16 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
         />
         <TextTypography text="$34.00" sx={{ textDecoration: "line-through" }} />
       </Stack>
-      <Stack direction="row" gap={4} justifyContent="start" alignItems="center">
+      <Stack
+        direction={{ sx: "column", md: "row" }}
+        gap={4}
+        justifyContent="start"
+        alignItems="center"
+      >
         <Box flex={1}>
           <QuantityInput />
         </Box>
-        <Stack direction="row" gap={2} flex={3}>
+        <Stack direction={{ sx: "column", md: "row" }} gap={2} flex={3}>
           <SecondaryButton
             onClick={() => undefined}
             text={txKeys.services.shop.wishlist}

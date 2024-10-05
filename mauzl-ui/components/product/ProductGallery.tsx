@@ -11,24 +11,30 @@ const ProductGallery = ({ images = [] }: ProductGalleryProps) => {
 
   return (
     <Stack className="grid gap-4">
-      <Stack>
+      <Stack justifyContent="center" alignItems="center">
         <Image
           alt="models"
-          className="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
+          className="h-auto w-full max-w-full rounded-lg object-cover object-center"
           src={active}
           width={0}
           height={0}
-          sizes="100vw"
+          sizes="(max-width: 600px) 100vw, 50vw"
           style={{
-            minWidth: "300px",
-            aspectRatio: "1/1",
-            height: "600px",
+            maxWidth: "90vw", // Max width of 90% of the viewport
+            maxHeight: "80vh", // Max height of 80% of the viewport height
+            width: "100%", // Grow to 100% width of the parent container
+            height: "auto", // Maintain aspect ratio
             objectFit: "cover",
             borderRadius: 8,
           }}
         />
       </Stack>
-      <Stack className="gap-4" direction="row" justifyContent="center">
+      <Stack
+        className="gap-4"
+        direction={{ xs: "column", md: "row" }}
+        justifyContent="center"
+        alignItems="center"
+      >
         {images.map((image, index) => (
           <Stack key={index}>
             <Image

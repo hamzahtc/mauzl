@@ -38,6 +38,7 @@ export default function SelectInput<T>({
             container: (provided) => ({
               ...provided,
               zIndex: 2,
+              minWidth: "270px",
             }),
           }}
         />

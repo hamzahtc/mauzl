@@ -13,27 +13,41 @@ const ProductTabs = () => {
   };
 
   return (
-    <Stack sx={{ width: "100%" }}>
+    <Stack sx={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
       <TabContext value={value}>
         <Stack
           alignItems="center"
-          sx={{ borderBottom: 1, borderColor: "divider" }}
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            width: "100%",
+            flexDirection: { xs: "column", md: "row" }, // Vertical on small screens, horizontal on larger screens
+            justifyContent: { xs: "center", md: "space-around" }, // Centered on small screens
+          }}
         >
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+            sx={{
+              width: "100%",
+              maxWidth: "500px", // Limit the width of the TabList
+              flexDirection: { xs: "column", md: "row" },
+            }}
+          >
             <Tab
               label="Description"
               value="description"
-              sx={{ textTransform: "none" }}
+              sx={{ textTransform: "none", flexGrow: 1, minWidth: 100 }}
             />
             <Tab
               label="Additional information"
               value="info"
-              sx={{ textTransform: "none" }}
+              sx={{ textTransform: "none", flexGrow: 1, minWidth: 100 }}
             />
             <Tab
               label="Reviews (0)"
               value="reviews"
-              sx={{ textTransform: "none" }}
+              sx={{ textTransform: "none", flexGrow: 1, minWidth: 100 }}
             />
           </TabList>
         </Stack>

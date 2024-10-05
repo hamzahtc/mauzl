@@ -23,7 +23,7 @@ export default function CheckoutPage() {
           fontWeight="bold"
         />
       </Stack>
-      <Stack px={10} py={10}>
+      <Stack px={{ xs: 2, md: 10 }} py={10}>
         <Checkout />
       </Stack>
     </Stack>

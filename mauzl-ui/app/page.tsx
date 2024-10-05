@@ -15,9 +15,9 @@ export default function HomePage() {
   const translate = useTranslation();
 
   return (
-    <Stack direction="column" gap={10} px={30} py={10}>
+    <Stack direction="column" gap={10} px={{ xs: 4, md: 30 }} py={10}>
       <Stack direction="row" gap={6} flexWrap="wrap">
-        <Stack flex={1} gap={4} justifyContent="center">
+        <Stack gap={4} justifyContent={{ xs: "start", md: "center" }}>
           <Box>
             <Chip
               label={translate(txKeys.services.home.createYourOwn)}
@@ -42,22 +42,6 @@ export default function HomePage() {
               endIcon={<EastIcon />}
             />
           </Box>
-        </Stack>
-        <Stack flex={1} alignItems="end">
-          <Image
-            alt="models"
-            src="/images/models.png"
-            priority={true}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{
-              width: "500px",
-              minWidth: "350px",
-              height: "auto",
-              borderRadius: 8,
-            }}
-          />
         </Stack>
       </Stack>
       <Stack direction="column" alignItems="center" gap={4}>
@@ -102,7 +86,7 @@ export default function HomePage() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack direction="row" gap={4} justifyContent="center">
+      <Stack direction="row" gap={4} justifyContent="center" flexWrap="wrap">
         <Box sx={{ position: "relative", width: "400px" }}>
           <Image
             alt="models"
