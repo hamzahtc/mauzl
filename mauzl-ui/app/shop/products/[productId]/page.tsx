@@ -24,9 +24,14 @@ const Product = () => {
           color="black"
         />
       </Stack>
-      <Stack px={30} py={10}>
+      <Stack px={{ md: 30 }} py={10}>
         <Stack direction="row">
-          <Stack direction="row">
+          <Stack
+            direction="row"
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+          >
             <ProductDetails />
           </Stack>
         </Stack>

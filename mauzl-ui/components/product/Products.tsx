@@ -33,7 +33,9 @@ const Products = () => {
         px={2}
       >
         {products.data?.data.products.map((product) => (
-          <Product product={product} key={product.id} />
+          <Box key={product.id} minWidth="250px">
+            <Product product={product} />
+          </Box>
         ))}
       </Stack>
       <Box>

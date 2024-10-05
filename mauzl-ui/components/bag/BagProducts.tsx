@@ -14,7 +14,7 @@ interface BagProductsProps {
 
 export default function BagProducts({ products }: BagProductsProps) {
   return (
-    <Stack gap={4}>
+    <Stack gap={4} alignItems="center">
       {products?.map((product, index) => (
         <Box key={product.id}>
           <Box

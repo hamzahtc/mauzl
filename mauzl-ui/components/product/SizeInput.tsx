@@ -6,7 +6,7 @@ import SecondaryButton from "../common/SecondaryButton";
 
 const SizeInput = () => {
   return (
-    <Stack direction="row" gap={2}>
+    <Stack direction="row" gap={2} flexWrap="wrap">
       {sizes.map((size) => (
         <SecondaryButton
           key={size}
