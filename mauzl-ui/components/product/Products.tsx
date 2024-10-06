@@ -2,6 +2,7 @@ import { Box, Chip, Pagination, Stack } from "@mui/material";
 import Product from "./Product";
 import {
   getProductsControllerFindAllQueryKey,
+  useCategoriesControllerFindAll,
   useProductsControllerFindAll,
 } from "@/generated/hooks";
 import { useState, useEffect } from "react";
@@ -11,6 +12,7 @@ import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
 import { MAX_PRICE, MIN_PRICE } from "@/utils/constant";
 import { useTranslation } from "@/i18n/useTranslation";
 import txKeys from "@/i18n/translations";
+import { CategoryDto } from "@/models";
 
 interface FilterChip {
   key: string;
@@ -29,6 +31,8 @@ const Products = () => {
   const maxPrice = Number(searchParams.get("max")) || MAX_PRICE;
   const sortBy = searchParams.get("sortBy") || undefined;
   const statuses = searchParams.get("statuses") || undefined;
+
+  const { data: categories } = useCategoriesControllerFindAll();
 
   const products = useProductsControllerFindAll({
     page,
@@ -51,7 +55,10 @@ const Products = () => {
       filterChips.push({ key: "name", label: `${name}` });
     }
     if (categoryId) {
-      filterChips.push({ key: "category", label: `Category: ${categoryId}` });
+      filterChips.push({
+        key: "category",
+        label: `${categories?.data.find((category: CategoryDto) => category.id == categoryId)?.name}`,
+      });
     }
     if (minPrice !== MIN_PRICE || maxPrice !== MAX_PRICE) {
       filterChips.push({
@@ -77,7 +84,7 @@ const Products = () => {
     }
 
     setFilters(filterChips);
-  }, [name, categoryId, minPrice, maxPrice, sortBy, statuses]);
+  }, [name, categoryId, minPrice, maxPrice, sortBy, statuses, categories]);
 
   if (products.isLoading) return <></>;
 

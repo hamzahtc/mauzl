@@ -6,6 +6,11 @@ import {
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
+interface QuanltityInputProps {
+  quantity: number;
+  handleQuantityInput: (quantity: number) => void;
+}
+
 const NumberInput = React.forwardRef(function CustomNumberInput(
   props: NumberInputProps,
   ref: React.ForwardedRef<HTMLDivElement>
@@ -43,9 +48,26 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
   );
 });
 
-export default function QuantityInput() {
+export default function QuantityInput({
+  quantity,
+  handleQuantityInput,
+}: QuanltityInputProps) {
+  const handleChange = (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.PointerEvent
+      | React.KeyboardEvent,
+    value: number | null
+  ) => {
+    if (value !== null) {
+      handleQuantityInput(value);
+    }
+  };
+
   return (
     <NumberInput
+      value={quantity}
+      onChange={handleChange}
       aria-label="Quantity Input"
       defaultValue={1}
       min={1}

@@ -10,11 +10,9 @@ interface CheckoutSideBarProps {
 export default function CheckoutSideBar({ products }: CheckoutSideBarProps) {
   return (
     <Stack
-      p={1}
       sx={{
         maxHeight: "470px",
         overflowY: "auto",
-        pr: 1,
       }}
     >
       <BagProducts products={products} />
