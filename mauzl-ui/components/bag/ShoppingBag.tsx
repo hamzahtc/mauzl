@@ -13,11 +13,12 @@ import BagProducts from "./BagProducts";
 import { useRouter } from "next/navigation";
 
 const ShoppingBag = () => {
-  const products = useLiveQuery(() => db.products.toArray());
+  const orderItems = useLiveQuery(() => db.products.toArray());
   const { push } = useRouter();
 
-  if (products?.length === 0) return <></>;
+  if (orderItems?.length === 0) return <></>;
 
+  const products = orderItems?.map((order) => order.product);
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -25,7 +26,7 @@ const ShoppingBag = () => {
       width="100%"
     >
       <Stack flex="2" gap={2}>
-        <TextTypography text={`${products?.length} products in total`} />
+        <TextTypography text={`${orderItems?.length} products in total`} />
         <BagProducts products={products} />
       </Stack>
       <Stack flex="1" gap={2}>

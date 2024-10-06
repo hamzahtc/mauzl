@@ -1,8 +1,7 @@
 import { Box, Stack } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import QuantityInput from "./QuantityInput";
 import txKeys from "@/i18n/translations";
-import ColorInput from "./ColorInput";
 import SizeInput from "./SizeInput";
 import { ProductDto } from "@/models";
 import { db } from "@/utils/db";
@@ -12,17 +11,30 @@ import PrimaryButton from "../common/PrimaryButton";
 import SecondaryButton from "../common/SecondaryButton";
 import TextTypography from "../common/TextTypography";
 import { theme } from "@/styles/stylesheet";
+import { SizeType } from "@/common/contants";
 
 interface ProductShopDetailsProps {
   product?: ProductDto;
 }
 
 const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
+  const [size, setSize] = useState<SizeType>("m");
+  const [quantity, setQuantity] = useState(1);
+
   if (!product) return <></>;
 
   const { name, description, price } = product || {};
 
-  const addProductToBag = async () => await db.products.add(product);
+  const addProductToBag = async () =>
+    await db.products.add({ product, size, quantity, productId: product.id });
+
+  const handleSizeInput = (size: SizeType) => {
+    setSize(size);
+  };
+
+  const handleQuantityInput = (quantity: number) => {
+    setQuantity(quantity);
+  };
 
   return (
     <Stack gap={4}>
@@ -33,13 +45,12 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
         fontWeight="bold"
       />
       <TextTypography text={description} variant="body2" lineHeight={2} />
-      <Stack gap={2}>
+      {/* <Stack gap={2}>
         <TextTypography text="Color: WHITE" fontWeight="bold" />
         <ColorInput />
-      </Stack>
+      </Stack> */}
       <Stack gap={2}>
-        <TextTypography text="Size: SMALL" fontWeight="bold" />
-        <SizeInput />
+        <SizeInput size={size} handleSizeInput={handleSizeInput} />
       </Stack>
       <Stack direction="row" alignItems="end" gap={2}>
         <TextTypography
@@ -57,7 +68,10 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
         alignItems="center"
       >
         <Box flex={1}>
-          <QuantityInput />
+          <QuantityInput
+            quantity={quantity}
+            handleQuantityInput={handleQuantityInput}
+          />
         </Box>
         <Stack direction={{ sx: "column", md: "row" }} gap={2} flex={3}>
           <SecondaryButton

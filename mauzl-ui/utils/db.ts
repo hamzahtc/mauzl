@@ -1,12 +1,21 @@
+import { SizeType } from "@/common/contants";
 import { ProductDto } from "@/models";
 import Dexie, { EntityTable } from "dexie";
 
+export interface OrderItem {
+  product: ProductDto;
+  size: SizeType;
+  quantity: number;
+  productId: number;
+}
+
 const db = new Dexie("mauzl-db") as Dexie & {
-  products: EntityTable<ProductDto, "id">;
+  products: EntityTable<OrderItem, "productId">;
 };
 
+// Define the schema for OrderItem
 db.version(1).stores({
-  products: "++id, name, price, category.name",
+  products: "productId, size, quantity", // Assuming 'product.id' will serve as the unique identifier
 });
 
 export { db };

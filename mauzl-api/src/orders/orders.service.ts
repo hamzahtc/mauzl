@@ -31,18 +31,15 @@ export class OrdersService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+  async create(createOrderDto: CreateOrderDto): Promise<OrderDto> {
     const address = this.addressRepository.create({
       ...createOrderDto.address,
     });
-
-    // const savedAddress = await this.addressRepository.save(address);
 
     const client = this.clientRepository.create({
       ...createOrderDto.client,
       address: address,
     });
-    // const savedClient = await this.clientRepository.save(client);
 
     const orderItems: OrderItem[] = await Promise.all(
       createOrderDto.items.map(async (item) => {
@@ -56,6 +53,7 @@ export class OrdersService {
           product,
           quantity: item.quantity,
           price: product.price,
+          size: item.size,
         });
       }),
     );
@@ -69,7 +67,9 @@ export class OrdersService {
       ),
     });
 
-    return this.orderRepository.save(order);
+    const savedOrder = await this.orderRepository.save(order);
+
+    return OrderMapper.toDto(savedOrder);
   }
 
   async findAll(): Promise<OrderDto[]> {

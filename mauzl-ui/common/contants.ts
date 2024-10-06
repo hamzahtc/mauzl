@@ -26,5 +26,5 @@ export const orders = [
   { name: "highToLow", value: "highToLow" },
 ];
 
-export type sizeType = keyof typeof txKeys.services.shop.sizes;
-export const sizes: sizeType[] = ["3xl", "2xl", "xl", "l", "m", "s", "xs"];
+export type SizeType = keyof typeof txKeys.services.shop.sizes;
+export const sizes: SizeType[] = ["3xl", "2xl", "xl", "l", "m", "s", "xs"];
