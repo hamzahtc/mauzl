@@ -40,6 +40,15 @@ export default function SelectInput<T>({
               zIndex: 2,
               minWidth: "270px",
             }),
+            control: (provided) => ({
+              ...provided,
+              borderRadius: 0, // Removes border-radius
+              backgroundColor: "#f9f9fb", // Changes background color
+            }),
+            menu: (provided) => ({
+              ...provided,
+              borderRadius: 0, // Removes border-radius for the dropdown
+            }),
           }}
         />
       )}

@@ -10,9 +10,11 @@ import Image from "next/image";
 import Cards from "@/components/product/Cards";
 import PrimaryButton from "@/components/common/PrimaryButton";
 import TextTypography from "@/components/common/TextTypography";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const translate = useTranslation();
+  const { push } = useRouter();
 
   return (
     <Stack direction="column" gap={10} px={{ xs: 4, md: 30 }} py={10}>
@@ -38,6 +40,7 @@ export default function HomePage() {
           <TextTypography text={txKeys.services.home.description} />
           <Box>
             <PrimaryButton
+              onClick={() => push("/shop")}
               text={txKeys.common.shopNow}
               endIcon={<EastIcon />}
             />

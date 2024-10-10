@@ -1,29 +1,17 @@
 "use client";
 
 import ShoppingBag from "@/components/bag/ShoppingBag";
-import TextTypography from "@/components/common/TextTypography";
-import txKeys from "@/i18n/translations";
 import { Stack } from "@mui/material";
 
 export default function BagPage() {
   return (
-    <Stack>
+    <Stack bgcolor="#eee" px={26} minHeight="100vh">
       <Stack
-        bgcolor="#F8F8F8"
-        justifyContent="center"
-        p={6}
-        mt={4}
+        p={{ xs: 2, md: 5 }}
         alignItems="center"
-        zIndex={2}
+        width="100%"
+        bgcolor="#eee"
       >
-        <TextTypography
-          text={txKeys.services.bag.title}
-          variant="h5"
-          textTransform="uppercase"
-          fontWeight="bold"
-        />
-      </Stack>
-      <Stack p={{ xs: 2, md: 10 }} py={10} alignItems="center" width="100%">
         <ShoppingBag />
       </Stack>
     </Stack>

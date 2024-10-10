@@ -9,7 +9,11 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import useQueryParamsRouter from "@/hooks/useQueryParamsRouter";
 import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
-import { MAX_PRICE, MIN_PRICE } from "@/utils/constant";
+import {
+  MAX_PRICE,
+  MIN_PRICE,
+  PRODUCTS_PAGINATION_LIMIT,
+} from "@/utils/constant";
 import { useTranslation } from "@/i18n/useTranslation";
 import txKeys from "@/i18n/translations";
 import { CategoryDto } from "@/models";
@@ -21,7 +25,7 @@ interface FilterChip {
 
 const Products = () => {
   const [page, setPage] = useState(1);
-  const limit = 3;
+  const limit = PRODUCTS_PAGINATION_LIMIT;
   const searchParams = useSearchParams();
 
   const { pushQueryParams, removeQueryParam } = useQueryParamsRouter();
@@ -84,7 +88,16 @@ const Products = () => {
     }
 
     setFilters(filterChips);
-  }, [name, categoryId, minPrice, maxPrice, sortBy, statuses, categories]);
+  }, [
+    name,
+    categoryId,
+    minPrice,
+    maxPrice,
+    sortBy,
+    statuses,
+    categories,
+    translate,
+  ]);
 
   if (products.isLoading) return <></>;
 

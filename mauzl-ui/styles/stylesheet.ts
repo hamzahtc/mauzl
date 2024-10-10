@@ -9,6 +9,14 @@ const PlusJakartaSans = localFont({
   ],
 });
 
+export const HelveticaNow = localFont({
+  src: [
+    {
+      path: "../public/fonts/helveticanowtext-bold-demo.ttf",
+    },
+  ],
+});
+
 export const theme = createTheme({
   palette: {
     primary: {

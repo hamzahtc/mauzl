@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
@@ -8,53 +8,80 @@ interface ProductGalleryProps {
 
 const ProductGallery = ({ images = [] }: ProductGalleryProps) => {
   const [active, setActive] = React.useState(images[0]);
+  const [hoverPosition, setHoverPosition] = React.useState({ x: 0, y: 0 });
+  const [activeIndex, setActiveIndex] = React.useState(0); // State to track the active thumbnail index
+
+  // Function to update the hover position
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100; // Calculate relative X position as a percentage
+    const y = ((e.clientY - top) / height) * 100; // Calculate relative Y position as a percentage
+    setHoverPosition({ x, y });
+  };
 
   return (
-    <Stack className="grid gap-4">
-      <Stack justifyContent="center" alignItems="center">
-        <Image
-          alt="models"
-          className="h-auto w-full max-w-full rounded-lg object-cover object-center"
-          src={active}
-          width={0}
-          height={0}
-          sizes="(max-width: 600px) 100vw, 50vw"
-          style={{
-            maxWidth: "90vw", // Max width of 90% of the viewport
-            maxHeight: "80vh", // Max height of 80% of the viewport height
-            width: "100%", // Grow to 100% width of the parent container
-            height: "auto", // Maintain aspect ratio
-            objectFit: "cover",
-            borderRadius: 8,
-          }}
-        />
-      </Stack>
+    <Stack
+      direction={{ xs: "column", md: "row" }} // Set the layout direction to horizontal (row)
+      spacing={2} // Add spacing between the thumbnails and large image
+      alignItems={{ xs: "center", md: "flex-start" }}
+    >
+      {/* Thumbnail images on the left */}
       <Stack
         className="gap-4"
-        direction={{ xs: "column", md: "row" }}
+        direction="column" // Thumbnails stacked vertically
         justifyContent="center"
         alignItems="center"
       >
         {images.map((image, index) => (
           <Stack key={index}>
+            {/* Switch active image on hover */}
             <Image
-              onClick={() => setActive(image)}
               alt="models"
-              className="h-20 max-w-full cursor-pointer rounded-lg object-cover object-center"
+              className="cursor-pointer object-cover object-center"
               src={image}
               width={0}
               height={0}
               sizes="100vw"
               style={{
-                width: "200px",
-                height: "130px",
-                aspectRatio: "1/1",
+                minWidth: "100px",
+                width: "100px", // Thumbnail width
+                height: "150px", // Thumbnail height
                 objectFit: "cover",
-                borderRadius: 8,
+                border:
+                  activeIndex === index
+                    ? "3px solid black"
+                    : "3px solid transparent", // Apply border based on activeIndex
+              }}
+              onMouseEnter={() => {
+                setActive(image);
+                setActiveIndex(index); // Set active index on hover
               }}
             />
           </Stack>
         ))}
+      </Stack>
+
+      {/* Large image on the right */}
+      <Stack justifyContent="center" alignItems="center">
+        {/* Wrapper div for controlling zoom on hover */}
+        <Box
+          className="relative w-[600px] h-[750px] overflow-hidden group"
+          onMouseMove={handleMouseMove}
+        >
+          {/* Image with dynamic transform-origin for zoom effect */}
+          <Image
+            alt="models"
+            className="object-cover object-center w-full h-full transform transition-transform duration-300 ease-in-out group-hover:scale-150 cursor-zoom-in"
+            src={active}
+            width={0}
+            height={0}
+            sizes="(max-width: 600px) 100vw, 50vw"
+            style={{
+              transformOrigin: `${hoverPosition.x}% ${hoverPosition.y}%`, // Set the zoom origin based on mouse position
+            }}
+          />
+        </Box>
       </Stack>
     </Stack>
   );

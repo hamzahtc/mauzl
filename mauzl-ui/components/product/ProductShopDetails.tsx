@@ -59,7 +59,10 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
           fontWeight="bold"
           color="info"
         />
-        <TextTypography text="$34.00" sx={{ textDecoration: "line-through" }} />
+        <TextTypography
+          text={`${price - 100} MAD`}
+          sx={{ textDecoration: "line-through" }}
+        />
       </Stack>
       <Stack
         direction={{ sx: "column", md: "row" }}
@@ -82,6 +85,9 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
             fullWidth
           />
           <PrimaryButton
+            sx={{
+              px: 3,
+            }}
             onClick={addProductToBag}
             text={txKeys.services.shop.addToBag}
             size="small"
