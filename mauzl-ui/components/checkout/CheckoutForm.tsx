@@ -52,7 +52,7 @@ export default function CheckoutForm({
   };
 
   return (
-    <Stack gap={2} justifyContent="center" width="100%">
+    <Stack gap={2} justifyContent="center" width="100%" bgcolor="#f9f9fb" p={2}>
       <TextInput<Order>
         form={form}
         name="client.firstName"
@@ -88,7 +88,7 @@ export default function CheckoutForm({
         type="submit"
         text="Confirm"
         onClick={handleConfirm}
-        sx={{ minWidth: "270px" }}
+        sx={{ minWidth: "270px", bgcolor: "#018849" }}
       />
     </Stack>
   );

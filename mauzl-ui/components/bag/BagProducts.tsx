@@ -1,5 +1,5 @@
 import { ProductDto } from "@/models";
-import { Box, Divider, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
@@ -7,6 +7,8 @@ import TextTypography from "../common/TextTypography";
 import SecondaryButton from "../common/SecondaryButton";
 import PrimaryButton from "../common/PrimaryButton";
 import { db } from "@/utils/db";
+import { FaRegHeart } from "react-icons/fa6";
+import { HelveticaNow, theme } from "@/styles/stylesheet";
 
 interface BagProductsProps {
   products?: ProductDto[];
@@ -14,24 +16,10 @@ interface BagProductsProps {
 
 export default function BagProducts({ products }: BagProductsProps) {
   return (
-    <Stack gap={4} alignItems="center">
-      {products?.map((product, index) => (
-        <Box key={product.id} width="100%">
-          <Box
-            p={2}
-            key={product.id}
-            minWidth="330px"
-            mb={4}
-            sx={{
-              bgcolor: "#f9f9fb",
-              borderRadius: 2,
-              "&:hover": {
-                color: "black",
-                cursor: "pointer",
-                bgcolor: "#eeeeF2",
-              },
-            }}
-          >
+    <Stack gap={1} alignItems="center">
+      {products?.map((product) => (
+        <Box key={product.id} width="100%" bgcolor="#f9f9fb" p={2}>
+          <Box key={product.id} minWidth="330px">
             <Link href={`/shop/products/${product.id}`}>
               <Stack direction="row" gap={2}>
                 <Image
@@ -45,7 +33,6 @@ export default function BagProducts({ products }: BagProductsProps) {
                     height: "180px",
                     aspectRatio: "1/1",
                     objectFit: "cover",
-                    borderRadius: 8,
                   }}
                 />
                 <Stack justifyContent="space-between" width="100%">
@@ -62,7 +49,10 @@ export default function BagProducts({ products }: BagProductsProps) {
                       />
                       <TextTypography text={product.category.name} />
                     </Stack>
-                    <TextTypography text={`${product.price} MAD`} />
+                    <TextTypography
+                      text={`${product.price} MAD`}
+                      fontFamily={HelveticaNow.style.fontFamily}
+                    />
                   </Stack>
                   <Stack
                     direction="row"
@@ -79,6 +69,10 @@ export default function BagProducts({ products }: BagProductsProps) {
                       }}
                     />
                     <PrimaryButton
+                      color="info"
+                      startIcon={
+                        <FaRegHeart color={theme.palette.secondary.main} />
+                      }
                       text="Move to favorites"
                       onClick={(e) => {
                         e.preventDefault();
@@ -90,8 +84,6 @@ export default function BagProducts({ products }: BagProductsProps) {
               </Stack>
             </Link>
           </Box>
-
-          {index < products.length - 1 && <Divider />}
         </Box>
       ))}
     </Stack>

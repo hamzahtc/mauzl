@@ -11,6 +11,8 @@ import txKeys from "@/i18n/translations";
 import { IoBagCheckOutline } from "react-icons/io5";
 import BagProducts from "./BagProducts";
 import { useRouter } from "next/navigation";
+import { HelveticaNow } from "@/styles/stylesheet";
+import { CiDeliveryTruck } from "react-icons/ci";
 
 const ShoppingBag = () => {
   const orderItems = useLiveQuery(() => db.products.toArray());
@@ -22,24 +24,76 @@ const ShoppingBag = () => {
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
-      gap={{ xs: 4, md: 10 }}
+      gap={{ xs: 4, md: 1 }}
       width="100%"
     >
-      <Stack flex="2" gap={2}>
-        <TextTypography text={`${orderItems?.length} products in total`} />
+      <Stack flex={2} gap={1}>
+        <Stack
+          bgcolor="#f9f9fb"
+          p={2}
+          direction="row"
+          justifyContent="space-between"
+        >
+          <TextTypography text="MON PANIER" fontWeight="bold" />
+          <TextTypography text={`${orderItems?.length} products in total`} />
+        </Stack>
         <BagProducts products={products} />
+        <Stack
+          bgcolor="#f9f9fb"
+          p={2}
+          direction="row"
+          justifyContent="end"
+          gap={4}
+        >
+          <TextTypography
+            textTransform="uppercase"
+            fontWeight="bold"
+            text={`sous-total`}
+          />
+          <TextTypography
+            textTransform="uppercase"
+            fontWeight="bold"
+            text={`${299} MAD`}
+            fontFamily={HelveticaNow.style.fontFamily}
+          />
+        </Stack>
+        <Stack
+          bgcolor="#f9f9fb"
+          p={2}
+          direction="row"
+          alignItems="center"
+          gap={4}
+        >
+          <CiDeliveryTruck size={50} />
+          <TextTypography
+            textTransform="uppercase"
+            fontWeight="bold"
+            text="Free standard delivery over 599 MAD"
+            fontFamily={HelveticaNow.style.fontFamily}
+          />
+        </Stack>
       </Stack>
-      <Stack flex="1" gap={2}>
-        <TextTypography text="Order summary" fontWeight="bold" />
+      <Stack flex="1" gap={2} bgcolor="#f9f9fb" p={2} maxHeight="180px">
+        <TextTypography
+          text="Order summary"
+          fontWeight="bold"
+          textTransform="uppercase"
+        />
         <Stack direction="row" justifyContent="space-between">
-          <TextTypography text="Products (11)" />
-          <TextTypography text="859,80DH" />
+          <TextTypography text={`Products (${products?.length})`} />
+          <TextTypography
+            text="859,80 MAD"
+            fontFamily={HelveticaNow.style.fontFamily}
+          />
         </Stack>
         <Divider />
         <PrimaryButton
           onClick={() => push("/checkout")}
           text={txKeys.services.bag.checkout}
           endIcon={<IoBagCheckOutline />}
+          sx={{
+            bgcolor: "#018849",
+          }}
         />
       </Stack>
     </Stack>

@@ -14,7 +14,7 @@ const ProductDetails = () => {
   return (
     <Stack gap={4}>
       <Stack direction={{ xs: "column", md: "row" }} gap={6}>
-        <Stack flex={1} alignItems="center">
+        <Stack flex={2} alignItems="center">
           <ProductGallery images={product?.data.images} />
         </Stack>
         <Stack flex={1} px={{ xs: 5 }}>

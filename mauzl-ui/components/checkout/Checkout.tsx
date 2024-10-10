@@ -8,6 +8,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import { useOrdersControllerCreate } from "@/generated/hooks";
 import ConfirmationDialog from "./ConfirmationDialog";
+import TextTypography from "../common/TextTypography";
 
 const Checkout = () => {
   const orderItems = useLiveQuery(() => db.products.toArray());
@@ -30,8 +31,11 @@ const Checkout = () => {
   if (isSuccess) return <ConfirmationDialog />;
 
   return (
-    <Stack direction={{ xs: "column", md: "row" }} gap={4} flexWrap="wrap">
-      <Stack flex={3}>
+    <Stack direction={{ xs: "column", md: "row" }} gap={1} flexWrap="wrap">
+      <Stack flex={3} gap={1}>
+        <Stack bgcolor="#f9f9fb" p={2}>
+          <TextTypography text="Client informations" fontWeight="bold" />
+        </Stack>
         <CheckoutForm orderItems={orderItems} createOrder={createOrder} />
       </Stack>
       <Stack flex={2}>
