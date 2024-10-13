@@ -78,7 +78,14 @@ jobs:
           NEXT_PUBLIC_BUILD_DATE: $(date --utc +'%Y-%m-%dT%H:%M:%SZ')
           NEXT_PUBLIC_BUILD_SHA: $GITHUB_SHA
         run: |
-          npm run build:export
+          npm run build
+
+      - name: Upload front artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: front-dist-artifact
+          retention-days: "1"
+          path: .next
 
   mauzl-admin-build:
     runs-on: ubuntu-latest
