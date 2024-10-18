@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:run": "npm run typeorm -- migration:run",
@@ -20,8 +21,7 @@
     "test:cov": "jest --coverage --passWithNoTests",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:watch": "jest --watch",
-    "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js"
+    "test:watch": "jest --watch"
   },
   "jest": {
     "collectCoverageFrom": [

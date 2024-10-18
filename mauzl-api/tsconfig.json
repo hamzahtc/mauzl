@@ -21,5 +21,10 @@
       "~*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts", "db/migrations/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "*.ts",
+    "src/db/migrations/**/*.ts"
+  ]
 }
