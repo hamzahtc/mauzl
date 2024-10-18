@@ -37,11 +37,11 @@ import type {
 export const appControllerGetHello = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/`, options);
+  return axios.get(`/api/`, options);
 };
 
 export const getAppControllerGetHelloQueryKey = () => {
-  return [`http://localhost:4000/api/`] as const;
+  return [`/api/`] as const;
 };
 
 export const getAppControllerGetHelloQueryOptions = <
@@ -161,7 +161,7 @@ export const usersControllerCreate = (
   createUserDto: CreateUserDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.post(`http://localhost:4000/api/users`, createUserDto, options);
+  return axios.post(`/api/users`, createUserDto, options);
 };
 
 export const getUsersControllerCreateMutationOptions = <
@@ -226,11 +226,11 @@ export const useUsersControllerCreate = <
 export const usersControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/users`, options);
+  return axios.get(`/api/users`, options);
 };
 
 export const getUsersControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/users`] as const;
+  return [`/api/users`] as const;
 };
 
 export const getUsersControllerFindAllQueryOptions = <
@@ -351,11 +351,11 @@ export const usersControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/users/${id}`, options);
+  return axios.get(`/api/users/${id}`, options);
 };
 
 export const getUsersControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/users/${id}`] as const;
+  return [`/api/users/${id}`] as const;
 };
 
 export const getUsersControllerFindOneQueryOptions = <
@@ -497,11 +497,7 @@ export const usersControllerUpdate = (
   updateUserDto: UpdateUserDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.patch(
-    `http://localhost:4000/api/users/${id}`,
-    updateUserDto,
-    options,
-  );
+  return axios.patch(`/api/users/${id}`, updateUserDto, options);
 };
 
 export const getUsersControllerUpdateMutationOptions = <
@@ -567,7 +563,7 @@ export const usersControllerRemove = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.delete(`http://localhost:4000/api/users/${id}`, options);
+  return axios.delete(`/api/users/${id}`, options);
 };
 
 export const getUsersControllerRemoveMutationOptions = <
@@ -633,11 +629,7 @@ export const categoriesControllerCreate = (
   createCategoryDto: CreateCategoryDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.post(
-    `http://localhost:4000/api/categories`,
-    createCategoryDto,
-    options,
-  );
+  return axios.post(`/api/categories`, createCategoryDto, options);
 };
 
 export const getCategoriesControllerCreateMutationOptions = <
@@ -702,11 +694,11 @@ export const useCategoriesControllerCreate = <
 export const categoriesControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<CategoryDto[]>> => {
-  return axios.get(`http://localhost:4000/api/categories`, options);
+  return axios.get(`/api/categories`, options);
 };
 
 export const getCategoriesControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/categories`] as const;
+  return [`/api/categories`] as const;
 };
 
 export const getCategoriesControllerFindAllQueryOptions = <
@@ -827,11 +819,11 @@ export const categoriesControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<CategoryDto>> => {
-  return axios.get(`http://localhost:4000/api/categories/${id}`, options);
+  return axios.get(`/api/categories/${id}`, options);
 };
 
 export const getCategoriesControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/categories/${id}`] as const;
+  return [`/api/categories/${id}`] as const;
 };
 
 export const getCategoriesControllerFindOneQueryOptions = <
@@ -974,11 +966,7 @@ export const categoriesControllerUpdate = (
   updateCategoryDto: UpdateCategoryDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.patch(
-    `http://localhost:4000/api/categories/${id}`,
-    updateCategoryDto,
-    options,
-  );
+  return axios.patch(`/api/categories/${id}`, updateCategoryDto, options);
 };
 
 export const getCategoriesControllerUpdateMutationOptions = <
@@ -1044,7 +1032,7 @@ export const categoriesControllerRemove = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.delete(`http://localhost:4000/api/categories/${id}`, options);
+  return axios.delete(`/api/categories/${id}`, options);
 };
 
 export const getCategoriesControllerRemoveMutationOptions = <
@@ -1110,11 +1098,7 @@ export const productsControllerCreate = (
   createProductDto: CreateProductDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.post(
-    `http://localhost:4000/api/products`,
-    createProductDto,
-    options,
-  );
+  return axios.post(`/api/products`, createProductDto, options);
 };
 
 export const getProductsControllerCreateMutationOptions = <
@@ -1180,7 +1164,7 @@ export const productsControllerFindAll = (
   params?: ProductsControllerFindAllParams,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<PaginatedProductDto>> => {
-  return axios.get(`http://localhost:4000/api/products`, {
+  return axios.get(`/api/products`, {
     ...options,
     params: { ...params, ...options?.params },
   });
@@ -1189,10 +1173,7 @@ export const productsControllerFindAll = (
 export const getProductsControllerFindAllQueryKey = (
   params?: ProductsControllerFindAllParams,
 ) => {
-  return [
-    `http://localhost:4000/api/products`,
-    ...(params ? [params] : []),
-  ] as const;
+  return [`/api/products`, ...(params ? [params] : [])] as const;
 };
 
 export const getProductsControllerFindAllQueryOptions = <
@@ -1332,11 +1313,11 @@ export const productsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<ProductDto>> => {
-  return axios.get(`http://localhost:4000/api/products/${id}`, options);
+  return axios.get(`/api/products/${id}`, options);
 };
 
 export const getProductsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/products/${id}`] as const;
+  return [`/api/products/${id}`] as const;
 };
 
 export const getProductsControllerFindOneQueryOptions = <
@@ -1479,11 +1460,7 @@ export const productsControllerUpdate = (
   updateProductDto: UpdateProductDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.patch(
-    `http://localhost:4000/api/products/${id}`,
-    updateProductDto,
-    options,
-  );
+  return axios.patch(`/api/products/${id}`, updateProductDto, options);
 };
 
 export const getProductsControllerUpdateMutationOptions = <
@@ -1549,7 +1526,7 @@ export const productsControllerRemove = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.delete(`http://localhost:4000/api/products/${id}`, options);
+  return axios.delete(`/api/products/${id}`, options);
 };
 
 export const getProductsControllerRemoveMutationOptions = <
@@ -1615,11 +1592,7 @@ export const ordersControllerCreate = (
   createOrderDto: CreateOrderDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.post(
-    `http://localhost:4000/api/orders`,
-    createOrderDto,
-    options,
-  );
+  return axios.post(`/api/orders`, createOrderDto, options);
 };
 
 export const getOrdersControllerCreateMutationOptions = <
@@ -1684,11 +1657,11 @@ export const useOrdersControllerCreate = <
 export const ordersControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/orders`, options);
+  return axios.get(`/api/orders`, options);
 };
 
 export const getOrdersControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/orders`] as const;
+  return [`/api/orders`] as const;
 };
 
 export const getOrdersControllerFindAllQueryOptions = <
@@ -1809,11 +1782,11 @@ export const ordersControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/orders/${id}`, options);
+  return axios.get(`/api/orders/${id}`, options);
 };
 
 export const getOrdersControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/orders/${id}`] as const;
+  return [`/api/orders/${id}`] as const;
 };
 
 export const getOrdersControllerFindOneQueryOptions = <
@@ -1955,11 +1928,7 @@ export const ordersControllerUpdate = (
   updateOrderDto: UpdateOrderDto,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.patch(
-    `http://localhost:4000/api/orders/${id}`,
-    updateOrderDto,
-    options,
-  );
+  return axios.patch(`/api/orders/${id}`, updateOrderDto, options);
 };
 
 export const getOrdersControllerUpdateMutationOptions = <
@@ -2025,7 +1994,7 @@ export const ordersControllerRemove = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.delete(`http://localhost:4000/api/orders/${id}`, options);
+  return axios.delete(`/api/orders/${id}`, options);
 };
 
 export const getOrdersControllerRemoveMutationOptions = <
@@ -2090,11 +2059,11 @@ export const useOrdersControllerRemove = <
 export const orderItemsControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/order-items`, options);
+  return axios.get(`/api/order-items`, options);
 };
 
 export const getOrderItemsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/order-items`] as const;
+  return [`/api/order-items`] as const;
 };
 
 export const getOrderItemsControllerFindAllQueryOptions = <
@@ -2215,11 +2184,11 @@ export const orderItemsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/order-items/${id}`, options);
+  return axios.get(`/api/order-items/${id}`, options);
 };
 
 export const getOrderItemsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/order-items/${id}`] as const;
+  return [`/api/order-items/${id}`] as const;
 };
 
 export const getOrderItemsControllerFindOneQueryOptions = <
@@ -2360,11 +2329,11 @@ export function useOrderItemsControllerFindOne<
 export const paymentsControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/payments`, options);
+  return axios.get(`/api/payments`, options);
 };
 
 export const getPaymentsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/payments`] as const;
+  return [`/api/payments`] as const;
 };
 
 export const getPaymentsControllerFindAllQueryOptions = <
@@ -2485,11 +2454,11 @@ export const paymentsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/payments/${id}`, options);
+  return axios.get(`/api/payments/${id}`, options);
 };
 
 export const getPaymentsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/payments/${id}`] as const;
+  return [`/api/payments/${id}`] as const;
 };
 
 export const getPaymentsControllerFindOneQueryOptions = <
@@ -2630,11 +2599,11 @@ export function usePaymentsControllerFindOne<
 export const wishListsControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/wish-lists`, options);
+  return axios.get(`/api/wish-lists`, options);
 };
 
 export const getWishListsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/wish-lists`] as const;
+  return [`/api/wish-lists`] as const;
 };
 
 export const getWishListsControllerFindAllQueryOptions = <
@@ -2755,11 +2724,11 @@ export const wishListsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/wish-lists/${id}`, options);
+  return axios.get(`/api/wish-lists/${id}`, options);
 };
 
 export const getWishListsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/wish-lists/${id}`] as const;
+  return [`/api/wish-lists/${id}`] as const;
 };
 
 export const getWishListsControllerFindOneQueryOptions = <
@@ -2900,11 +2869,11 @@ export function useWishListsControllerFindOne<
 export const reviewsControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/reviews`, options);
+  return axios.get(`/api/reviews`, options);
 };
 
 export const getReviewsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/reviews`] as const;
+  return [`/api/reviews`] as const;
 };
 
 export const getReviewsControllerFindAllQueryOptions = <
@@ -3025,11 +2994,11 @@ export const reviewsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/reviews/${id}`, options);
+  return axios.get(`/api/reviews/${id}`, options);
 };
 
 export const getReviewsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/reviews/${id}`] as const;
+  return [`/api/reviews/${id}`] as const;
 };
 
 export const getReviewsControllerFindOneQueryOptions = <
@@ -3169,11 +3138,11 @@ export function useReviewsControllerFindOne<
 export const clientsControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/clients`, options);
+  return axios.get(`/api/clients`, options);
 };
 
 export const getClientsControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/clients`] as const;
+  return [`/api/clients`] as const;
 };
 
 export const getClientsControllerFindAllQueryOptions = <
@@ -3294,11 +3263,11 @@ export const clientsControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/clients/${id}`, options);
+  return axios.get(`/api/clients/${id}`, options);
 };
 
 export const getClientsControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/clients/${id}`] as const;
+  return [`/api/clients/${id}`] as const;
 };
 
 export const getClientsControllerFindOneQueryOptions = <
@@ -3438,11 +3407,11 @@ export function useClientsControllerFindOne<
 export const addressesControllerFindAll = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/addresses`, options);
+  return axios.get(`/api/addresses`, options);
 };
 
 export const getAddressesControllerFindAllQueryKey = () => {
-  return [`http://localhost:4000/api/addresses`] as const;
+  return [`/api/addresses`] as const;
 };
 
 export const getAddressesControllerFindAllQueryOptions = <
@@ -3563,11 +3532,11 @@ export const addressesControllerFindOne = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/addresses/${id}`, options);
+  return axios.get(`/api/addresses/${id}`, options);
 };
 
 export const getAddressesControllerFindOneQueryKey = (id: string) => {
-  return [`http://localhost:4000/api/addresses/${id}`] as const;
+  return [`/api/addresses/${id}`] as const;
 };
 
 export const getAddressesControllerFindOneQueryOptions = <
@@ -3709,7 +3678,7 @@ export const addressesControllerRemove = (
   id: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.delete(`http://localhost:4000/api/addresses/${id}`, options);
+  return axios.delete(`/api/addresses/${id}`, options);
 };
 
 export const getAddressesControllerRemoveMutationOptions = <
@@ -3774,11 +3743,7 @@ export const useAddressesControllerRemove = <
 export const imageControllerUploadImage = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.post(
-    `http://localhost:4000/api/images/upload`,
-    undefined,
-    options,
-  );
+  return axios.post(`/api/images/upload`, undefined, options);
 };
 
 export const getImageControllerUploadImageMutationOptions = <
@@ -3842,11 +3807,11 @@ export const imageControllerGetImageLink = (
   image: string,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
-  return axios.get(`http://localhost:4000/api/images/${image}`, options);
+  return axios.get(`/api/images/${image}`, options);
 };
 
 export const getImageControllerGetImageLinkQueryKey = (image: string) => {
-  return [`http://localhost:4000/api/images/${image}`] as const;
+  return [`/api/images/${image}`] as const;
 };
 
 export const getImageControllerGetImageLinkQueryOptions = <

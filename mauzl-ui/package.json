@@ -30,6 +30,7 @@
     "axios": "^1.7.7",
     "dexie": "^4.0.8",
     "dexie-react-hooks": "^1.1.7",
+    "dotenv": "^16.4.5",
     "i18next": "^23.7.16",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-http-backend": "^2.4.2",
@@ -45,6 +46,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/lodash": "^4.17.10",
     "@types/node": "^20",
     "@types/react": "^18",

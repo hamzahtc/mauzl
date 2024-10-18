@@ -1,4 +1,7 @@
 import { defineConfig } from "orval";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig({
   mauzlApi: {
@@ -8,7 +11,7 @@ export default defineConfig({
       schemas: "./models",
       client: "react-query",
       mock: true,
-      baseUrl: "http://localhost:4000/api",
+      baseUrl: "/api",
     },
     input: {
       target: "http://localhost:4000/api/openapi",
