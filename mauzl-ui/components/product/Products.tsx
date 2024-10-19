@@ -88,16 +88,8 @@ const Products = () => {
     }
 
     setFilters(filterChips);
-  }, [
-    name,
-    categoryId,
-    minPrice,
-    maxPrice,
-    sortBy,
-    statuses,
-    categories,
-    translate,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, categoryId, minPrice, maxPrice, sortBy, statuses, categories]);
 
   if (products.isLoading) return <></>;
 
