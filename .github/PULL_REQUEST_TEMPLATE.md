@@ -1,6 +1,6 @@
 ## Description
 
-Please include a summary of the changes and the related issue(s).
+Please make sure the branch name and the base branch are OK :white_check_mark:
 
 ## Checklist
 
@@ -10,10 +10,6 @@ Please include a summary of the changes and the related issue(s).
 - [ ] I have commented on my code, particularly in hard-to-understand areas.
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
-
-## Related Issue(s)
-
-- Resolves #
 
 ## Finally
 
