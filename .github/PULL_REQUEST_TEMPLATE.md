@@ -1,6 +1,6 @@
 ## Description
 
-Please make sure the branch name and the base branch are OK :white_check_mark:
+Please ensure all checklist items are complete :white_check_mark:
 
 ## Checklist
 
