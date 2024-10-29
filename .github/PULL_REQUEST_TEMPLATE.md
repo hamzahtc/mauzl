@@ -10,10 +10,11 @@ Please include a summary of the changes and the related issue(s).
 - [ ] I have commented on my code, particularly in hard-to-understand areas.
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
+- [ ] To be removed.
 
 ## Related Issue(s)
 
-- Resolves #
+- Resolves #[Insert Issue Number]
 
 ## Finally
 
