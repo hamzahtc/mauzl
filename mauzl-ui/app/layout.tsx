@@ -5,8 +5,6 @@ import { Box } from "@mui/material";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import Script from "next/script";
-import Link from "next/link";
-import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "Mauzl",
@@ -20,9 +18,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <Link rel="icon" href="/icons/favicon.ico" />
-      </Head>
       <Script id="clarity-script" strategy="afterInteractive">
         {`
             (function(c,l,a,r,i,t,y){

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { FaBagShopping } from "react-icons/fa6";
 import LanguageSelect from "./LanguageSelect";
 import Image from "next/image";
+import MauzlIcon from "../../public/svgs/Mauzl.svg";
 
 const sidebarStyle = {
   width: "100%",
@@ -33,7 +34,7 @@ const Sidebar = () => {
           <Link href="/">
             <Image
               alt="models"
-              src="/svgs/mauzl.svg"
+              src={MauzlIcon}
               width={0}
               height={0}
               style={{

@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "mauzl.com", "www.mauzl.com"],
+    remotePatterns: [
+      { hostname: "localhost" },
+      { hostname: "mauzl.com" },
+      { hostname: "www.mauzl.com" },
+    ],
   },
   async rewrites() {
     return [
