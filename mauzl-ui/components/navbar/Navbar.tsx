@@ -23,6 +23,7 @@ import Sidebar from "./Sidebar";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import Image from "next/image";
+import MauzlIcon from "../../public/svgs/Mauzl.svg";
 
 const Navbar = () => {
   const matches = useMediaQuery(theme.breakpoints.up("md"), {
@@ -91,7 +92,7 @@ const Navbar = () => {
               <Link href="/">
                 <Image
                   alt="models"
-                  src="/svgs/mauzl.svg"
+                  src={MauzlIcon}
                   width={0}
                   height={0}
                   style={{

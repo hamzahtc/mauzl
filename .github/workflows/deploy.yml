@@ -36,6 +36,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/projects/mauzl/mauzl-api
+            git reset --hard HEAD
             git pull
             npm install
             rm -rf dist/*
@@ -67,6 +68,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/projects/mauzl/mauzl-ui
+            git reset --hard HEAD
             git pull
             npm install
             pm2 delete mauzl-ui
