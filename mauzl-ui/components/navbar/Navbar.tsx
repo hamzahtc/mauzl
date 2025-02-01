@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "next/link";
-import txKeys from "@/i18n/translations";
 import LanguageSelect from "./LanguageSelect";
 import { theme } from "@/styles/stylesheet";
 import NavbarMenu from "./NavbarMenu";
@@ -23,6 +22,7 @@ import TextTypography from "../common/TextTypography";
 import Sidebar from "./Sidebar";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
+import Image from "next/image";
 
 const Navbar = () => {
   const matches = useMediaQuery(theme.breakpoints.up("md"), {
@@ -89,13 +89,13 @@ const Navbar = () => {
           >
             <Stack>
               <Link href="/">
-                <TextTypography
-                  text={txKeys.common.appName}
-                  variant="h6"
-                  color={elevate ? "primary" : "black"}
-                  sx={{
-                    transition: "color 0.5s",
-                    "&:hover": { color: theme.palette.primary.main },
+                <Image
+                  alt="models"
+                  src="/svgs/mauzl.svg"
+                  width={0}
+                  height={0}
+                  style={{
+                    width: "50px",
                   }}
                 />
               </Link>
