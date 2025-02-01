@@ -11,6 +11,7 @@ import { services } from "@/common/contants";
 import { useRouter } from "next/navigation";
 import { FaBagShopping } from "react-icons/fa6";
 import LanguageSelect from "./LanguageSelect";
+import Image from "next/image";
 
 const sidebarStyle = {
   width: "100%",
@@ -30,12 +31,13 @@ const Sidebar = () => {
           direction="row"
         >
           <Link href="/">
-            <TextTypography
-              text={txKeys.common.appName}
-              variant="h6"
-              sx={{
-                transition: "color 0.5s",
-                "&:hover": { color: theme.palette.primary.main },
+            <Image
+              alt="models"
+              src="/svgs/mauzl.svg"
+              width={0}
+              height={0}
+              style={{
+                width: "50px",
               }}
             />
           </Link>
