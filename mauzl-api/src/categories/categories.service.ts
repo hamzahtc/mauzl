@@ -20,9 +20,12 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     try {
       const category = this.categoryRepository.create(createCategoryDto);
-      return this.categoryRepository.save(category);
+      this.logger.log(JSON.stringify(category));
+      const savedCategory = await this.categoryRepository.save(category);
+      this.logger.log(JSON.stringify(savedCategory));
+      return savedCategory;
     } catch (error) {
-      this.logger.error(error);
+      this.logger.log(error);
     }
   }
 
