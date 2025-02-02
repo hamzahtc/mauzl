@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
@@ -11,11 +11,19 @@ export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-  ) {}
+  ) {
+    this.logger = new Logger('CategoryService');
+  }
+
+  private readonly logger: Logger;
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
-    const category = this.categoryRepository.create(createCategoryDto);
-    return this.categoryRepository.save(category);
+    try {
+      const category = this.categoryRepository.create(createCategoryDto);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
   async findAll() {
