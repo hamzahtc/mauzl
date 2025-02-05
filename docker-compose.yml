@@ -1,0 +1,49 @@
+services:
+  mauzl-db:
+    image: postgres:15
+    container_name: mauzl-db
+    restart: always
+    env_file:
+      - .env.production
+    ports:
+      - "5432:5432"
+    volumes:
+      - mauzl_data:/var/lib/postgresql/data
+
+  mauzl-minio:
+    image: minio/minio
+    container_name: mauzl-minio
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - minio_data:/data
+    env_file:
+      - .env.production
+    command: server --console-address ":9001" /data
+
+  mauzl-ui:
+    container_name: mauzl-ui
+    build: ./mauzl-ui
+    env_file:
+      - .env.production
+    ports:
+      - "3000:3000"
+
+  mauzl-api:
+    build: ./mauzl-api
+    container_name: mauzl-api
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env.production
+    depends_on:
+      - mauzl-db
+      - mauzl-minio
+    volumes:
+      - ./src:/app/src
+
+volumes:
+  mauzl_data:
+  minio_data:
