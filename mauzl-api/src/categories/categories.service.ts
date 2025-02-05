@@ -20,37 +20,81 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     try {
       const category = this.categoryRepository.create(createCategoryDto);
-      this.logger.log(JSON.stringify(category));
       const savedCategory = await this.categoryRepository.save(category);
-      this.logger.log(JSON.stringify(savedCategory));
+      this.logger.log(
+        `Category created successfully with ID: ${savedCategory.id}`,
+      );
       return savedCategory;
     } catch (error) {
-      this.logger.log(error);
+      this.logger.error(`Failed to create category: ${error.message}`);
+      throw error;
     }
   }
 
   async findAll() {
-    const categories = await this.categoryRepository.find();
-    return CategoryMapper.toDtoArray(categories);
+    try {
+      const categories = await this.categoryRepository.find();
+      this.logger.log(`Fetched all categories, count: ${categories.length}`);
+      return CategoryMapper.toDtoArray(categories);
+    } catch (error) {
+      this.logger.error(`Failed to fetch categories: ${error.message}`);
+      throw error;
+    }
   }
 
   async findOne(id: number): Promise<Category> {
-    const category = await this.categoryRepository.findOne({ where: { id } });
-    if (!category) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
+    try {
+      const category = await this.categoryRepository.findOne({ where: { id } });
+      if (!category) {
+        this.logger.warn(`Category with ID ${id} not found`);
+        throw new NotFoundException(`Category with ID ${id} not found`);
+      }
+      this.logger.log(`Found category with ID: ${id}`);
+      return category;
+    } catch (error) {
+      this.logger.error(
+        `Error finding category with ID ${id}: ${error.message}`,
+      );
+      throw error;
     }
-    return category;
   }
 
   async update(
     id: number,
     updateCategoryDto: UpdateCategoryDto,
   ): Promise<Category> {
-    await this.categoryRepository.update(id, updateCategoryDto);
-    return this.findOne(id);
+    try {
+      const result = await this.categoryRepository.update(
+        id,
+        updateCategoryDto,
+      );
+      if (result.affected === 0) {
+        this.logger.warn(`No category found with ID ${id}, nothing to update`);
+        throw new NotFoundException(`Category with ID ${id} not found`);
+      }
+      this.logger.log(`Category updated successfully with ID: ${id}`);
+      return this.findOne(id);
+    } catch (error) {
+      this.logger.error(
+        `Failed to update category with ID ${id}: ${error.message}`,
+      );
+      throw error;
+    }
   }
 
   async remove(id: number): Promise<void> {
-    await this.categoryRepository.delete(id);
+    try {
+      const result = await this.categoryRepository.delete(id);
+      if (result.affected === 0) {
+        this.logger.warn(`No category found with ID ${id}, nothing to remove`);
+        throw new NotFoundException(`Category with ID ${id} not found`);
+      }
+      this.logger.log(`Category removed with ID: ${id}`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to remove category with ID ${id}: ${error.message}`,
+      );
+      throw error;
+    }
   }
 }
