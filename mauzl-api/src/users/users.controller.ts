@@ -6,10 +6,13 @@ import {
   Param,
   Delete,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { UserDto } from './dto/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +26,13 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('me')
+  @ApiOkResponse({ type: UserDto })
+  findMe(@Req() req) {
+    const currentUserId = req.user.id;
+    return this.usersService.findOne(currentUserId);
   }
 
   @Get(':id')

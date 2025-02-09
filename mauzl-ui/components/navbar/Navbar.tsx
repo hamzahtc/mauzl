@@ -24,11 +24,16 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import Image from "next/image";
 import MauzlIcon from "../../public/svgs/Mauzl.svg";
+import AccountMenu from "./AccountMenu";
+import { useUsersControllerFindMe } from "@/generated/hooks";
+import PrimaryButton from "../common/PrimaryButton";
 
 const Navbar = () => {
   const matches = useMediaQuery(theme.breakpoints.up("md"), {
     defaultMatches: true,
   });
+
+  const { isLoading, data } = useUsersControllerFindMe();
 
   const orderItems = useLiveQuery(() => db.products.toArray()) || [];
 
@@ -139,6 +144,11 @@ const Navbar = () => {
               </IconButton>
 
               <LanguageSelect />
+              {!isLoading && data ? (
+                <AccountMenu user={data} />
+              ) : (
+                <PrimaryButton text="Login" href="/api/auth/google/callback" />
+              )}
             </Stack>
           </Stack>
         </Toolbar>

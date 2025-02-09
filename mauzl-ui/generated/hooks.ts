@@ -17,8 +17,6 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import axios from "axios";
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import type {
   CategoryDto,
   CreateCategoryDto,
@@ -32,12 +30,18 @@ import type {
   UpdateOrderDto,
   UpdateProductDto,
   UpdateUserDto,
+  UserDto,
 } from "../models";
+import { customInstance } from "../utils/axios";
+import type { ErrorType, BodyType } from "../utils/axios";
+
+type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 export const appControllerGetHello = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>({ url: `/api/`, method: "GET", signal }, options);
 };
 
 export const getAppControllerGetHelloQueryKey = () => {
@@ -46,7 +50,7 @@ export const getAppControllerGetHelloQueryKey = () => {
 
 export const getAppControllerGetHelloQueryOptions = <
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -55,15 +59,15 @@ export const getAppControllerGetHelloQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey = queryOptions?.queryKey ?? getAppControllerGetHelloQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof appControllerGetHello>>
-  > = ({ signal }) => appControllerGetHello({ signal, ...axiosOptions });
+  > = ({ signal }) => appControllerGetHello(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof appControllerGetHello>>,
@@ -75,11 +79,11 @@ export const getAppControllerGetHelloQueryOptions = <
 export type AppControllerGetHelloQueryResult = NonNullable<
   Awaited<ReturnType<typeof appControllerGetHello>>
 >;
-export type AppControllerGetHelloQueryError = AxiosError<unknown>;
+export type AppControllerGetHelloQueryError = ErrorType<unknown>;
 
 export function useAppControllerGetHello<
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -96,11 +100,11 @@ export function useAppControllerGetHello<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAppControllerGetHello<
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -117,11 +121,11 @@ export function useAppControllerGetHello<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAppControllerGetHello<
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -130,12 +134,12 @@ export function useAppControllerGetHello<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useAppControllerGetHello<
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -144,7 +148,7 @@ export function useAppControllerGetHello<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAppControllerGetHelloQueryOptions(options);
 
@@ -158,38 +162,46 @@ export function useAppControllerGetHello<
 }
 
 export const usersControllerCreate = (
-  createUserDto: CreateUserDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(`/api/users`, createUserDto, options);
+  createUserDto: BodyType<CreateUserDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/users`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUserDto,
+    },
+    options,
+  );
 };
 
 export const getUsersControllerCreateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof usersControllerCreate>>,
     TError,
-    { data: CreateUserDto },
+    { data: BodyType<CreateUserDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof usersControllerCreate>>,
   TError,
-  { data: CreateUserDto },
+  { data: BodyType<CreateUserDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof usersControllerCreate>>,
-    { data: CreateUserDto }
+    { data: BodyType<CreateUserDto> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return usersControllerCreate(data, axiosOptions);
+    return usersControllerCreate(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -198,24 +210,24 @@ export const getUsersControllerCreateMutationOptions = <
 export type UsersControllerCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof usersControllerCreate>>
 >;
-export type UsersControllerCreateMutationBody = CreateUserDto;
-export type UsersControllerCreateMutationError = AxiosError<unknown>;
+export type UsersControllerCreateMutationBody = BodyType<CreateUserDto>;
+export type UsersControllerCreateMutationError = ErrorType<unknown>;
 
 export const useUsersControllerCreate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof usersControllerCreate>>,
     TError,
-    { data: CreateUserDto },
+    { data: BodyType<CreateUserDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof usersControllerCreate>>,
   TError,
-  { data: CreateUserDto },
+  { data: BodyType<CreateUserDto> },
   TContext
 > => {
   const mutationOptions = getUsersControllerCreateMutationOptions(options);
@@ -224,9 +236,13 @@ export const useUsersControllerCreate = <
 };
 
 export const usersControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/users`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/users`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getUsersControllerFindAllQueryKey = () => {
@@ -235,7 +251,7 @@ export const getUsersControllerFindAllQueryKey = () => {
 
 export const getUsersControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof usersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -244,16 +260,16 @@ export const getUsersControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getUsersControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof usersControllerFindAll>>
-  > = ({ signal }) => usersControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => usersControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof usersControllerFindAll>>,
@@ -265,11 +281,11 @@ export const getUsersControllerFindAllQueryOptions = <
 export type UsersControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof usersControllerFindAll>>
 >;
-export type UsersControllerFindAllQueryError = AxiosError<unknown>;
+export type UsersControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useUsersControllerFindAll<
   TData = Awaited<ReturnType<typeof usersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -286,11 +302,11 @@ export function useUsersControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindAll<
   TData = Awaited<ReturnType<typeof usersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -307,11 +323,11 @@ export function useUsersControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindAll<
   TData = Awaited<ReturnType<typeof usersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -320,12 +336,12 @@ export function useUsersControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useUsersControllerFindAll<
   TData = Awaited<ReturnType<typeof usersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -334,7 +350,7 @@ export function useUsersControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getUsersControllerFindAllQueryOptions(options);
 
@@ -347,11 +363,142 @@ export function useUsersControllerFindAll<
   return query;
 }
 
+export const usersControllerFindMe = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<UserDto>(
+    { url: `/api/users/me`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getUsersControllerFindMeQueryKey = () => {
+  return [`/api/users/me`] as const;
+};
+
+export const getUsersControllerFindMeQueryOptions = <
+  TData = Awaited<ReturnType<typeof usersControllerFindMe>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindMe>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getUsersControllerFindMeQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof usersControllerFindMe>>
+  > = ({ signal }) => usersControllerFindMe(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof usersControllerFindMe>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type UsersControllerFindMeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerFindMe>>
+>;
+export type UsersControllerFindMeQueryError = ErrorType<unknown>;
+
+export function useUsersControllerFindMe<
+  TData = Awaited<ReturnType<typeof usersControllerFindMe>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindMe>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof usersControllerFindMe>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useUsersControllerFindMe<
+  TData = Awaited<ReturnType<typeof usersControllerFindMe>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindMe>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof usersControllerFindMe>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useUsersControllerFindMe<
+  TData = Awaited<ReturnType<typeof usersControllerFindMe>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindMe>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useUsersControllerFindMe<
+  TData = Awaited<ReturnType<typeof usersControllerFindMe>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindMe>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getUsersControllerFindMeQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
 export const usersControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/users/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/users/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getUsersControllerFindOneQueryKey = (id: string) => {
@@ -360,7 +507,7 @@ export const getUsersControllerFindOneQueryKey = (id: string) => {
 
 export const getUsersControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -371,17 +518,17 @@ export const getUsersControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getUsersControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof usersControllerFindOne>>
-  > = ({ signal }) => usersControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => usersControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -398,11 +545,11 @@ export const getUsersControllerFindOneQueryOptions = <
 export type UsersControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof usersControllerFindOne>>
 >;
-export type UsersControllerFindOneQueryError = AxiosError<unknown>;
+export type UsersControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -421,12 +568,12 @@ export function useUsersControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -445,12 +592,12 @@ export function useUsersControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -461,13 +608,13 @@ export function useUsersControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -478,7 +625,7 @@ export function useUsersControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getUsersControllerFindOneQueryOptions(id, options);
@@ -494,38 +641,46 @@ export function useUsersControllerFindOne<
 
 export const usersControllerUpdate = (
   id: string,
-  updateUserDto: UpdateUserDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.patch(`/api/users/${id}`, updateUserDto, options);
+  updateUserDto: BodyType<UpdateUserDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/users/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUserDto,
+    },
+    options,
+  );
 };
 
 export const getUsersControllerUpdateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof usersControllerUpdate>>,
     TError,
-    { id: string; data: UpdateUserDto },
+    { id: string; data: BodyType<UpdateUserDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof usersControllerUpdate>>,
   TError,
-  { id: string; data: UpdateUserDto },
+  { id: string; data: BodyType<UpdateUserDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof usersControllerUpdate>>,
-    { id: string; data: UpdateUserDto }
+    { id: string; data: BodyType<UpdateUserDto> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return usersControllerUpdate(id, data, axiosOptions);
+    return usersControllerUpdate(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -534,24 +689,24 @@ export const getUsersControllerUpdateMutationOptions = <
 export type UsersControllerUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof usersControllerUpdate>>
 >;
-export type UsersControllerUpdateMutationBody = UpdateUserDto;
-export type UsersControllerUpdateMutationError = AxiosError<unknown>;
+export type UsersControllerUpdateMutationBody = BodyType<UpdateUserDto>;
+export type UsersControllerUpdateMutationError = ErrorType<unknown>;
 
 export const useUsersControllerUpdate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof usersControllerUpdate>>,
     TError,
-    { id: string; data: UpdateUserDto },
+    { id: string; data: BodyType<UpdateUserDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof usersControllerUpdate>>,
   TError,
-  { id: string; data: UpdateUserDto },
+  { id: string; data: BodyType<UpdateUserDto> },
   TContext
 > => {
   const mutationOptions = getUsersControllerUpdateMutationOptions(options);
@@ -561,13 +716,16 @@ export const useUsersControllerUpdate = <
 
 export const usersControllerRemove = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.delete(`/api/users/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/users/${id}`, method: "DELETE" },
+    options,
+  );
 };
 
 export const getUsersControllerRemoveMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -576,14 +734,14 @@ export const getUsersControllerRemoveMutationOptions = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof usersControllerRemove>>,
   TError,
   { id: string },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof usersControllerRemove>>,
@@ -591,7 +749,7 @@ export const getUsersControllerRemoveMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return usersControllerRemove(id, axiosOptions);
+    return usersControllerRemove(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -601,10 +759,10 @@ export type UsersControllerRemoveMutationResult = NonNullable<
   Awaited<ReturnType<typeof usersControllerRemove>>
 >;
 
-export type UsersControllerRemoveMutationError = AxiosError<unknown>;
+export type UsersControllerRemoveMutationError = ErrorType<unknown>;
 
 export const useUsersControllerRemove = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -613,7 +771,7 @@ export const useUsersControllerRemove = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof usersControllerRemove>>,
   TError,
@@ -626,38 +784,46 @@ export const useUsersControllerRemove = <
 };
 
 export const categoriesControllerCreate = (
-  createCategoryDto: CreateCategoryDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(`/api/categories`, createCategoryDto, options);
+  createCategoryDto: BodyType<CreateCategoryDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/categories`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createCategoryDto,
+    },
+    options,
+  );
 };
 
 export const getCategoriesControllerCreateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof categoriesControllerCreate>>,
     TError,
-    { data: CreateCategoryDto },
+    { data: BodyType<CreateCategoryDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof categoriesControllerCreate>>,
   TError,
-  { data: CreateCategoryDto },
+  { data: BodyType<CreateCategoryDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof categoriesControllerCreate>>,
-    { data: CreateCategoryDto }
+    { data: BodyType<CreateCategoryDto> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return categoriesControllerCreate(data, axiosOptions);
+    return categoriesControllerCreate(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -666,24 +832,25 @@ export const getCategoriesControllerCreateMutationOptions = <
 export type CategoriesControllerCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof categoriesControllerCreate>>
 >;
-export type CategoriesControllerCreateMutationBody = CreateCategoryDto;
-export type CategoriesControllerCreateMutationError = AxiosError<unknown>;
+export type CategoriesControllerCreateMutationBody =
+  BodyType<CreateCategoryDto>;
+export type CategoriesControllerCreateMutationError = ErrorType<unknown>;
 
 export const useCategoriesControllerCreate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof categoriesControllerCreate>>,
     TError,
-    { data: CreateCategoryDto },
+    { data: BodyType<CreateCategoryDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof categoriesControllerCreate>>,
   TError,
-  { data: CreateCategoryDto },
+  { data: BodyType<CreateCategoryDto> },
   TContext
 > => {
   const mutationOptions = getCategoriesControllerCreateMutationOptions(options);
@@ -692,9 +859,13 @@ export const useCategoriesControllerCreate = <
 };
 
 export const categoriesControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CategoryDto[]>> => {
-  return axios.get(`/api/categories`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<CategoryDto[]>(
+    { url: `/api/categories`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getCategoriesControllerFindAllQueryKey = () => {
@@ -703,7 +874,7 @@ export const getCategoriesControllerFindAllQueryKey = () => {
 
 export const getCategoriesControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof categoriesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -712,16 +883,16 @@ export const getCategoriesControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getCategoriesControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof categoriesControllerFindAll>>
-  > = ({ signal }) => categoriesControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => categoriesControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof categoriesControllerFindAll>>,
@@ -733,11 +904,11 @@ export const getCategoriesControllerFindAllQueryOptions = <
 export type CategoriesControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof categoriesControllerFindAll>>
 >;
-export type CategoriesControllerFindAllQueryError = AxiosError<unknown>;
+export type CategoriesControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useCategoriesControllerFindAll<
   TData = Awaited<ReturnType<typeof categoriesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -754,11 +925,11 @@ export function useCategoriesControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindAll<
   TData = Awaited<ReturnType<typeof categoriesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -775,11 +946,11 @@ export function useCategoriesControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindAll<
   TData = Awaited<ReturnType<typeof categoriesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -788,12 +959,12 @@ export function useCategoriesControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useCategoriesControllerFindAll<
   TData = Awaited<ReturnType<typeof categoriesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -802,7 +973,7 @@ export function useCategoriesControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getCategoriesControllerFindAllQueryOptions(options);
 
@@ -817,9 +988,13 @@ export function useCategoriesControllerFindAll<
 
 export const categoriesControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CategoryDto>> => {
-  return axios.get(`/api/categories/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<CategoryDto>(
+    { url: `/api/categories/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getCategoriesControllerFindOneQueryKey = (id: string) => {
@@ -828,7 +1003,7 @@ export const getCategoriesControllerFindOneQueryKey = (id: string) => {
 
 export const getCategoriesControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -839,18 +1014,17 @@ export const getCategoriesControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getCategoriesControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof categoriesControllerFindOne>>
-  > = ({ signal }) =>
-    categoriesControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => categoriesControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -867,11 +1041,11 @@ export const getCategoriesControllerFindOneQueryOptions = <
 export type CategoriesControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof categoriesControllerFindOne>>
 >;
-export type CategoriesControllerFindOneQueryError = AxiosError<unknown>;
+export type CategoriesControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -890,12 +1064,12 @@ export function useCategoriesControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -914,12 +1088,12 @@ export function useCategoriesControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -930,13 +1104,13 @@ export function useCategoriesControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -947,7 +1121,7 @@ export function useCategoriesControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getCategoriesControllerFindOneQueryOptions(id, options);
@@ -963,38 +1137,46 @@ export function useCategoriesControllerFindOne<
 
 export const categoriesControllerUpdate = (
   id: string,
-  updateCategoryDto: UpdateCategoryDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.patch(`/api/categories/${id}`, updateCategoryDto, options);
+  updateCategoryDto: BodyType<UpdateCategoryDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/categories/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateCategoryDto,
+    },
+    options,
+  );
 };
 
 export const getCategoriesControllerUpdateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof categoriesControllerUpdate>>,
     TError,
-    { id: string; data: UpdateCategoryDto },
+    { id: string; data: BodyType<UpdateCategoryDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof categoriesControllerUpdate>>,
   TError,
-  { id: string; data: UpdateCategoryDto },
+  { id: string; data: BodyType<UpdateCategoryDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof categoriesControllerUpdate>>,
-    { id: string; data: UpdateCategoryDto }
+    { id: string; data: BodyType<UpdateCategoryDto> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return categoriesControllerUpdate(id, data, axiosOptions);
+    return categoriesControllerUpdate(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1003,24 +1185,25 @@ export const getCategoriesControllerUpdateMutationOptions = <
 export type CategoriesControllerUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof categoriesControllerUpdate>>
 >;
-export type CategoriesControllerUpdateMutationBody = UpdateCategoryDto;
-export type CategoriesControllerUpdateMutationError = AxiosError<unknown>;
+export type CategoriesControllerUpdateMutationBody =
+  BodyType<UpdateCategoryDto>;
+export type CategoriesControllerUpdateMutationError = ErrorType<unknown>;
 
 export const useCategoriesControllerUpdate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof categoriesControllerUpdate>>,
     TError,
-    { id: string; data: UpdateCategoryDto },
+    { id: string; data: BodyType<UpdateCategoryDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof categoriesControllerUpdate>>,
   TError,
-  { id: string; data: UpdateCategoryDto },
+  { id: string; data: BodyType<UpdateCategoryDto> },
   TContext
 > => {
   const mutationOptions = getCategoriesControllerUpdateMutationOptions(options);
@@ -1030,13 +1213,16 @@ export const useCategoriesControllerUpdate = <
 
 export const categoriesControllerRemove = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.delete(`/api/categories/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/categories/${id}`, method: "DELETE" },
+    options,
+  );
 };
 
 export const getCategoriesControllerRemoveMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1045,14 +1231,14 @@ export const getCategoriesControllerRemoveMutationOptions = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof categoriesControllerRemove>>,
   TError,
   { id: string },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof categoriesControllerRemove>>,
@@ -1060,7 +1246,7 @@ export const getCategoriesControllerRemoveMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return categoriesControllerRemove(id, axiosOptions);
+    return categoriesControllerRemove(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1070,10 +1256,10 @@ export type CategoriesControllerRemoveMutationResult = NonNullable<
   Awaited<ReturnType<typeof categoriesControllerRemove>>
 >;
 
-export type CategoriesControllerRemoveMutationError = AxiosError<unknown>;
+export type CategoriesControllerRemoveMutationError = ErrorType<unknown>;
 
 export const useCategoriesControllerRemove = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1082,7 +1268,7 @@ export const useCategoriesControllerRemove = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof categoriesControllerRemove>>,
   TError,
@@ -1095,38 +1281,46 @@ export const useCategoriesControllerRemove = <
 };
 
 export const productsControllerCreate = (
-  createProductDto: CreateProductDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(`/api/products`, createProductDto, options);
+  createProductDto: BodyType<CreateProductDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/products`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createProductDto,
+    },
+    options,
+  );
 };
 
 export const getProductsControllerCreateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof productsControllerCreate>>,
     TError,
-    { data: CreateProductDto },
+    { data: BodyType<CreateProductDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof productsControllerCreate>>,
   TError,
-  { data: CreateProductDto },
+  { data: BodyType<CreateProductDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof productsControllerCreate>>,
-    { data: CreateProductDto }
+    { data: BodyType<CreateProductDto> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return productsControllerCreate(data, axiosOptions);
+    return productsControllerCreate(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1135,24 +1329,24 @@ export const getProductsControllerCreateMutationOptions = <
 export type ProductsControllerCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof productsControllerCreate>>
 >;
-export type ProductsControllerCreateMutationBody = CreateProductDto;
-export type ProductsControllerCreateMutationError = AxiosError<unknown>;
+export type ProductsControllerCreateMutationBody = BodyType<CreateProductDto>;
+export type ProductsControllerCreateMutationError = ErrorType<unknown>;
 
 export const useProductsControllerCreate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof productsControllerCreate>>,
     TError,
-    { data: CreateProductDto },
+    { data: BodyType<CreateProductDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof productsControllerCreate>>,
   TError,
-  { data: CreateProductDto },
+  { data: BodyType<CreateProductDto> },
   TContext
 > => {
   const mutationOptions = getProductsControllerCreateMutationOptions(options);
@@ -1162,12 +1356,13 @@ export const useProductsControllerCreate = <
 
 export const productsControllerFindAll = (
   params?: ProductsControllerFindAllParams,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<PaginatedProductDto>> => {
-  return axios.get(`/api/products`, {
-    ...options,
-    params: { ...params, ...options?.params },
-  });
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<PaginatedProductDto>(
+    { url: `/api/products`, method: "GET", params, signal },
+    options,
+  );
 };
 
 export const getProductsControllerFindAllQueryKey = (
@@ -1178,7 +1373,7 @@ export const getProductsControllerFindAllQueryKey = (
 
 export const getProductsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   params?: ProductsControllerFindAllParams,
   options?: {
@@ -1189,18 +1384,17 @@ export const getProductsControllerFindAllQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getProductsControllerFindAllQueryKey(params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof productsControllerFindAll>>
-  > = ({ signal }) =>
-    productsControllerFindAll(params, { signal, ...axiosOptions });
+  > = ({ signal }) => productsControllerFindAll(params, requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof productsControllerFindAll>>,
@@ -1212,11 +1406,11 @@ export const getProductsControllerFindAllQueryOptions = <
 export type ProductsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof productsControllerFindAll>>
 >;
-export type ProductsControllerFindAllQueryError = AxiosError<unknown>;
+export type ProductsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   params: undefined | ProductsControllerFindAllParams,
   options: {
@@ -1235,12 +1429,12 @@ export function useProductsControllerFindAll<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   params?: ProductsControllerFindAllParams,
   options?: {
@@ -1259,12 +1453,12 @@ export function useProductsControllerFindAll<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   params?: ProductsControllerFindAllParams,
   options?: {
@@ -1275,13 +1469,13 @@ export function useProductsControllerFindAll<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   params?: ProductsControllerFindAllParams,
   options?: {
@@ -1292,7 +1486,7 @@ export function useProductsControllerFindAll<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getProductsControllerFindAllQueryOptions(
@@ -1311,9 +1505,13 @@ export function useProductsControllerFindAll<
 
 export const productsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<ProductDto>> => {
-  return axios.get(`/api/products/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<ProductDto>(
+    { url: `/api/products/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getProductsControllerFindOneQueryKey = (id: string) => {
@@ -1322,7 +1520,7 @@ export const getProductsControllerFindOneQueryKey = (id: string) => {
 
 export const getProductsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1333,18 +1531,17 @@ export const getProductsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getProductsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof productsControllerFindOne>>
-  > = ({ signal }) =>
-    productsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => productsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -1361,11 +1558,11 @@ export const getProductsControllerFindOneQueryOptions = <
 export type ProductsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof productsControllerFindOne>>
 >;
-export type ProductsControllerFindOneQueryError = AxiosError<unknown>;
+export type ProductsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -1384,12 +1581,12 @@ export function useProductsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1408,12 +1605,12 @@ export function useProductsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1424,13 +1621,13 @@ export function useProductsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1441,7 +1638,7 @@ export function useProductsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getProductsControllerFindOneQueryOptions(id, options);
@@ -1457,38 +1654,46 @@ export function useProductsControllerFindOne<
 
 export const productsControllerUpdate = (
   id: string,
-  updateProductDto: UpdateProductDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.patch(`/api/products/${id}`, updateProductDto, options);
+  updateProductDto: BodyType<UpdateProductDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/products/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateProductDto,
+    },
+    options,
+  );
 };
 
 export const getProductsControllerUpdateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof productsControllerUpdate>>,
     TError,
-    { id: string; data: UpdateProductDto },
+    { id: string; data: BodyType<UpdateProductDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof productsControllerUpdate>>,
   TError,
-  { id: string; data: UpdateProductDto },
+  { id: string; data: BodyType<UpdateProductDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof productsControllerUpdate>>,
-    { id: string; data: UpdateProductDto }
+    { id: string; data: BodyType<UpdateProductDto> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return productsControllerUpdate(id, data, axiosOptions);
+    return productsControllerUpdate(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1497,24 +1702,24 @@ export const getProductsControllerUpdateMutationOptions = <
 export type ProductsControllerUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof productsControllerUpdate>>
 >;
-export type ProductsControllerUpdateMutationBody = UpdateProductDto;
-export type ProductsControllerUpdateMutationError = AxiosError<unknown>;
+export type ProductsControllerUpdateMutationBody = BodyType<UpdateProductDto>;
+export type ProductsControllerUpdateMutationError = ErrorType<unknown>;
 
 export const useProductsControllerUpdate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof productsControllerUpdate>>,
     TError,
-    { id: string; data: UpdateProductDto },
+    { id: string; data: BodyType<UpdateProductDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof productsControllerUpdate>>,
   TError,
-  { id: string; data: UpdateProductDto },
+  { id: string; data: BodyType<UpdateProductDto> },
   TContext
 > => {
   const mutationOptions = getProductsControllerUpdateMutationOptions(options);
@@ -1524,13 +1729,16 @@ export const useProductsControllerUpdate = <
 
 export const productsControllerRemove = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.delete(`/api/products/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/products/${id}`, method: "DELETE" },
+    options,
+  );
 };
 
 export const getProductsControllerRemoveMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1539,14 +1747,14 @@ export const getProductsControllerRemoveMutationOptions = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof productsControllerRemove>>,
   TError,
   { id: string },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof productsControllerRemove>>,
@@ -1554,7 +1762,7 @@ export const getProductsControllerRemoveMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return productsControllerRemove(id, axiosOptions);
+    return productsControllerRemove(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1564,10 +1772,10 @@ export type ProductsControllerRemoveMutationResult = NonNullable<
   Awaited<ReturnType<typeof productsControllerRemove>>
 >;
 
-export type ProductsControllerRemoveMutationError = AxiosError<unknown>;
+export type ProductsControllerRemoveMutationError = ErrorType<unknown>;
 
 export const useProductsControllerRemove = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1576,7 +1784,7 @@ export const useProductsControllerRemove = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof productsControllerRemove>>,
   TError,
@@ -1589,38 +1797,46 @@ export const useProductsControllerRemove = <
 };
 
 export const ordersControllerCreate = (
-  createOrderDto: CreateOrderDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(`/api/orders`, createOrderDto, options);
+  createOrderDto: BodyType<CreateOrderDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/orders`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createOrderDto,
+    },
+    options,
+  );
 };
 
 export const getOrdersControllerCreateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof ordersControllerCreate>>,
     TError,
-    { data: CreateOrderDto },
+    { data: BodyType<CreateOrderDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof ordersControllerCreate>>,
   TError,
-  { data: CreateOrderDto },
+  { data: BodyType<CreateOrderDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof ordersControllerCreate>>,
-    { data: CreateOrderDto }
+    { data: BodyType<CreateOrderDto> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return ordersControllerCreate(data, axiosOptions);
+    return ordersControllerCreate(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1629,24 +1845,24 @@ export const getOrdersControllerCreateMutationOptions = <
 export type OrdersControllerCreateMutationResult = NonNullable<
   Awaited<ReturnType<typeof ordersControllerCreate>>
 >;
-export type OrdersControllerCreateMutationBody = CreateOrderDto;
-export type OrdersControllerCreateMutationError = AxiosError<unknown>;
+export type OrdersControllerCreateMutationBody = BodyType<CreateOrderDto>;
+export type OrdersControllerCreateMutationError = ErrorType<unknown>;
 
 export const useOrdersControllerCreate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof ordersControllerCreate>>,
     TError,
-    { data: CreateOrderDto },
+    { data: BodyType<CreateOrderDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof ordersControllerCreate>>,
   TError,
-  { data: CreateOrderDto },
+  { data: BodyType<CreateOrderDto> },
   TContext
 > => {
   const mutationOptions = getOrdersControllerCreateMutationOptions(options);
@@ -1655,9 +1871,13 @@ export const useOrdersControllerCreate = <
 };
 
 export const ordersControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/orders`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/orders`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getOrdersControllerFindAllQueryKey = () => {
@@ -1666,7 +1886,7 @@ export const getOrdersControllerFindAllQueryKey = () => {
 
 export const getOrdersControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof ordersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -1675,16 +1895,16 @@ export const getOrdersControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getOrdersControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof ordersControllerFindAll>>
-  > = ({ signal }) => ordersControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => ordersControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof ordersControllerFindAll>>,
@@ -1696,11 +1916,11 @@ export const getOrdersControllerFindAllQueryOptions = <
 export type OrdersControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof ordersControllerFindAll>>
 >;
-export type OrdersControllerFindAllQueryError = AxiosError<unknown>;
+export type OrdersControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useOrdersControllerFindAll<
   TData = Awaited<ReturnType<typeof ordersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -1717,11 +1937,11 @@ export function useOrdersControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindAll<
   TData = Awaited<ReturnType<typeof ordersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -1738,11 +1958,11 @@ export function useOrdersControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindAll<
   TData = Awaited<ReturnType<typeof ordersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -1751,12 +1971,12 @@ export function useOrdersControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrdersControllerFindAll<
   TData = Awaited<ReturnType<typeof ordersControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -1765,7 +1985,7 @@ export function useOrdersControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrdersControllerFindAllQueryOptions(options);
 
@@ -1780,9 +2000,13 @@ export function useOrdersControllerFindAll<
 
 export const ordersControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/orders/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/orders/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getOrdersControllerFindOneQueryKey = (id: string) => {
@@ -1791,7 +2015,7 @@ export const getOrdersControllerFindOneQueryKey = (id: string) => {
 
 export const getOrdersControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1802,17 +2026,17 @@ export const getOrdersControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getOrdersControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof ordersControllerFindOne>>
-  > = ({ signal }) => ordersControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => ordersControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -1829,11 +2053,11 @@ export const getOrdersControllerFindOneQueryOptions = <
 export type OrdersControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof ordersControllerFindOne>>
 >;
-export type OrdersControllerFindOneQueryError = AxiosError<unknown>;
+export type OrdersControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -1852,12 +2076,12 @@ export function useOrdersControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1876,12 +2100,12 @@ export function useOrdersControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1892,13 +2116,13 @@ export function useOrdersControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -1909,7 +2133,7 @@ export function useOrdersControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrdersControllerFindOneQueryOptions(id, options);
@@ -1925,38 +2149,46 @@ export function useOrdersControllerFindOne<
 
 export const ordersControllerUpdate = (
   id: string,
-  updateOrderDto: UpdateOrderDto,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.patch(`/api/orders/${id}`, updateOrderDto, options);
+  updateOrderDto: BodyType<UpdateOrderDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/orders/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateOrderDto,
+    },
+    options,
+  );
 };
 
 export const getOrdersControllerUpdateMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof ordersControllerUpdate>>,
     TError,
-    { id: string; data: UpdateOrderDto },
+    { id: string; data: BodyType<UpdateOrderDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof ordersControllerUpdate>>,
   TError,
-  { id: string; data: UpdateOrderDto },
+  { id: string; data: BodyType<UpdateOrderDto> },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof ordersControllerUpdate>>,
-    { id: string; data: UpdateOrderDto }
+    { id: string; data: BodyType<UpdateOrderDto> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return ordersControllerUpdate(id, data, axiosOptions);
+    return ordersControllerUpdate(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -1965,24 +2197,24 @@ export const getOrdersControllerUpdateMutationOptions = <
 export type OrdersControllerUpdateMutationResult = NonNullable<
   Awaited<ReturnType<typeof ordersControllerUpdate>>
 >;
-export type OrdersControllerUpdateMutationBody = UpdateOrderDto;
-export type OrdersControllerUpdateMutationError = AxiosError<unknown>;
+export type OrdersControllerUpdateMutationBody = BodyType<UpdateOrderDto>;
+export type OrdersControllerUpdateMutationError = ErrorType<unknown>;
 
 export const useOrdersControllerUpdate = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof ordersControllerUpdate>>,
     TError,
-    { id: string; data: UpdateOrderDto },
+    { id: string; data: BodyType<UpdateOrderDto> },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof ordersControllerUpdate>>,
   TError,
-  { id: string; data: UpdateOrderDto },
+  { id: string; data: BodyType<UpdateOrderDto> },
   TContext
 > => {
   const mutationOptions = getOrdersControllerUpdateMutationOptions(options);
@@ -1992,13 +2224,16 @@ export const useOrdersControllerUpdate = <
 
 export const ordersControllerRemove = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.delete(`/api/orders/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/orders/${id}`, method: "DELETE" },
+    options,
+  );
 };
 
 export const getOrdersControllerRemoveMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -2007,14 +2242,14 @@ export const getOrdersControllerRemoveMutationOptions = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof ordersControllerRemove>>,
   TError,
   { id: string },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof ordersControllerRemove>>,
@@ -2022,7 +2257,7 @@ export const getOrdersControllerRemoveMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return ordersControllerRemove(id, axiosOptions);
+    return ordersControllerRemove(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -2032,10 +2267,10 @@ export type OrdersControllerRemoveMutationResult = NonNullable<
   Awaited<ReturnType<typeof ordersControllerRemove>>
 >;
 
-export type OrdersControllerRemoveMutationError = AxiosError<unknown>;
+export type OrdersControllerRemoveMutationError = ErrorType<unknown>;
 
 export const useOrdersControllerRemove = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -2044,7 +2279,7 @@ export const useOrdersControllerRemove = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof ordersControllerRemove>>,
   TError,
@@ -2057,9 +2292,13 @@ export const useOrdersControllerRemove = <
 };
 
 export const orderItemsControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/order-items`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/order-items`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getOrderItemsControllerFindAllQueryKey = () => {
@@ -2068,7 +2307,7 @@ export const getOrderItemsControllerFindAllQueryKey = () => {
 
 export const getOrderItemsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2077,16 +2316,16 @@ export const getOrderItemsControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getOrderItemsControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof orderItemsControllerFindAll>>
-  > = ({ signal }) => orderItemsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => orderItemsControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
@@ -2098,11 +2337,11 @@ export const getOrderItemsControllerFindAllQueryOptions = <
 export type OrderItemsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof orderItemsControllerFindAll>>
 >;
-export type OrderItemsControllerFindAllQueryError = AxiosError<unknown>;
+export type OrderItemsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useOrderItemsControllerFindAll<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -2119,11 +2358,11 @@ export function useOrderItemsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindAll<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2140,11 +2379,11 @@ export function useOrderItemsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindAll<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2153,12 +2392,12 @@ export function useOrderItemsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrderItemsControllerFindAll<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2167,7 +2406,7 @@ export function useOrderItemsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrderItemsControllerFindAllQueryOptions(options);
 
@@ -2182,9 +2421,13 @@ export function useOrderItemsControllerFindAll<
 
 export const orderItemsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/order-items/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/order-items/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getOrderItemsControllerFindOneQueryKey = (id: string) => {
@@ -2193,7 +2436,7 @@ export const getOrderItemsControllerFindOneQueryKey = (id: string) => {
 
 export const getOrderItemsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2204,18 +2447,17 @@ export const getOrderItemsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getOrderItemsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof orderItemsControllerFindOne>>
-  > = ({ signal }) =>
-    orderItemsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => orderItemsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -2232,11 +2474,11 @@ export const getOrderItemsControllerFindOneQueryOptions = <
 export type OrderItemsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof orderItemsControllerFindOne>>
 >;
-export type OrderItemsControllerFindOneQueryError = AxiosError<unknown>;
+export type OrderItemsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -2255,12 +2497,12 @@ export function useOrderItemsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2279,12 +2521,12 @@ export function useOrderItemsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2295,13 +2537,13 @@ export function useOrderItemsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2312,7 +2554,7 @@ export function useOrderItemsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrderItemsControllerFindOneQueryOptions(id, options);
@@ -2327,9 +2569,13 @@ export function useOrderItemsControllerFindOne<
 }
 
 export const paymentsControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/payments`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/payments`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getPaymentsControllerFindAllQueryKey = () => {
@@ -2338,7 +2584,7 @@ export const getPaymentsControllerFindAllQueryKey = () => {
 
 export const getPaymentsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof paymentsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2347,16 +2593,16 @@ export const getPaymentsControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getPaymentsControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof paymentsControllerFindAll>>
-  > = ({ signal }) => paymentsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => paymentsControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof paymentsControllerFindAll>>,
@@ -2368,11 +2614,11 @@ export const getPaymentsControllerFindAllQueryOptions = <
 export type PaymentsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof paymentsControllerFindAll>>
 >;
-export type PaymentsControllerFindAllQueryError = AxiosError<unknown>;
+export type PaymentsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function usePaymentsControllerFindAll<
   TData = Awaited<ReturnType<typeof paymentsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -2389,11 +2635,11 @@ export function usePaymentsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindAll<
   TData = Awaited<ReturnType<typeof paymentsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2410,11 +2656,11 @@ export function usePaymentsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindAll<
   TData = Awaited<ReturnType<typeof paymentsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2423,12 +2669,12 @@ export function usePaymentsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function usePaymentsControllerFindAll<
   TData = Awaited<ReturnType<typeof paymentsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2437,7 +2683,7 @@ export function usePaymentsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getPaymentsControllerFindAllQueryOptions(options);
 
@@ -2452,9 +2698,13 @@ export function usePaymentsControllerFindAll<
 
 export const paymentsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/payments/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/payments/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getPaymentsControllerFindOneQueryKey = (id: string) => {
@@ -2463,7 +2713,7 @@ export const getPaymentsControllerFindOneQueryKey = (id: string) => {
 
 export const getPaymentsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2474,18 +2724,17 @@ export const getPaymentsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getPaymentsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof paymentsControllerFindOne>>
-  > = ({ signal }) =>
-    paymentsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => paymentsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -2502,11 +2751,11 @@ export const getPaymentsControllerFindOneQueryOptions = <
 export type PaymentsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof paymentsControllerFindOne>>
 >;
-export type PaymentsControllerFindOneQueryError = AxiosError<unknown>;
+export type PaymentsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -2525,12 +2774,12 @@ export function usePaymentsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2549,12 +2798,12 @@ export function usePaymentsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2565,13 +2814,13 @@ export function usePaymentsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2582,7 +2831,7 @@ export function usePaymentsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getPaymentsControllerFindOneQueryOptions(id, options);
@@ -2597,9 +2846,13 @@ export function usePaymentsControllerFindOne<
 }
 
 export const wishListsControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/wish-lists`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/wish-lists`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getWishListsControllerFindAllQueryKey = () => {
@@ -2608,7 +2861,7 @@ export const getWishListsControllerFindAllQueryKey = () => {
 
 export const getWishListsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2617,16 +2870,16 @@ export const getWishListsControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getWishListsControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof wishListsControllerFindAll>>
-  > = ({ signal }) => wishListsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => wishListsControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof wishListsControllerFindAll>>,
@@ -2638,11 +2891,11 @@ export const getWishListsControllerFindAllQueryOptions = <
 export type WishListsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof wishListsControllerFindAll>>
 >;
-export type WishListsControllerFindAllQueryError = AxiosError<unknown>;
+export type WishListsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useWishListsControllerFindAll<
   TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -2659,11 +2912,11 @@ export function useWishListsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindAll<
   TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2680,11 +2933,11 @@ export function useWishListsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindAll<
   TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2693,12 +2946,12 @@ export function useWishListsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useWishListsControllerFindAll<
   TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2707,7 +2960,7 @@ export function useWishListsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getWishListsControllerFindAllQueryOptions(options);
 
@@ -2722,9 +2975,13 @@ export function useWishListsControllerFindAll<
 
 export const wishListsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/wish-lists/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/wish-lists/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getWishListsControllerFindOneQueryKey = (id: string) => {
@@ -2733,7 +2990,7 @@ export const getWishListsControllerFindOneQueryKey = (id: string) => {
 
 export const getWishListsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2744,18 +3001,17 @@ export const getWishListsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getWishListsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof wishListsControllerFindOne>>
-  > = ({ signal }) =>
-    wishListsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => wishListsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -2772,11 +3028,11 @@ export const getWishListsControllerFindOneQueryOptions = <
 export type WishListsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof wishListsControllerFindOne>>
 >;
-export type WishListsControllerFindOneQueryError = AxiosError<unknown>;
+export type WishListsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -2795,12 +3051,12 @@ export function useWishListsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2819,12 +3075,12 @@ export function useWishListsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2835,13 +3091,13 @@ export function useWishListsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -2852,7 +3108,7 @@ export function useWishListsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getWishListsControllerFindOneQueryOptions(id, options);
@@ -2867,9 +3123,13 @@ export function useWishListsControllerFindOne<
 }
 
 export const reviewsControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/reviews`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/reviews`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getReviewsControllerFindAllQueryKey = () => {
@@ -2878,7 +3138,7 @@ export const getReviewsControllerFindAllQueryKey = () => {
 
 export const getReviewsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof reviewsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2887,16 +3147,16 @@ export const getReviewsControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getReviewsControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof reviewsControllerFindAll>>
-  > = ({ signal }) => reviewsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => reviewsControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof reviewsControllerFindAll>>,
@@ -2908,11 +3168,11 @@ export const getReviewsControllerFindAllQueryOptions = <
 export type ReviewsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof reviewsControllerFindAll>>
 >;
-export type ReviewsControllerFindAllQueryError = AxiosError<unknown>;
+export type ReviewsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useReviewsControllerFindAll<
   TData = Awaited<ReturnType<typeof reviewsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -2929,11 +3189,11 @@ export function useReviewsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindAll<
   TData = Awaited<ReturnType<typeof reviewsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2950,11 +3210,11 @@ export function useReviewsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindAll<
   TData = Awaited<ReturnType<typeof reviewsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2963,12 +3223,12 @@ export function useReviewsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useReviewsControllerFindAll<
   TData = Awaited<ReturnType<typeof reviewsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -2977,7 +3237,7 @@ export function useReviewsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getReviewsControllerFindAllQueryOptions(options);
 
@@ -2992,9 +3252,13 @@ export function useReviewsControllerFindAll<
 
 export const reviewsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/reviews/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/reviews/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getReviewsControllerFindOneQueryKey = (id: string) => {
@@ -3003,7 +3267,7 @@ export const getReviewsControllerFindOneQueryKey = (id: string) => {
 
 export const getReviewsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3014,17 +3278,17 @@ export const getReviewsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getReviewsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof reviewsControllerFindOne>>
-  > = ({ signal }) => reviewsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => reviewsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -3041,11 +3305,11 @@ export const getReviewsControllerFindOneQueryOptions = <
 export type ReviewsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof reviewsControllerFindOne>>
 >;
-export type ReviewsControllerFindOneQueryError = AxiosError<unknown>;
+export type ReviewsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -3064,12 +3328,12 @@ export function useReviewsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3088,12 +3352,12 @@ export function useReviewsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3104,13 +3368,13 @@ export function useReviewsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3121,7 +3385,7 @@ export function useReviewsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getReviewsControllerFindOneQueryOptions(id, options);
@@ -3136,9 +3400,13 @@ export function useReviewsControllerFindOne<
 }
 
 export const clientsControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/clients`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/clients`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getClientsControllerFindAllQueryKey = () => {
@@ -3147,7 +3415,7 @@ export const getClientsControllerFindAllQueryKey = () => {
 
 export const getClientsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof clientsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3156,16 +3424,16 @@ export const getClientsControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getClientsControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof clientsControllerFindAll>>
-  > = ({ signal }) => clientsControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => clientsControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof clientsControllerFindAll>>,
@@ -3177,11 +3445,11 @@ export const getClientsControllerFindAllQueryOptions = <
 export type ClientsControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof clientsControllerFindAll>>
 >;
-export type ClientsControllerFindAllQueryError = AxiosError<unknown>;
+export type ClientsControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useClientsControllerFindAll<
   TData = Awaited<ReturnType<typeof clientsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -3198,11 +3466,11 @@ export function useClientsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindAll<
   TData = Awaited<ReturnType<typeof clientsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3219,11 +3487,11 @@ export function useClientsControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindAll<
   TData = Awaited<ReturnType<typeof clientsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3232,12 +3500,12 @@ export function useClientsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useClientsControllerFindAll<
   TData = Awaited<ReturnType<typeof clientsControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3246,7 +3514,7 @@ export function useClientsControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getClientsControllerFindAllQueryOptions(options);
 
@@ -3261,9 +3529,13 @@ export function useClientsControllerFindAll<
 
 export const clientsControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/clients/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/clients/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getClientsControllerFindOneQueryKey = (id: string) => {
@@ -3272,7 +3544,7 @@ export const getClientsControllerFindOneQueryKey = (id: string) => {
 
 export const getClientsControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3283,17 +3555,17 @@ export const getClientsControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getClientsControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof clientsControllerFindOne>>
-  > = ({ signal }) => clientsControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => clientsControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -3310,11 +3582,11 @@ export const getClientsControllerFindOneQueryOptions = <
 export type ClientsControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof clientsControllerFindOne>>
 >;
-export type ClientsControllerFindOneQueryError = AxiosError<unknown>;
+export type ClientsControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -3333,12 +3605,12 @@ export function useClientsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3357,12 +3629,12 @@ export function useClientsControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3373,13 +3645,13 @@ export function useClientsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3390,7 +3662,7 @@ export function useClientsControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getClientsControllerFindOneQueryOptions(id, options);
@@ -3405,9 +3677,13 @@ export function useClientsControllerFindOne<
 }
 
 export const addressesControllerFindAll = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/addresses`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/addresses`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getAddressesControllerFindAllQueryKey = () => {
@@ -3416,7 +3692,7 @@ export const getAddressesControllerFindAllQueryKey = () => {
 
 export const getAddressesControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3425,16 +3701,16 @@ export const getAddressesControllerFindAllQueryOptions = <
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getAddressesControllerFindAllQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof addressesControllerFindAll>>
-  > = ({ signal }) => addressesControllerFindAll({ signal, ...axiosOptions });
+  > = ({ signal }) => addressesControllerFindAll(requestOptions, signal);
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof addressesControllerFindAll>>,
@@ -3446,11 +3722,11 @@ export const getAddressesControllerFindAllQueryOptions = <
 export type AddressesControllerFindAllQueryResult = NonNullable<
   Awaited<ReturnType<typeof addressesControllerFindAll>>
 >;
-export type AddressesControllerFindAllQueryError = AxiosError<unknown>;
+export type AddressesControllerFindAllQueryError = ErrorType<unknown>;
 
 export function useAddressesControllerFindAll<
   TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options: {
   query: Partial<
     UseQueryOptions<
@@ -3467,11 +3743,11 @@ export function useAddressesControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindAll<
   TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3488,11 +3764,11 @@ export function useAddressesControllerFindAll<
       >,
       "initialData"
     >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindAll<
   TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3501,12 +3777,12 @@ export function useAddressesControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useAddressesControllerFindAll<
   TData = Awaited<ReturnType<typeof addressesControllerFindAll>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
@@ -3515,7 +3791,7 @@ export function useAddressesControllerFindAll<
       TData
     >
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAddressesControllerFindAllQueryOptions(options);
 
@@ -3530,9 +3806,13 @@ export function useAddressesControllerFindAll<
 
 export const addressesControllerFindOne = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/addresses/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/addresses/${id}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getAddressesControllerFindOneQueryKey = (id: string) => {
@@ -3541,7 +3821,7 @@ export const getAddressesControllerFindOneQueryKey = (id: string) => {
 
 export const getAddressesControllerFindOneQueryOptions = <
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3552,18 +3832,17 @@ export const getAddressesControllerFindOneQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getAddressesControllerFindOneQueryKey(id);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof addressesControllerFindOne>>
-  > = ({ signal }) =>
-    addressesControllerFindOne(id, { signal, ...axiosOptions });
+  > = ({ signal }) => addressesControllerFindOne(id, requestOptions, signal);
 
   return {
     queryKey,
@@ -3580,11 +3859,11 @@ export const getAddressesControllerFindOneQueryOptions = <
 export type AddressesControllerFindOneQueryResult = NonNullable<
   Awaited<ReturnType<typeof addressesControllerFindOne>>
 >;
-export type AddressesControllerFindOneQueryError = AxiosError<unknown>;
+export type AddressesControllerFindOneQueryError = ErrorType<unknown>;
 
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options: {
@@ -3603,12 +3882,12 @@ export function useAddressesControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3627,12 +3906,12 @@ export function useAddressesControllerFindOne<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3643,13 +3922,13 @@ export function useAddressesControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   id: string,
   options?: {
@@ -3660,7 +3939,7 @@ export function useAddressesControllerFindOne<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAddressesControllerFindOneQueryOptions(id, options);
@@ -3676,13 +3955,16 @@ export function useAddressesControllerFindOne<
 
 export const addressesControllerRemove = (
   id: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.delete(`/api/addresses/${id}`, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/addresses/${id}`, method: "DELETE" },
+    options,
+  );
 };
 
 export const getAddressesControllerRemoveMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -3691,14 +3973,14 @@ export const getAddressesControllerRemoveMutationOptions = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof addressesControllerRemove>>,
   TError,
   { id: string },
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof addressesControllerRemove>>,
@@ -3706,7 +3988,7 @@ export const getAddressesControllerRemoveMutationOptions = <
   > = (props) => {
     const { id } = props ?? {};
 
-    return addressesControllerRemove(id, axiosOptions);
+    return addressesControllerRemove(id, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -3716,10 +3998,10 @@ export type AddressesControllerRemoveMutationResult = NonNullable<
   Awaited<ReturnType<typeof addressesControllerRemove>>
 >;
 
-export type AddressesControllerRemoveMutationError = AxiosError<unknown>;
+export type AddressesControllerRemoveMutationError = ErrorType<unknown>;
 
 export const useAddressesControllerRemove = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -3728,7 +4010,7 @@ export const useAddressesControllerRemove = <
     { id: string },
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof addressesControllerRemove>>,
   TError,
@@ -3741,13 +4023,16 @@ export const useAddressesControllerRemove = <
 };
 
 export const imageControllerUploadImage = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.post(`/api/images/upload`, undefined, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/images/upload`, method: "POST" },
+    options,
+  );
 };
 
 export const getImageControllerUploadImageMutationOptions = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -3756,20 +4041,20 @@ export const getImageControllerUploadImageMutationOptions = <
     void,
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof imageControllerUploadImage>>,
   TError,
   void,
   TContext
 > => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof imageControllerUploadImage>>,
     void
   > = () => {
-    return imageControllerUploadImage(axiosOptions);
+    return imageControllerUploadImage(requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -3779,10 +4064,10 @@ export type ImageControllerUploadImageMutationResult = NonNullable<
   Awaited<ReturnType<typeof imageControllerUploadImage>>
 >;
 
-export type ImageControllerUploadImageMutationError = AxiosError<unknown>;
+export type ImageControllerUploadImageMutationError = ErrorType<unknown>;
 
 export const useImageControllerUploadImage = <
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -3791,7 +4076,7 @@ export const useImageControllerUploadImage = <
     void,
     TContext
   >;
-  axios?: AxiosRequestConfig;
+  request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof imageControllerUploadImage>>,
   TError,
@@ -3805,9 +4090,13 @@ export const useImageControllerUploadImage = <
 
 export const imageControllerGetImageLink = (
   image: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.get(`/api/images/${image}`, options);
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/images/${image}`, method: "GET", signal },
+    options,
+  );
 };
 
 export const getImageControllerGetImageLinkQueryKey = (image: string) => {
@@ -3816,7 +4105,7 @@ export const getImageControllerGetImageLinkQueryKey = (image: string) => {
 
 export const getImageControllerGetImageLinkQueryOptions = <
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   image: string,
   options?: {
@@ -3827,10 +4116,10 @@ export const getImageControllerGetImageLinkQueryOptions = <
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
     queryOptions?.queryKey ?? getImageControllerGetImageLinkQueryKey(image);
@@ -3838,7 +4127,7 @@ export const getImageControllerGetImageLinkQueryOptions = <
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof imageControllerGetImageLink>>
   > = ({ signal }) =>
-    imageControllerGetImageLink(image, { signal, ...axiosOptions });
+    imageControllerGetImageLink(image, requestOptions, signal);
 
   return {
     queryKey,
@@ -3855,11 +4144,11 @@ export const getImageControllerGetImageLinkQueryOptions = <
 export type ImageControllerGetImageLinkQueryResult = NonNullable<
   Awaited<ReturnType<typeof imageControllerGetImageLink>>
 >;
-export type ImageControllerGetImageLinkQueryError = AxiosError<unknown>;
+export type ImageControllerGetImageLinkQueryError = ErrorType<unknown>;
 
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   image: string,
   options: {
@@ -3878,12 +4167,12 @@ export function useImageControllerGetImageLink<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   image: string,
   options?: {
@@ -3902,12 +4191,12 @@ export function useImageControllerGetImageLink<
         >,
         "initialData"
       >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   image: string,
   options?: {
@@ -3918,13 +4207,13 @@ export function useImageControllerGetImageLink<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
-  TError = AxiosError<unknown>,
+  TError = ErrorType<unknown>,
 >(
   image: string,
   options?: {
@@ -3935,13 +4224,467 @@ export function useImageControllerGetImageLink<
         TData
       >
     >;
-    axios?: AxiosRequestConfig;
+    request?: SecondParameter<typeof customInstance>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getImageControllerGetImageLinkQueryOptions(
     image,
     options,
   );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const authControllerLogin = (
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/login`, method: "POST" },
+    options,
+  );
+};
+
+export const getAuthControllerLoginMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerLogin>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    void
+  > = () => {
+    return authControllerLogin(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerLoginMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogin>>
+>;
+
+export type AuthControllerLoginMutationError = ErrorType<unknown>;
+
+export const useAuthControllerLogin = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerLogin>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerLoginMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerRefreshToken = (
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/refresh`, method: "POST" },
+    options,
+  );
+};
+
+export const getAuthControllerRefreshTokenMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    void
+  > = () => {
+    return authControllerRefreshToken(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerRefreshTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>
+>;
+
+export type AuthControllerRefreshTokenMutationError = ErrorType<unknown>;
+
+export const useAuthControllerRefreshToken = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerRefreshTokenMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerSignOut = (
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/signout`, method: "POST" },
+    options,
+  );
+};
+
+export const getAuthControllerSignOutMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerSignOut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    void
+  > = () => {
+    return authControllerSignOut(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerSignOutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerSignOut>>
+>;
+
+export type AuthControllerSignOutMutationError = ErrorType<unknown>;
+
+export const useAuthControllerSignOut = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerSignOut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerSignOutMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerGoogleLogin = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/google/login`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getAuthControllerGoogleLoginQueryKey = () => {
+  return [`/api/auth/google/login`] as const;
+};
+
+export const getAuthControllerGoogleLoginQueryOptions = <
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAuthControllerGoogleLoginQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof authControllerGoogleLogin>>
+  > = ({ signal }) => authControllerGoogleLogin(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AuthControllerGoogleLoginQueryResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGoogleLogin>>
+>;
+export type AuthControllerGoogleLoginQueryError = ErrorType<unknown>;
+
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAuthControllerGoogleLoginQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const authControllerGoogleCallback = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/google/callback`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getAuthControllerGoogleCallbackQueryKey = () => {
+  return [`/api/auth/google/callback`] as const;
+};
+
+export const getAuthControllerGoogleCallbackQueryOptions = <
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAuthControllerGoogleCallbackQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof authControllerGoogleCallback>>
+  > = ({ signal }) => authControllerGoogleCallback(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AuthControllerGoogleCallbackQueryResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGoogleCallback>>
+>;
+export type AuthControllerGoogleCallbackQueryError = ErrorType<unknown>;
+
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAuthControllerGoogleCallbackQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

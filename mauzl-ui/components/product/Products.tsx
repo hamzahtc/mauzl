@@ -4,6 +4,7 @@ import {
   getProductsControllerFindAllQueryKey,
   useCategoriesControllerFindAll,
   useProductsControllerFindAll,
+  useUsersControllerFindMe,
 } from "@/generated/hooks";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -37,6 +38,7 @@ const Products = () => {
   const statuses = searchParams.get("statuses") || undefined;
 
   const { data: categories } = useCategoriesControllerFindAll();
+  const { data: me, isLoading } = useUsersControllerFindMe();
 
   const products = useProductsControllerFindAll({
     page,
@@ -61,7 +63,7 @@ const Products = () => {
     if (categoryId) {
       filterChips.push({
         key: "category",
-        label: `${categories?.data.find((category: CategoryDto) => category.id == categoryId)?.name}`,
+        label: `${categories?.find((category: CategoryDto) => category.id == categoryId)?.name}`,
       });
     }
     if (minPrice !== MIN_PRICE || maxPrice !== MAX_PRICE) {
@@ -91,6 +93,10 @@ const Products = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, categoryId, minPrice, maxPrice, sortBy, statuses, categories]);
 
+  if (isLoading) {
+    console.log(me);
+  }
+
   if (products.isLoading) return <></>;
 
   const handlePageChange = (
@@ -99,7 +105,7 @@ const Products = () => {
   ) => {
     setPage(pageNumber);
   };
-  const totalProducts = products.data?.data?.total;
+  const totalProducts = products.data?.total;
 
   const handleDelete = async (key: string) => {
     if (key.startsWith("status")) {
@@ -135,7 +141,7 @@ const Products = () => {
         flexWrap="wrap"
         px={2}
       >
-        {products.data?.data.products.map((product) => (
+        {products.data?.products.map((product) => (
           <Box key={product.id} minWidth="250px">
             <Product product={product} />
           </Box>

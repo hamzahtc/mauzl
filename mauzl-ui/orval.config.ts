@@ -12,6 +12,12 @@ export default defineConfig({
       client: "react-query",
       mock: true,
       baseUrl: "/api",
+      override: {
+        mutator: {
+          path: "./utils/axios.ts",
+          name: "customInstance",
+        },
+      },
     },
     input: {
       target: "http://localhost:4000/api/openapi",

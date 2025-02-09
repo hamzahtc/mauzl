@@ -15,10 +15,10 @@ const ProductDetails = () => {
     <Stack gap={4}>
       <Stack direction={{ xs: "column", md: "row" }} gap={6}>
         <Stack flex={2} alignItems="center">
-          <ProductGallery images={product?.data.images} />
+          <ProductGallery images={product?.images} />
         </Stack>
         <Stack flex={1} px={{ xs: 5 }}>
-          <ProductShopDetails product={product?.data} />
+          <ProductShopDetails product={product} />
         </Stack>
       </Stack>
       <Stack>

@@ -20,3 +20,4 @@ export * from "./updateCategoryDto";
 export * from "./updateOrderDto";
 export * from "./updateProductDto";
 export * from "./updateUserDto";
+export * from "./userDto";

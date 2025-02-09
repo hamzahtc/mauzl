@@ -6,14 +6,13 @@ import { Stack } from "@mui/material";
 import PrimaryButton from "../common/PrimaryButton";
 import SelectInput from "../common/SelectInput";
 import cities from "../../data/cities.json";
-import { AxiosResponse } from "axios";
 import { ZodValidator, zodValidator } from "@tanstack/zod-form-adapter";
 import { Order, OrderSchema } from "@/validation/order.schema";
 import { OrderItem } from "@/utils/db";
 
 interface CheckoutFormProps {
   orderItems: OrderItem[];
-  createOrder: (data: { data: CreateOrderDto }) => Promise<AxiosResponse<void>>;
+  createOrder: (data: { data: CreateOrderDto }) => Promise<void>;
 }
 
 export default function CheckoutForm({

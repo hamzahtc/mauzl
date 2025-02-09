@@ -6,6 +6,7 @@ const nextConfig = {
       { hostname: "localhost" },
       { hostname: "mauzl.com" },
       { hostname: "www.mauzl.com" },
+      { hostname: "lh3.googleusercontent.com" },
     ],
   },
   async rewrites() {
@@ -17,5 +18,5 @@ const nextConfig = {
     ];
   },
 };
-
+  
 export default nextConfig;

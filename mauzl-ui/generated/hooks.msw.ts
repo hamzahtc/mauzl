@@ -6,7 +6,26 @@
  */
 import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
-import type { CategoryDto, PaginatedProductDto, ProductDto } from "../models";
+import type {
+  CategoryDto,
+  PaginatedProductDto,
+  ProductDto,
+  UserDto,
+} from "../models";
+
+export const getUsersControllerFindMeResponseMock = (
+  overrideResponse: Partial<UserDto> = {},
+): UserDto => ({
+  avatarUrl: faker.word.sample(),
+  email: faker.word.sample(),
+  firstName: faker.word.sample(),
+  hashedRefreshToken: faker.word.sample(),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  lastName: faker.word.sample(),
+  role: faker.word.sample(),
+  username: faker.word.sample(),
+  ...overrideResponse,
+});
 
 export const getCategoriesControllerFindAllResponseMock = (): CategoryDto[] =>
   Array.from(
@@ -116,6 +135,29 @@ export const getUsersControllerFindAllMockHandler = (
       await overrideResponse(info);
     }
     return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getUsersControllerFindMeMockHandler = (
+  overrideResponse?:
+    | UserDto
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<UserDto> | UserDto),
+) => {
+  return http.get("*/users/me", async (info) => {
+    await delay(1000);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getUsersControllerFindMeResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
   });
 };
 
@@ -674,10 +716,91 @@ export const getImageControllerGetImageLinkMockHandler = (
     return new HttpResponse(null, { status: 200 });
   });
 };
+
+export const getAuthControllerLoginMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/login", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAuthControllerRefreshTokenMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/refresh", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getAuthControllerSignOutMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/signout", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getAuthControllerGoogleLoginMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/auth/google/login", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAuthControllerGoogleCallbackMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/auth/google/callback", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
 export const getMauzlAPIMock = () => [
   getAppControllerGetHelloMockHandler(),
   getUsersControllerCreateMockHandler(),
   getUsersControllerFindAllMockHandler(),
+  getUsersControllerFindMeMockHandler(),
   getUsersControllerFindOneMockHandler(),
   getUsersControllerUpdateMockHandler(),
   getUsersControllerRemoveMockHandler(),
@@ -711,4 +834,9 @@ export const getMauzlAPIMock = () => [
   getAddressesControllerRemoveMockHandler(),
   getImageControllerUploadImageMockHandler(),
   getImageControllerGetImageLinkMockHandler(),
+  getAuthControllerLoginMockHandler(),
+  getAuthControllerRefreshTokenMockHandler(),
+  getAuthControllerSignOutMockHandler(),
+  getAuthControllerGoogleLoginMockHandler(),
+  getAuthControllerGoogleCallbackMockHandler(),
 ];
