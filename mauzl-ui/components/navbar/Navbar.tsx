@@ -97,14 +97,16 @@ const Navbar = () => {
             width="100%"
             gap={1}
           >
-            <Stack>
+            <Stack mx={3}>
               <Link href="/">
                 <Image
                   alt="models"
                   src={MauzlIcon}
-                  width={0}
                   height={0}
+                  width={0}
                   style={{
+                    minWidth: "50px",
+                    minHeight: "50px",
                     width: "50px",
                   }}
                 />
