@@ -33,5 +33,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: user/app:latest
+          tags: hamzahatoch09/mauzl-ui:latest
           context: ./mauzl-ui
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
