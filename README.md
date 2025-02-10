@@ -1,0 +1,1 @@
+- To run the app with docker -> docker compose --env-file .env.production up --build
