@@ -33,7 +33,11 @@ const Navbar = () => {
     defaultMatches: true,
   });
 
-  const { isLoading, data } = useUsersControllerFindMe();
+  const me = useUsersControllerFindMe({
+    query: {
+      retry: 0,
+    },
+  });
 
   const orderItems = useLiveQuery(() => db.products.toArray()) || [];
 
@@ -144,8 +148,8 @@ const Navbar = () => {
               </IconButton>
 
               <LanguageSelect />
-              {!isLoading && data ? (
-                <AccountMenu user={data} />
+              {!me.isLoading && me.data ? (
+                <AccountMenu user={me.data} />
               ) : (
                 <PrimaryButton text="Login" href="/api/auth/google/callback" />
               )}

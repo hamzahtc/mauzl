@@ -12,6 +12,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { UserDto } from "@/models";
 import Image from "next/image";
+import { authControllerSignOut } from "@/generated/hooks";
 
 interface Props {
   user: UserDto;
@@ -22,6 +23,11 @@ const AccountMenu = ({ user }: Props) => {
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const logout = async () => {
+    await authControllerSignOut();
+    window.location.href = "/";
   };
 
   const handleClose = () => {
@@ -106,7 +112,7 @@ const AccountMenu = ({ user }: Props) => {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

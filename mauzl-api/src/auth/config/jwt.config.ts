@@ -7,7 +7,7 @@ dotenv.config(); // Load .env file if not using ConfigModule directly
 export default registerAs(
   'jwt',
   (): JwtModuleOptions => ({
-    secret: process.env.REFRESH_JWT_SECRET || 'mauzl_jwt_secret',
-    signOptions: { expiresIn: '30h' },
+    secret: process.env.REFRESH_JWT_SECRET,
+    signOptions: { expiresIn: '15m' },
   }),
 );

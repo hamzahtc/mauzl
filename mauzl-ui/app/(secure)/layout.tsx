@@ -1,33 +1,14 @@
-// "use client";
-
-// import * as React from "react";
-// import { useRouter } from "next/navigation";
-// import { useUsersControllerFindMe } from "@/generated/hooks";
-
-// export default function Layout({ children }: { children: React.ReactNode }) {
-//   const router = useRouter();
-//   const { isLoading, data } = useUsersControllerFindMe();
-
-//   React.useEffect(() => {
-//     if (data || isLoading || !router) return;
-
-//     router.push("/");
-//   }, [data, isLoading, router]);
-
-//   if (!data || isLoading) {
-//     return null;
-//   }
-
-//   return children;
-// }
-
 "use client";
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useUsersControllerFindMe } from "@/generated/hooks";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function PrivateLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const { isLoading, isError, error, data } = useUsersControllerFindMe({
     query: { retry: 0 },

@@ -5,7 +5,6 @@ import {
   HttpStatus,
   Post,
   Req,
-  Request,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -23,20 +22,66 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user.id);
+  async login(@Req() req, @Res() res) {
+    const { accessToken, refreshToken } = await this.authService.login(
+      req.user.id,
+    );
+
+    // Set access token in cookie
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000, // 15 minutes (short-lived access token)
+    });
+
+    // Set refresh token in cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (long-lived refresh token)
+    });
+
+    res.send({ message: 'Login successful' });
   }
 
   @UseGuards(RefreshAuthGuard)
   @Post('refresh')
-  refreshToken(@Req() req) {
-    return this.authService.refreshToken(req.user.id);
+  async refreshToken(@Req() req, @Res() res) {
+    const { accessToken } = await this.authService.refreshToken(req.user.id);
+
+    // Set the new access token in a cookie
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000, // 15 minutes (short-lived access token)
+    });
+
+    res.send({ message: 'Token refreshed successfully' });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('signout')
-  signOut(@Req() req) {
-    this.authService.signOut(req.user.id);
+  async signOut(@Req() req, @Res() res) {
+    // Invalidate the refresh token in the database
+
+    // Clear access token cookie
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    // Clear refresh token cookie
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    res.status(HttpStatus.OK).send({ message: 'Sign-out successful' });
   }
 
   @Public()
@@ -48,14 +93,26 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   async googleCallback(@Req() req, @Res() res) {
-    const response = await this.authService.login(req.user.id);
-    res.cookie('auth_token', response.accessToken, {
+    const { accessToken, refreshToken } = await this.authService.login(
+      req.user.id,
+    );
+
+    // Set access token in cookie
+    res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 15 * 60 * 1000, // 15 minutes (short-lived access token)
     });
 
-    res.redirect('http://localhost:3000'); // Redirect to frontend WITHOUT token in URL
+    // Set refresh token in cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (long-lived refresh token)
+    });
+
+    res.redirect(process.env.MAUZL_BASE_URL);
   }
 }
