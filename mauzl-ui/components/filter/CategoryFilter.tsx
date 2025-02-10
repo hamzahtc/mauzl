@@ -34,7 +34,7 @@ const CategoryFilter = () => {
 
   if (categories.isLoading) return <></>;
 
-  const categoryList = categories.data?.data;
+  const categoryList = categories.data;
 
   return (
     <Stack gap={2}>

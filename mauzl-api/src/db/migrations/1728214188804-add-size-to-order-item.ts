@@ -1,14 +1,15 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AddSizeToOrderItem1728214188804 implements MigrationInterface {
-    name = 'AddSizeToOrderItem1728214188804'
+  name = 'AddSizeToOrderItem1728214188804';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "order_item" ADD "size" character varying NOT NULL DEFAULT 'm'`);
-    }
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "order_item" ADD "size" character varying NOT NULL DEFAULT 'm'`,
+    );
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "order_item" DROP COLUMN "size"`);
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`ALTER TABLE "order_item" DROP COLUMN "size"`);
+  }
 }

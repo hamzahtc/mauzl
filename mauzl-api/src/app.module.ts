@@ -16,6 +16,7 @@ import { MinioClientModule } from './minio-client/minio-client.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ImageModule } from './images/image.module';
 import { AddressesModule } from '~addresses/addresses.module';
+import { AuthModule } from '~auth/auth.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { AddressesModule } from '~addresses/addresses.module';
     AddressesModule,
     MinioClientModule,
     ImageModule,
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],

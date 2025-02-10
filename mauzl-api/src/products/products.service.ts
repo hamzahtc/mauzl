@@ -72,7 +72,6 @@ export class ProductsService {
   }
 
   async findAll(page: number, limit: number, filters: ProductFilterDto) {
-    this.logger.log('THIS IS A NEW VERSION');
     const offset = (page - 1) * limit;
     const statusArray = filters.statuses ? filters.statuses.split(',') : [];
 
