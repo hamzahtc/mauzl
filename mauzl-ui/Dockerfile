@@ -3,6 +3,7 @@ WORKDIR /app
 
 # Add build argument
 ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_CLARITY_PROJECT_ID
 
 FROM node AS composer
 COPY package*.json ./
@@ -11,6 +12,7 @@ ADD . ./
 
 # Set environment variable inside the build process
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_CLARITY_PROJECT_ID=${NEXT_PUBLIC_CLARITY_PROJECT_ID}
 
 RUN npm run build
 

@@ -41,6 +41,7 @@ jobs:
           context: ./mauzl-ui
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_CLARITY_PROJECT_ID=${{ secrets.NEXT_PUBLIC_CLARITY_PROJECT_ID }}
 
   publish-mauzl-api:
     runs-on: ubuntu-latest

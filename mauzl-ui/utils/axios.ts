@@ -60,7 +60,7 @@ AXIOS_INSTANCE.interceptors.response.use(
         try {
           // Call the /refresh endpoint to get a new access token
           const refreshResponse = await Axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`,
+            `/api/auth/refresh`,
             {},
             { withCredentials: true }
           );
