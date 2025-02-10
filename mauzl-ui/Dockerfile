@@ -1,10 +1,17 @@
 FROM node:20.9.0 AS node
 WORKDIR /app
 
+# Add build argument
+ARG NEXT_PUBLIC_API_URL
+
 FROM node AS composer
 COPY package*.json ./
 RUN npm install
 ADD . ./
+
+# Set environment variable inside the build process
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 RUN npm run build
 
 FROM node AS runner
