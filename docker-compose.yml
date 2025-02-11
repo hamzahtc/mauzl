@@ -25,15 +25,22 @@ services:
 
   mauzl-ui:
     container_name: mauzl-ui
-    build: ./mauzl-ui
+    build:
+      context: ./mauzl-ui
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_CLARITY_PROJECT_ID: ${NEXT_PUBLIC_CLARITY_PROJECT_ID}
     env_file:
       - .env.production
     ports:
       - "3000:3000"
 
   mauzl-api:
-    build: ./mauzl-api
     container_name: mauzl-api
+    build:
+      context: ./mauzl-api
+      dockerfile: Dockerfile
     ports:
       - "4000:4000"
     env_file:
@@ -41,8 +48,6 @@ services:
     depends_on:
       - mauzl-db
       - mauzl-minio
-    volumes:
-      - ./src:/app/src
 
 volumes:
   mauzl_data:
