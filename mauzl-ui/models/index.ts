@@ -9,6 +9,7 @@ export * from "./categoryDto";
 export * from "./createAddressDto";
 export * from "./createCategoryDto";
 export * from "./createClientDto";
+export * from "./createContactDto";
 export * from "./createOrderDto";
 export * from "./createOrderItemDto";
 export * from "./createProductDto";

@@ -17,6 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ImageModule } from './images/image.module';
 import { AddressesModule } from '~addresses/addresses.module';
 import { AuthModule } from '~auth/auth.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AuthModule } from '~auth/auth.module';
     ImageModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

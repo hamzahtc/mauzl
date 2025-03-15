@@ -796,6 +796,86 @@ export const getAuthControllerGoogleCallbackMockHandler = (
     return new HttpResponse(null, { status: 200 });
   });
 };
+
+export const getContactControllerCreateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/contacts", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getContactControllerFindAllMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/contacts", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getContactControllerFindOneMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/contacts/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getContactControllerUpdateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.patch("*/contacts/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getContactControllerRemoveMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.delete("*/contacts/:id", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
 export const getMauzlAPIMock = () => [
   getAppControllerGetHelloMockHandler(),
   getUsersControllerCreateMockHandler(),
@@ -839,4 +919,9 @@ export const getMauzlAPIMock = () => [
   getAuthControllerSignOutMockHandler(),
   getAuthControllerGoogleLoginMockHandler(),
   getAuthControllerGoogleCallbackMockHandler(),
+  getContactControllerCreateMockHandler(),
+  getContactControllerFindAllMockHandler(),
+  getContactControllerFindOneMockHandler(),
+  getContactControllerUpdateMockHandler(),
+  getContactControllerRemoveMockHandler(),
 ];

@@ -20,6 +20,7 @@ import type {
 import type {
   CategoryDto,
   CreateCategoryDto,
+  CreateContactDto,
   CreateOrderDto,
   CreateProductDto,
   CreateUserDto,
@@ -39,7 +40,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 export const appControllerGetHello = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>({ url: `/api/`, method: "GET", signal }, options);
 };
@@ -163,7 +164,7 @@ export function useAppControllerGetHello<
 
 export const usersControllerCreate = (
   createUserDto: BodyType<CreateUserDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -172,7 +173,7 @@ export const usersControllerCreate = (
       headers: { "Content-Type": "application/json" },
       data: createUserDto,
     },
-    options
+    options,
   );
 };
 
@@ -237,11 +238,11 @@ export const useUsersControllerCreate = <
 
 export const usersControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/users`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -365,11 +366,11 @@ export function useUsersControllerFindAll<
 
 export const usersControllerFindMe = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<UserDto>(
     { url: `/api/users/me`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -493,11 +494,11 @@ export function useUsersControllerFindMe<
 export const usersControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/users/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -519,7 +520,7 @@ export const getUsersControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -569,7 +570,7 @@ export function useUsersControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
@@ -593,7 +594,7 @@ export function useUsersControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useUsersControllerFindOne<
   TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
@@ -609,7 +610,7 @@ export function useUsersControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useUsersControllerFindOne<
@@ -626,7 +627,7 @@ export function useUsersControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getUsersControllerFindOneQueryOptions(id, options);
 
@@ -642,7 +643,7 @@ export function useUsersControllerFindOne<
 export const usersControllerUpdate = (
   id: string,
   updateUserDto: BodyType<UpdateUserDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -651,7 +652,7 @@ export const usersControllerUpdate = (
       headers: { "Content-Type": "application/json" },
       data: updateUserDto,
     },
-    options
+    options,
   );
 };
 
@@ -716,11 +717,11 @@ export const useUsersControllerUpdate = <
 
 export const usersControllerRemove = (
   id: string,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/users/${id}`, method: "DELETE" },
-    options
+    options,
   );
 };
 
@@ -785,7 +786,7 @@ export const useUsersControllerRemove = <
 
 export const categoriesControllerCreate = (
   createCategoryDto: BodyType<CreateCategoryDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -794,7 +795,7 @@ export const categoriesControllerCreate = (
       headers: { "Content-Type": "application/json" },
       data: createCategoryDto,
     },
-    options
+    options,
   );
 };
 
@@ -860,11 +861,11 @@ export const useCategoriesControllerCreate = <
 
 export const categoriesControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<CategoryDto[]>(
     { url: `/api/categories`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -989,11 +990,11 @@ export function useCategoriesControllerFindAll<
 export const categoriesControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<CategoryDto>(
     { url: `/api/categories/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -1015,7 +1016,7 @@ export const getCategoriesControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1065,7 +1066,7 @@ export function useCategoriesControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
@@ -1089,7 +1090,7 @@ export function useCategoriesControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useCategoriesControllerFindOne<
   TData = Awaited<ReturnType<typeof categoriesControllerFindOne>>,
@@ -1105,7 +1106,7 @@ export function useCategoriesControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useCategoriesControllerFindOne<
@@ -1122,7 +1123,7 @@ export function useCategoriesControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getCategoriesControllerFindOneQueryOptions(id, options);
 
@@ -1138,7 +1139,7 @@ export function useCategoriesControllerFindOne<
 export const categoriesControllerUpdate = (
   id: string,
   updateCategoryDto: BodyType<UpdateCategoryDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -1147,7 +1148,7 @@ export const categoriesControllerUpdate = (
       headers: { "Content-Type": "application/json" },
       data: updateCategoryDto,
     },
-    options
+    options,
   );
 };
 
@@ -1213,11 +1214,11 @@ export const useCategoriesControllerUpdate = <
 
 export const categoriesControllerRemove = (
   id: string,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/categories/${id}`, method: "DELETE" },
-    options
+    options,
   );
 };
 
@@ -1282,7 +1283,7 @@ export const useCategoriesControllerRemove = <
 
 export const productsControllerCreate = (
   createProductDto: BodyType<CreateProductDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -1291,7 +1292,7 @@ export const productsControllerCreate = (
       headers: { "Content-Type": "application/json" },
       data: createProductDto,
     },
-    options
+    options,
   );
 };
 
@@ -1357,16 +1358,16 @@ export const useProductsControllerCreate = <
 export const productsControllerFindAll = (
   params?: ProductsControllerFindAllParams,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<PaginatedProductDto>(
     { url: `/api/products`, method: "GET", params, signal },
-    options
+    options,
   );
 };
 
 export const getProductsControllerFindAllQueryKey = (
-  params?: ProductsControllerFindAllParams
+  params?: ProductsControllerFindAllParams,
 ) => {
   return [`/api/products`, ...(params ? [params] : [])] as const;
 };
@@ -1385,7 +1386,7 @@ export const getProductsControllerFindAllQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1430,7 +1431,7 @@ export function useProductsControllerFindAll<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
@@ -1454,7 +1455,7 @@ export function useProductsControllerFindAll<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindAll<
   TData = Awaited<ReturnType<typeof productsControllerFindAll>>,
@@ -1470,7 +1471,7 @@ export function useProductsControllerFindAll<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useProductsControllerFindAll<
@@ -1487,11 +1488,11 @@ export function useProductsControllerFindAll<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getProductsControllerFindAllQueryOptions(
     params,
-    options
+    options,
   );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
@@ -1506,11 +1507,11 @@ export function useProductsControllerFindAll<
 export const productsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<ProductDto>(
     { url: `/api/products/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -1532,7 +1533,7 @@ export const getProductsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -1582,7 +1583,7 @@ export function useProductsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
@@ -1606,7 +1607,7 @@ export function useProductsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useProductsControllerFindOne<
   TData = Awaited<ReturnType<typeof productsControllerFindOne>>,
@@ -1622,7 +1623,7 @@ export function useProductsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useProductsControllerFindOne<
@@ -1639,7 +1640,7 @@ export function useProductsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getProductsControllerFindOneQueryOptions(id, options);
 
@@ -1655,7 +1656,7 @@ export function useProductsControllerFindOne<
 export const productsControllerUpdate = (
   id: string,
   updateProductDto: BodyType<UpdateProductDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -1664,7 +1665,7 @@ export const productsControllerUpdate = (
       headers: { "Content-Type": "application/json" },
       data: updateProductDto,
     },
-    options
+    options,
   );
 };
 
@@ -1729,11 +1730,11 @@ export const useProductsControllerUpdate = <
 
 export const productsControllerRemove = (
   id: string,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/products/${id}`, method: "DELETE" },
-    options
+    options,
   );
 };
 
@@ -1798,7 +1799,7 @@ export const useProductsControllerRemove = <
 
 export const ordersControllerCreate = (
   createOrderDto: BodyType<CreateOrderDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -1807,7 +1808,7 @@ export const ordersControllerCreate = (
       headers: { "Content-Type": "application/json" },
       data: createOrderDto,
     },
-    options
+    options,
   );
 };
 
@@ -1872,11 +1873,11 @@ export const useOrdersControllerCreate = <
 
 export const ordersControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/orders`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2001,11 +2002,11 @@ export function useOrdersControllerFindAll<
 export const ordersControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/orders/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2027,7 +2028,7 @@ export const getOrdersControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2077,7 +2078,7 @@ export function useOrdersControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
@@ -2101,7 +2102,7 @@ export function useOrdersControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrdersControllerFindOne<
   TData = Awaited<ReturnType<typeof ordersControllerFindOne>>,
@@ -2117,7 +2118,7 @@ export function useOrdersControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrdersControllerFindOne<
@@ -2134,7 +2135,7 @@ export function useOrdersControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrdersControllerFindOneQueryOptions(id, options);
 
@@ -2150,7 +2151,7 @@ export function useOrdersControllerFindOne<
 export const ordersControllerUpdate = (
   id: string,
   updateOrderDto: BodyType<UpdateOrderDto>,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     {
@@ -2159,7 +2160,7 @@ export const ordersControllerUpdate = (
       headers: { "Content-Type": "application/json" },
       data: updateOrderDto,
     },
-    options
+    options,
   );
 };
 
@@ -2224,11 +2225,11 @@ export const useOrdersControllerUpdate = <
 
 export const ordersControllerRemove = (
   id: string,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/orders/${id}`, method: "DELETE" },
-    options
+    options,
   );
 };
 
@@ -2293,11 +2294,11 @@ export const useOrdersControllerRemove = <
 
 export const orderItemsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/order-items`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2422,11 +2423,11 @@ export function useOrderItemsControllerFindAll<
 export const orderItemsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/order-items/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2448,7 +2449,7 @@ export const getOrderItemsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2498,7 +2499,7 @@ export function useOrderItemsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
@@ -2522,7 +2523,7 @@ export function useOrderItemsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useOrderItemsControllerFindOne<
   TData = Awaited<ReturnType<typeof orderItemsControllerFindOne>>,
@@ -2538,7 +2539,7 @@ export function useOrderItemsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useOrderItemsControllerFindOne<
@@ -2555,7 +2556,7 @@ export function useOrderItemsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getOrderItemsControllerFindOneQueryOptions(id, options);
 
@@ -2570,11 +2571,11 @@ export function useOrderItemsControllerFindOne<
 
 export const paymentsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/payments`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2699,11 +2700,11 @@ export function usePaymentsControllerFindAll<
 export const paymentsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/payments/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2725,7 +2726,7 @@ export const getPaymentsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -2775,7 +2776,7 @@ export function usePaymentsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
@@ -2799,7 +2800,7 @@ export function usePaymentsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function usePaymentsControllerFindOne<
   TData = Awaited<ReturnType<typeof paymentsControllerFindOne>>,
@@ -2815,7 +2816,7 @@ export function usePaymentsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function usePaymentsControllerFindOne<
@@ -2832,7 +2833,7 @@ export function usePaymentsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getPaymentsControllerFindOneQueryOptions(id, options);
 
@@ -2847,11 +2848,11 @@ export function usePaymentsControllerFindOne<
 
 export const wishListsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/wish-lists`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -2976,11 +2977,11 @@ export function useWishListsControllerFindAll<
 export const wishListsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/wish-lists/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3002,7 +3003,7 @@ export const getWishListsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3052,7 +3053,7 @@ export function useWishListsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
@@ -3076,7 +3077,7 @@ export function useWishListsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
@@ -3092,7 +3093,7 @@ export function useWishListsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useWishListsControllerFindOne<
@@ -3109,7 +3110,7 @@ export function useWishListsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getWishListsControllerFindOneQueryOptions(id, options);
 
@@ -3124,11 +3125,11 @@ export function useWishListsControllerFindOne<
 
 export const reviewsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/reviews`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3253,11 +3254,11 @@ export function useReviewsControllerFindAll<
 export const reviewsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/reviews/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3279,7 +3280,7 @@ export const getReviewsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3329,7 +3330,7 @@ export function useReviewsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
@@ -3353,7 +3354,7 @@ export function useReviewsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useReviewsControllerFindOne<
   TData = Awaited<ReturnType<typeof reviewsControllerFindOne>>,
@@ -3369,7 +3370,7 @@ export function useReviewsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useReviewsControllerFindOne<
@@ -3386,7 +3387,7 @@ export function useReviewsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getReviewsControllerFindOneQueryOptions(id, options);
 
@@ -3401,11 +3402,11 @@ export function useReviewsControllerFindOne<
 
 export const clientsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/clients`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3530,11 +3531,11 @@ export function useClientsControllerFindAll<
 export const clientsControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/clients/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3556,7 +3557,7 @@ export const getClientsControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3606,7 +3607,7 @@ export function useClientsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
@@ -3630,7 +3631,7 @@ export function useClientsControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useClientsControllerFindOne<
   TData = Awaited<ReturnType<typeof clientsControllerFindOne>>,
@@ -3646,7 +3647,7 @@ export function useClientsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useClientsControllerFindOne<
@@ -3663,7 +3664,7 @@ export function useClientsControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getClientsControllerFindOneQueryOptions(id, options);
 
@@ -3678,11 +3679,11 @@ export function useClientsControllerFindOne<
 
 export const addressesControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/addresses`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3807,11 +3808,11 @@ export function useAddressesControllerFindAll<
 export const addressesControllerFindOne = (
   id: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/addresses/${id}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -3833,7 +3834,7 @@ export const getAddressesControllerFindOneQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -3883,7 +3884,7 @@ export function useAddressesControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
@@ -3907,7 +3908,7 @@ export function useAddressesControllerFindOne<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useAddressesControllerFindOne<
   TData = Awaited<ReturnType<typeof addressesControllerFindOne>>,
@@ -3923,7 +3924,7 @@ export function useAddressesControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useAddressesControllerFindOne<
@@ -3940,7 +3941,7 @@ export function useAddressesControllerFindOne<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAddressesControllerFindOneQueryOptions(id, options);
 
@@ -3955,11 +3956,11 @@ export function useAddressesControllerFindOne<
 
 export const addressesControllerRemove = (
   id: string,
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/addresses/${id}`, method: "DELETE" },
-    options
+    options,
   );
 };
 
@@ -4023,11 +4024,11 @@ export const useAddressesControllerRemove = <
 };
 
 export const imageControllerUploadImage = (
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/images/upload`, method: "POST" },
-    options
+    options,
   );
 };
 
@@ -4091,11 +4092,11 @@ export const useImageControllerUploadImage = <
 export const imageControllerGetImageLink = (
   image: string,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/images/${image}`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -4117,7 +4118,7 @@ export const getImageControllerGetImageLinkQueryOptions = <
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
@@ -4168,7 +4169,7 @@ export function useImageControllerGetImageLink<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
@@ -4192,7 +4193,7 @@ export function useImageControllerGetImageLink<
         "initialData"
       >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useImageControllerGetImageLink<
   TData = Awaited<ReturnType<typeof imageControllerGetImageLink>>,
@@ -4208,7 +4209,7 @@ export function useImageControllerGetImageLink<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useImageControllerGetImageLink<
@@ -4225,11 +4226,11 @@ export function useImageControllerGetImageLink<
       >
     >;
     request?: SecondParameter<typeof customInstance>;
-  }
+  },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getImageControllerGetImageLinkQueryOptions(
     image,
-    options
+    options,
   );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
@@ -4242,11 +4243,11 @@ export function useImageControllerGetImageLink<
 }
 
 export const authControllerLogin = (
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/auth/login`, method: "POST" },
-    options
+    options,
   );
 };
 
@@ -4308,11 +4309,11 @@ export const useAuthControllerLogin = <
 };
 
 export const authControllerRefreshToken = (
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/auth/refresh`, method: "POST" },
-    options
+    options,
   );
 };
 
@@ -4374,11 +4375,11 @@ export const useAuthControllerRefreshToken = <
 };
 
 export const authControllerSignOut = (
-  options?: SecondParameter<typeof customInstance>
+  options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
     { url: `/api/auth/signout`, method: "POST" },
-    options
+    options,
   );
 };
 
@@ -4441,11 +4442,11 @@ export const useAuthControllerSignOut = <
 
 export const authControllerGoogleLogin = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/auth/google/login`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -4569,11 +4570,11 @@ export function useAuthControllerGoogleLogin<
 
 export const authControllerGoogleCallback = (
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
     { url: `/api/auth/google/callback`, method: "GET", signal },
-    options
+    options,
   );
 };
 
@@ -4694,3 +4695,492 @@ export function useAuthControllerGoogleCallback<
 
   return query;
 }
+
+export const contactControllerCreate = (
+  createContactDto: BodyType<CreateContactDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/contacts`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createContactDto,
+    },
+    options,
+  );
+};
+
+export const getContactControllerCreateMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerCreate>>,
+    TError,
+    { data: BodyType<CreateContactDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof contactControllerCreate>>,
+  TError,
+  { data: BodyType<CreateContactDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof contactControllerCreate>>,
+    { data: BodyType<CreateContactDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return contactControllerCreate(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ContactControllerCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof contactControllerCreate>>
+>;
+export type ContactControllerCreateMutationBody = BodyType<CreateContactDto>;
+export type ContactControllerCreateMutationError = ErrorType<unknown>;
+
+export const useContactControllerCreate = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerCreate>>,
+    TError,
+    { data: BodyType<CreateContactDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof contactControllerCreate>>,
+  TError,
+  { data: BodyType<CreateContactDto> },
+  TContext
+> => {
+  const mutationOptions = getContactControllerCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const contactControllerFindAll = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/contacts`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getContactControllerFindAllQueryKey = () => {
+  return [`/api/contacts`] as const;
+};
+
+export const getContactControllerFindAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof contactControllerFindAll>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof contactControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getContactControllerFindAllQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof contactControllerFindAll>>
+  > = ({ signal }) => contactControllerFindAll(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof contactControllerFindAll>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ContactControllerFindAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof contactControllerFindAll>>
+>;
+export type ContactControllerFindAllQueryError = ErrorType<unknown>;
+
+export function useContactControllerFindAll<
+  TData = Awaited<ReturnType<typeof contactControllerFindAll>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof contactControllerFindAll>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof contactControllerFindAll>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useContactControllerFindAll<
+  TData = Awaited<ReturnType<typeof contactControllerFindAll>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof contactControllerFindAll>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof contactControllerFindAll>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useContactControllerFindAll<
+  TData = Awaited<ReturnType<typeof contactControllerFindAll>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof contactControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useContactControllerFindAll<
+  TData = Awaited<ReturnType<typeof contactControllerFindAll>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof contactControllerFindAll>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getContactControllerFindAllQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const contactControllerFindOne = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/contacts/${id}`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getContactControllerFindOneQueryKey = (id: string) => {
+  return [`/api/contacts/${id}`] as const;
+};
+
+export const getContactControllerFindOneQueryOptions = <
+  TData = Awaited<ReturnType<typeof contactControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof contactControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getContactControllerFindOneQueryKey(id);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof contactControllerFindOne>>
+  > = ({ signal }) => contactControllerFindOne(id, requestOptions, signal);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof contactControllerFindOne>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ContactControllerFindOneQueryResult = NonNullable<
+  Awaited<ReturnType<typeof contactControllerFindOne>>
+>;
+export type ContactControllerFindOneQueryError = ErrorType<unknown>;
+
+export function useContactControllerFindOne<
+  TData = Awaited<ReturnType<typeof contactControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(
+  id: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof contactControllerFindOne>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof contactControllerFindOne>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useContactControllerFindOne<
+  TData = Awaited<ReturnType<typeof contactControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof contactControllerFindOne>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof contactControllerFindOne>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useContactControllerFindOne<
+  TData = Awaited<ReturnType<typeof contactControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof contactControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useContactControllerFindOne<
+  TData = Awaited<ReturnType<typeof contactControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(
+  id: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof contactControllerFindOne>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getContactControllerFindOneQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const contactControllerUpdate = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/contacts/${id}`, method: "PATCH" },
+    options,
+  );
+};
+
+export const getContactControllerUpdateMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerUpdate>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof contactControllerUpdate>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof contactControllerUpdate>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return contactControllerUpdate(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ContactControllerUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof contactControllerUpdate>>
+>;
+
+export type ContactControllerUpdateMutationError = ErrorType<unknown>;
+
+export const useContactControllerUpdate = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerUpdate>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof contactControllerUpdate>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationOptions = getContactControllerUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const contactControllerRemove = (
+  id: string,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/contacts/${id}`, method: "DELETE" },
+    options,
+  );
+};
+
+export const getContactControllerRemoveMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerRemove>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof contactControllerRemove>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof contactControllerRemove>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return contactControllerRemove(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ContactControllerRemoveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof contactControllerRemove>>
+>;
+
+export type ContactControllerRemoveMutationError = ErrorType<unknown>;
+
+export const useContactControllerRemove = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contactControllerRemove>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof contactControllerRemove>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationOptions = getContactControllerRemoveMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
