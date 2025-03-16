@@ -6,7 +6,9 @@ WORKDIR /app
 FROM base AS build
 COPY package*.json ./
 # Install all dependencies including devDependencies necessary for building the app
-RUN npm install --frozen-lockfile
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm config set fetch-retry-maxtimeout 300000 \
+    && npm install --frozen-lockfile
 # Copy the source code of the application
 COPY . .
 # Build the application, assuming the use of Nest.js CLI
