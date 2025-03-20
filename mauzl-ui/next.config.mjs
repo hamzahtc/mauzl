@@ -6,6 +6,7 @@ const nextConfig = {
       { hostname: "localhost" },
       { hostname: "mauzl.com" },
       { hostname: "www.mauzl.com" },
+      { hostname: "minio.mauzl.com" },
       { hostname: "lh3.googleusercontent.com" },
     ],
   },
@@ -18,5 +19,5 @@ const nextConfig = {
     ];
   },
 };
-  
+
 export default nextConfig;
