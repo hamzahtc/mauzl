@@ -118,7 +118,11 @@ export class ProductsService {
       order,
     });
 
+    console.log(products.map((product) => product.images));
+
     const productDtos = ProductMapper.toDtoArray(products);
+    console.log(productDtos.map((product) => product.images));
+
     await Promise.all(
       productDtos.map(async (product) => {
         product.images = await Promise.all(

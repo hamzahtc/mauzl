@@ -18,6 +18,7 @@ import { ImageModule } from './images/image.module';
 import { AddressesModule } from '~addresses/addresses.module';
 import { AuthModule } from '~auth/auth.module';
 import { ContactModule } from './contact/contact.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ContactModule } from './contact/contact.module';
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ContactModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

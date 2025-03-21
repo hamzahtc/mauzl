@@ -7,6 +7,10 @@ import { Address } from '~addresses/entities/address.entity';
 import { Order } from './entities/order.entity';
 import { Client } from '~clients/entities/client.entity';
 import { Repository } from 'typeorm';
+import { ImageService } from '~images/image.service';
+import { EmailService } from '~email/email.service';
+import { MinioClientService } from '~minio-client/minio-client.service';
+import { MinioService } from 'nestjs-minio-client';
 
 describe('OrdersService', () => {
   let service: OrdersService;
@@ -15,6 +19,22 @@ describe('OrdersService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OrdersService,
+        {
+          provide: ImageService,
+          useValue: {},
+        },
+        {
+          provide: EmailService,
+          useValue: {},
+        },
+        {
+          provide: MinioClientService,
+          useValue: {},
+        },
+        {
+          provide: MinioService,
+          useValue: {},
+        },
         {
           provide: getRepositoryToken(Order),
           useValue: Repository,

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -24,6 +25,7 @@
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
+    "src/**/*.tsx",
     "*.ts",
     "src/db/migrations/**/*.ts"
   ]
