@@ -40,50 +40,47 @@ const ContactInfo: React.FC = () => {
         </Stack>
       </Stack>
       <Stack>
-        <Stack gap={2} py={2}>
+        <Stack gap={1} py={2}>
           <Stack direction="row" gap={2}>
             <Phone
-              color="primary"
               sx={{
                 transition: "color 0.5s",
                 "&:hover": { color: theme.typography.body1.color },
+                fontSize: "1.5rem",
               }}
             />
             <TextTypography
               text="+212 500440444"
               fontWeight="bold"
-              variant="body1"
-              color="primary"
+              fontSize="0.8rem"
             />
           </Stack>
           <Stack direction="row" gap={2}>
             <Email
-              color="primary"
               sx={{
                 transition: "color 0.5s",
                 "&:hover": { color: theme.typography.body1.color },
+                fontSize: "1.5rem",
               }}
             />
             <TextTypography
               text="mauzlshop@gmail.com"
               fontWeight="bold"
-              variant="body1"
-              color="primary"
+              fontSize="0.8rem"
             />
           </Stack>
           <Stack direction="row" gap={2}>
             <Place
-              color="primary"
               sx={{
                 transition: "color 0.5s",
                 "&:hover": { color: theme.typography.body1.color },
+                fontSize: "1.5rem",
               }}
             />
             <TextTypography
               text="132 Dartmouth Street Boston, Massachusetts 02156 United States"
               fontWeight="bold"
-              color="primary"
-              variant="body1"
+              fontSize="0.8rem"
             />
           </Stack>
         </Stack>

@@ -797,6 +797,22 @@ export const getAuthControllerGoogleCallbackMockHandler = (
   });
 };
 
+export const getAuthControllerSignupMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/signup", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
 export const getContactControllerCreateMockHandler = (
   overrideResponse?:
     | void
@@ -919,6 +935,7 @@ export const getMauzlAPIMock = () => [
   getAuthControllerSignOutMockHandler(),
   getAuthControllerGoogleLoginMockHandler(),
   getAuthControllerGoogleCallbackMockHandler(),
+  getAuthControllerSignupMockHandler(),
   getContactControllerCreateMockHandler(),
   getContactControllerFindAllMockHandler(),
   getContactControllerFindOneMockHandler(),

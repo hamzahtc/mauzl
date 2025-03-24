@@ -36,7 +36,7 @@ const PriceFilter = () => {
     setQueryParam("max", price[1]);
     pushQueryParams();
     await QueryClientInstance.refetchQueries({
-      queryKey: [getProductsControllerFindAllQueryKey],
+      queryKey: getProductsControllerFindAllQueryKey(),
       exact: true,
     });
   };

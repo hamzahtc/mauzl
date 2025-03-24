@@ -17,7 +17,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       clientSecret: googleConfiguration.clientSecret,
       callbackURL: googleConfiguration.callbackURL,
       scope: ['email', 'profile'],
+      passReqToCallback: false, // 👈 Force Google to always show account selection
     });
+  }
+
+  authorizationParams(): Record<string, string> {
+    return {
+      prompt: 'select_account',
+    };
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any) {

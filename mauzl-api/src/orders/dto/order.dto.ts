@@ -28,4 +28,12 @@ export class OrderDto {
   @Expose()
   @ApiProperty()
   client: ClientDto;
+
+  @Expose()
+  @ApiProperty()
+  orderNumber: string;
+
+  @Expose()
+  @ApiProperty()
+  trackingNumber: string;
 }

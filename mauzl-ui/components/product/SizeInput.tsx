@@ -3,6 +3,7 @@ import React from "react";
 import txKeys from "@/i18n/translations";
 import { sizes, SizeType } from "@/common/contants";
 import SecondaryButton from "../common/SecondaryButton";
+import { theme } from "@/styles/stylesheet";
 
 interface SizeInputProps {
   size: SizeType;
@@ -18,7 +19,9 @@ const SizeInput = ({ size, handleSizeInput }: SizeInputProps) => {
           text={txKeys.services.shop.sizes[sizeValue]}
           size="small"
           onClick={() => handleSizeInput(sizeValue)}
-          variant={size === sizeValue ? "contained" : "outlined"}
+          sx={{
+            bgcolor: size === sizeValue ? theme.palette.info.main : "#f9f9fb",
+          }}
         />
       ))}
     </Stack>

@@ -27,7 +27,7 @@ const CategoryFilter = () => {
     setQueryParam("category", categoryId);
     pushQueryParams();
     QueryClientInstance.refetchQueries({
-      queryKey: [getProductsControllerFindAllQueryKey],
+      queryKey: getProductsControllerFindAllQueryKey(),
       exact: true,
     });
   };

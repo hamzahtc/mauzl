@@ -15,6 +15,10 @@ import { OrderItem } from '~order-items/entities/order-item.entity';
 import { Product } from '~products/entities/product.entity';
 import { OrderDto } from './dto/order.dto';
 import { OrderMapper } from './order.mapper';
+import { render } from '@react-email/render';
+import OrderConfirmationEmail from '~email/templates/OrderConfirmationEmail';
+import { EmailService } from '~email/email.service';
+import { ImageService } from '~images/image.service';
 
 @Injectable()
 export class OrdersService {
@@ -29,6 +33,9 @@ export class OrdersService {
     private readonly orderItemRepository: Repository<OrderItem>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+
+    private imageService: ImageService,
+    private emailService: EmailService,
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<OrderDto> {
@@ -65,11 +72,27 @@ export class OrdersService {
         (total, item) => total + item.price * item.quantity,
         0,
       ),
+      orderNumber: this.generateOrderNumber(),
     });
 
     const savedOrder = await this.orderRepository.save(order);
+    this.sendOrderConfirmation(client.email);
 
     return OrderMapper.toDto(savedOrder);
+  }
+
+  generateOrderNumber(): string {
+    const now: Date = new Date();
+
+    const pad = (n: number): string => n.toString().padStart(2, '0');
+
+    const datePart: string = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+    const randomPart: string = Math.random()
+      .toString(36)
+      .substring(2, 6)
+      .toUpperCase();
+
+    return `MZL-${datePart}-${randomPart}`;
   }
 
   async findAll(): Promise<OrderDto[]> {
@@ -104,5 +127,35 @@ export class OrdersService {
 
   async remove(id: number): Promise<void> {
     await this.orderRepository.delete(id);
+  }
+
+  async sendOrderConfirmation(to: string) {
+    const imageUrl = await this.imageService.getImageLink(
+      '1eb3e0750d9ac5ad631eb93ab7825350.jpg',
+    );
+    const emailHtml = await render(
+      OrderConfirmationEmail({
+        orderDetails: {
+          trackingNumber: 'mauzl_1ZV218970300071628',
+          orderNumber: 'mauzl_C0106373851',
+          orderDate: new Date().toLocaleDateString(),
+          products: [
+            {
+              name: 'Product 1',
+              image: imageUrl,
+              id: 'product_id',
+              color: 'black',
+              size: 'M',
+            },
+          ],
+        },
+      }),
+    );
+
+    return this.emailService.sendEmail(
+      to,
+      'Your Order Confirmation',
+      emailHtml,
+    );
   }
 }

@@ -27,6 +27,7 @@ import type {
   PaginatedProductDto,
   ProductDto,
   ProductsControllerFindAllParams,
+  SigninDto,
   UpdateCategoryDto,
   UpdateOrderDto,
   UpdateProductDto,
@@ -4243,10 +4244,16 @@ export function useImageControllerGetImageLink<
 }
 
 export const authControllerLogin = (
+  signinDto: BodyType<SigninDto>,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<void>(
-    { url: `/api/auth/login`, method: "POST" },
+    {
+      url: `/api/auth/login`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: signinDto,
+    },
     options,
   );
 };
@@ -4258,23 +4265,25 @@ export const getAuthControllerLoginMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authControllerLogin>>,
     TError,
-    void,
+    { data: BodyType<SigninDto> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
-  void,
+  { data: BodyType<SigninDto> },
   TContext
 > => {
   const { mutation: mutationOptions, request: requestOptions } = options ?? {};
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof authControllerLogin>>,
-    void
-  > = () => {
-    return authControllerLogin(requestOptions);
+    { data: BodyType<SigninDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return authControllerLogin(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
@@ -4283,7 +4292,7 @@ export const getAuthControllerLoginMutationOptions = <
 export type AuthControllerLoginMutationResult = NonNullable<
   Awaited<ReturnType<typeof authControllerLogin>>
 >;
-
+export type AuthControllerLoginMutationBody = BodyType<SigninDto>;
 export type AuthControllerLoginMutationError = ErrorType<unknown>;
 
 export const useAuthControllerLogin = <
@@ -4293,14 +4302,14 @@ export const useAuthControllerLogin = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authControllerLogin>>,
     TError,
-    void,
+    { data: BodyType<SigninDto> },
     TContext
   >;
   request?: SecondParameter<typeof customInstance>;
 }): UseMutationResult<
   Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
-  void,
+  { data: BodyType<SigninDto> },
   TContext
 > => {
   const mutationOptions = getAuthControllerLoginMutationOptions(options);
@@ -4695,6 +4704,80 @@ export function useAuthControllerGoogleCallback<
 
   return query;
 }
+
+export const authControllerSignup = (
+  createUserDto: BodyType<CreateUserDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/auth/signup`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUserDto,
+    },
+    options,
+  );
+};
+
+export const getAuthControllerSignupMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    TError,
+    { data: BodyType<CreateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerSignup>>,
+  TError,
+  { data: BodyType<CreateUserDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    { data: BodyType<CreateUserDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return authControllerSignup(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerSignup>>
+>;
+export type AuthControllerSignupMutationBody = BodyType<CreateUserDto>;
+export type AuthControllerSignupMutationError = ErrorType<unknown>;
+
+export const useAuthControllerSignup = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    TError,
+    { data: BodyType<CreateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerSignup>>,
+  TError,
+  { data: BodyType<CreateUserDto> },
+  TContext
+> => {
+  const mutationOptions = getAuthControllerSignupMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 
 export const contactControllerCreate = (
   createContactDto: BodyType<CreateContactDto>,

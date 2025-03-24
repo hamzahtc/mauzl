@@ -41,6 +41,7 @@ export class AuthService {
       refreshToken,
     };
   }
+
   async generateTokens(userId: number) {
     const payload: AuthJwtPayload = { sub: userId };
     const [accessToken, refreshToken] = await Promise.all([

@@ -34,7 +34,7 @@ const SearchInput = () => {
       else {
         setQueryParam("name", search);
         QueryClientInstance.refetchQueries({
-          queryKey: [getProductsControllerFindAllQueryKey],
+          queryKey: getProductsControllerFindAllQueryKey(),
           exact: true,
         });
       }

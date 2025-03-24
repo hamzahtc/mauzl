@@ -5,5 +5,4 @@ export class CreateUserDto {
   email: string;
   avatarUrl: string;
   password: string;
-  addressIds?: number[]; // User's addresses
 }

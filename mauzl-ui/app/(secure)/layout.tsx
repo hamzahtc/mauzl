@@ -17,7 +17,7 @@ export default function PrivateLayout({
   React.useEffect(() => {
     // Redirect on 401 error
     if (isError && error?.response?.status === 401) {
-      router.push("/api/auth/google/callback");
+      router.push("/signin");
     }
   }, [isError, error, router]);
 

@@ -1,5 +1,4 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -7,8 +6,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '~auth/enums/role.enum';
-
-import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -24,7 +21,7 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
@@ -40,17 +37,12 @@ export class User {
   @Column({ nullable: true })
   hashedRefreshToken: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true })
+  password?: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 }

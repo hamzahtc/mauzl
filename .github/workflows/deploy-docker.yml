@@ -86,4 +86,5 @@ jobs:
             cd /home/dockerized-mauzl
             docker-compose down
             docker-compose pull
+            docker-compose run --rm mauzl-migrate
             docker-compose up -d

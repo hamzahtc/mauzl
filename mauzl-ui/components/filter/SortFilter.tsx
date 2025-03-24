@@ -25,7 +25,7 @@ const SortFilter = () => {
     setQueryParam("sortBy", sortByValue);
     pushQueryParams();
     QueryClientInstance.refetchQueries({
-      queryKey: [getProductsControllerFindAllQueryKey],
+      queryKey: getProductsControllerFindAllQueryKey(),
       exact: true,
     });
   };

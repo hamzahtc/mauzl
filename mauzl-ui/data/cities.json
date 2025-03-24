@@ -1,5 +1,10 @@
 [
   {
+    "label": "Select a city",
+    "value": "",
+    "isDisabled": true
+  },
+  {
     "label": "Casablanca",
     "value": "Casablanca"
   },

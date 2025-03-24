@@ -8,10 +8,11 @@ interface Props extends TypographyProps {
 const TextTypography = ({
   text,
   variant = "body1",
+  fontSize = "0.9rem",
   ...muiTypographyProps
 }: Props) => {
   return (
-    <Typography variant={variant} {...muiTypographyProps}>
+    <Typography variant={variant} fontSize={fontSize} {...muiTypographyProps}>
       <TranslateMessage txKey={text} />
     </Typography>
   );

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Stack, IconButton } from "@mui/material";
 import Image from "next/image";
-import { HelveticaNow, theme } from "@/styles/stylesheet";
+import { theme } from "@/styles/stylesheet";
 import { ProductDto } from "@/models";
 import Link from "next/link";
 import PrimaryButton from "../common/PrimaryButton";
@@ -92,13 +92,24 @@ const Product = ({ product }: ProductProps) => {
         </Stack>
         <Stack alignItems="start" gap={1}>
           <Stack>
-            <TextTypography text={product.name} variant="body2" />
-            <TextTypography text={product.category.name} variant="body2" />
+            <TextTypography
+              text={product.name}
+              variant="body2"
+              fontSize="0.8rem"
+            />
+            <TextTypography
+              fontWeight="bold"
+              fontSize="0.8rem"
+              text={`MAD ${product.price}.00`}
+            />
+
+            <TextTypography
+              fontSize="0.8rem"
+              text={product.category.name}
+              color="primary"
+              variant="body2"
+            />
           </Stack>
-          <TextTypography
-            text={`${product.price} MAD`}
-            fontFamily={HelveticaNow.style.fontFamily}
-          />
         </Stack>
       </Stack>
     </Link>

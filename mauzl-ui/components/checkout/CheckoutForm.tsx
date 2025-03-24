@@ -8,7 +8,8 @@ import SelectInput from "../common/SelectInput";
 import cities from "../../data/cities.json";
 import { ZodValidator, zodValidator } from "@tanstack/zod-form-adapter";
 import { Order, OrderSchema } from "@/validation/order.schema";
-import { OrderItem } from "@/utils/db";
+import { db, OrderItem } from "@/utils/db";
+import { useRouter } from "next/navigation";
 
 interface CheckoutFormProps {
   orderItems: OrderItem[];
@@ -19,6 +20,8 @@ export default function CheckoutForm({
   orderItems,
   createOrder,
 }: CheckoutFormProps) {
+  const { push } = useRouter();
+
   const form = useForm<Order, ZodValidator>({
     defaultValues: {
       client: {
@@ -41,7 +44,11 @@ export default function CheckoutForm({
       onChange: OrderSchema,
     },
     validatorAdapter: zodValidator(),
-    onSubmit: async ({ value }) => createOrder({ data: value }),
+    onSubmit: async ({ value }) =>
+      createOrder({ data: value }).then(() => {
+        db.products.clear();
+        push("/shop");
+      }),
   });
 
   const handleConfirm = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -57,31 +64,42 @@ export default function CheckoutForm({
         name="client.firstName"
         label="First name"
         placeholder="Enter your first name"
+        required
       />
       <TextInput<Order>
         form={form}
         name="client.lastName"
         label="Last name"
         placeholder="Enter your last name"
+        required
       />
       <TextInput<Order>
         form={form}
         name="client.email"
         label="Email"
         placeholder="Enter your email"
+        required
       />
       <TextInput<Order>
         form={form}
         name="client.phoneNumber"
         label="Phone number"
         placeholder="Enter your phone number"
+        required
       />
-      <SelectInput<Order> form={form} name="address.city" options={cities} />
+      <SelectInput<Order>
+        form={form}
+        name="address.city"
+        options={cities}
+        label="City"
+        required
+      />
       <TextInput<Order>
         form={form}
         name="address.addressLine"
         label="Address"
         placeholder="Enter your address"
+        required
       />
       <PrimaryButton
         type="submit"

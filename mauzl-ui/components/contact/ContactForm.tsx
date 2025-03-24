@@ -41,12 +41,14 @@ const ContactForm: React.FC = () => {
           name="firstName"
           label="First name"
           placeholder="Enter your first name"
+          required
         />
         <TextInput<Contact>
           form={form}
           name="lastName"
           label="Last name"
           placeholder="Enter your last name"
+          required
         />
       </Stack>
       <Stack gap={2} direction={{ xs: "column", lg: "row" }}>
@@ -55,12 +57,14 @@ const ContactForm: React.FC = () => {
           name="email"
           label="Email"
           placeholder="Enter your email"
+          required
         />
         <TextInput<Contact>
           form={form}
           name="phoneNumber"
           label="Phone number"
           placeholder="Enter your phone number"
+          required
         />
       </Stack>
       <TextInput<Contact>
@@ -68,12 +72,15 @@ const ContactForm: React.FC = () => {
         name="subject"
         label="Subject"
         placeholder="Subject"
+        required
       />
       <TextArea<Contact>
         form={form}
         name="message"
+        label="Message"
         placeholder="Write your message.."
         minRows={4}
+        required
       />
       <PrimaryButton
         type="submit"

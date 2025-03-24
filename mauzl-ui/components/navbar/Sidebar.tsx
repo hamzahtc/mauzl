@@ -7,8 +7,6 @@ import { MenuItem, Stack } from "@mui/material";
 import TextTypography from "../common/TextTypography";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import MauzlIcon from "../../public/svgs/Mauzl.svg";
 import { services } from "@/common/contants";
 import txKeys from "@/i18n/translations";
 import { theme } from "@/styles/stylesheet";
@@ -92,17 +90,7 @@ export default function Sidebar() {
 
             <Box mx={2}>
               <Link href="/">
-                <Image
-                  alt="models"
-                  src={MauzlIcon}
-                  height={0}
-                  width={0}
-                  style={{
-                    minWidth: "50px",
-                    minHeight: "50px",
-                    width: "50px",
-                  }}
-                />
+                <TextTypography text="MAUZL" variant="body1" />
               </Link>
             </Box>
             <Box p={0.7}>

@@ -20,8 +20,6 @@ const Checkout = () => {
 
   if (!orderItems || orderItems?.length === 0) return <></>;
 
-  const products = orderItems?.map((order) => order.product);
-
   if (isPending)
     return (
       <Stack sx={{ width: "100%", color: "grey.500" }} spacing={2}>
@@ -39,7 +37,7 @@ const Checkout = () => {
         <CheckoutForm orderItems={orderItems} createOrder={createOrder} />
       </Stack>
       <Stack flex={2}>
-        <CheckoutSideBar products={products} />
+        <CheckoutSideBar orderItems={orderItems} />
       </Stack>
     </Stack>
   );

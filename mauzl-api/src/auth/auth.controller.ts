@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -10,19 +11,25 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guards/google-auth/google-auth.guard';
-import { Public } from './decoretors/public.decorator';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
+import { CreateUserDto } from '~users/dto/create-user.dto';
+import { UsersService } from '~users/users.service';
+import { SigninDto } from './dto/signin.dto';
+import { Authenticated } from './decoretors/authenticated.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  @Public()
+  constructor(
+    private readonly authService: AuthService,
+    private userService: UsersService,
+  ) {}
+
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req, @Res() res) {
+  async login(@Body() loginDto: SigninDto, @Req() req, @Res() res) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user.id,
     );
@@ -32,7 +39,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 15 * 60 * 1000, // 15 minutes (short-lived access token)
+      maxAge: 60 * 60 * 1000, // 60 minutes (short-lived access token)
     });
 
     // Set refresh token in cookie
@@ -46,6 +53,7 @@ export class AuthController {
     res.send({ message: 'Login successful' });
   }
 
+  @Authenticated()
   @UseGuards(RefreshAuthGuard)
   @Post('refresh')
   async refreshToken(@Req() req, @Res() res) {
@@ -62,6 +70,7 @@ export class AuthController {
     res.send({ message: 'Token refreshed successfully' });
   }
 
+  @Authenticated()
   @UseGuards(JwtAuthGuard)
   @Post('signout')
   async signOut(@Req() req, @Res() res) {
@@ -84,12 +93,10 @@ export class AuthController {
     res.status(HttpStatus.OK).send({ message: 'Sign-out successful' });
   }
 
-  @Public()
   @UseGuards(GoogleAuthGuard)
   @Get('google/login')
   googleLogin() {}
 
-  @Public()
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
   async googleCallback(@Req() req, @Res() res) {
@@ -102,7 +109,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 15 * 60 * 1000, // 15 minutes (short-lived access token)
+      maxAge: 60 * 60 * 1000, // 15 minutes (short-lived access token)
     });
 
     // Set refresh token in cookie
@@ -114,5 +121,11 @@ export class AuthController {
     });
 
     res.redirect(process.env.MAUZL_BASE_URL);
+  }
+
+  @Post('signup')
+  async signup(@Body() dto: CreateUserDto) {
+    console.log(dto);
+    return this.userService.create(dto); // Make sure to hash password!
   }
 }

@@ -30,7 +30,7 @@ const StatusFilter = () => {
     pushQueryParams();
 
     QueryClientInstance.refetchQueries({
-      queryKey: [getProductsControllerFindAllQueryKey],
+      queryKey: getProductsControllerFindAllQueryKey(),
       exact: true,
     });
   };
