@@ -37,7 +37,7 @@ const ShoppingBag = () => {
           <TextTypography text="MON PANIER" fontWeight="bold" />
           <TextTypography text={`${orderItems?.length} products in total`} />
         </Stack>
-        <BagProducts products={products} />
+        <BagProducts orderItems={orderItems} />
         <Stack
           bgcolor="#f9f9fb"
           p={2}
@@ -53,7 +53,9 @@ const ShoppingBag = () => {
           <TextTypography
             textTransform="uppercase"
             fontWeight="bold"
-            text={`${299} MAD`}
+            text={`${orderItems?.reduce((totalPrice, order) => {
+              return totalPrice + order.quantity * order.product.price;
+            }, 0)} MAD`}
             fontFamily={HelveticaNow.style.fontFamily}
           />
         </Stack>

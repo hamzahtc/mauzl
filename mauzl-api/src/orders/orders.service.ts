@@ -72,12 +72,27 @@ export class OrdersService {
         (total, item) => total + item.price * item.quantity,
         0,
       ),
+      orderNumber: this.generateOrderNumber(),
     });
 
     const savedOrder = await this.orderRepository.save(order);
     this.sendOrderConfirmation(client.email);
 
     return OrderMapper.toDto(savedOrder);
+  }
+
+  generateOrderNumber(): string {
+    const now: Date = new Date();
+
+    const pad = (n: number): string => n.toString().padStart(2, '0');
+
+    const datePart: string = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+    const randomPart: string = Math.random()
+      .toString(36)
+      .substring(2, 6)
+      .toUpperCase();
+
+    return `MZL-${datePart}-${randomPart}`;
   }
 
   async findAll(): Promise<OrderDto[]> {

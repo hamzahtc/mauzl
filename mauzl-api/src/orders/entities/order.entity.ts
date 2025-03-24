@@ -29,6 +29,12 @@ export class Order {
   @Column({ default: 'pending' })
   status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
 
+  @Column()
+  orderNumber: string;
+
+  @Column({ nullable: true })
+  trackingNumber: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

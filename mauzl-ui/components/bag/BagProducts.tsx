@@ -1,4 +1,3 @@
-import { ProductDto } from "@/models";
 import { Box, Stack } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,25 +5,25 @@ import * as React from "react";
 import TextTypography from "../common/TextTypography";
 import SecondaryButton from "../common/SecondaryButton";
 import PrimaryButton from "../common/PrimaryButton";
-import { db } from "@/utils/db";
+import { db, OrderItem } from "@/utils/db";
 import { FaRegHeart } from "react-icons/fa6";
 import { HelveticaNow, theme } from "@/styles/stylesheet";
 
 interface BagProductsProps {
-  products?: ProductDto[];
+  orderItems?: OrderItem[];
 }
 
-export default function BagProducts({ products }: BagProductsProps) {
+export default function BagProducts({ orderItems }: BagProductsProps) {
   return (
     <Stack gap={1} alignItems="center">
-      {products?.map((product) => (
-        <Box key={product.id} width="100%" bgcolor="#f9f9fb" p={2}>
-          <Box key={product.id} minWidth="330px">
-            <Link href={`/shop/products/${product.id}`}>
+      {orderItems?.map((orderItem) => (
+        <Box key={orderItem.productId} width="100%" bgcolor="#f9f9fb" p={2}>
+          <Box key={orderItem.product.id} minWidth="330px">
+            <Link href={`/shop/products/${orderItem.product.id}`}>
               <Stack direction="row" gap={2}>
                 <Image
                   alt=""
-                  src={product.images[0]}
+                  src={orderItem.product.images[0]}
                   width={0}
                   height={0}
                   sizes="100vw"
@@ -42,15 +41,23 @@ export default function BagProducts({ products }: BagProductsProps) {
                     flexWrap="wrap"
                   >
                     <Stack>
-                      <TextTypography
-                        text={product.name}
-                        fontWeight="bold"
-                        variant="h6"
-                      />
-                      <TextTypography text={product.category.name} />
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        <TextTypography
+                          text={orderItem.product.name}
+                          fontWeight="bold"
+                          variant="h6"
+                        />
+                        <TextTypography
+                          text={`x ${orderItem.quantity}`}
+                          fontWeight="bold"
+                          variant="body1"
+                        />
+                      </Stack>
+
+                      <TextTypography text={orderItem.product.category.name} />
                     </Stack>
                     <TextTypography
-                      text={`${product.price} MAD`}
+                      text={`${orderItem.product.price * orderItem.quantity} MAD`}
                       fontFamily={HelveticaNow.style.fontFamily}
                     />
                   </Stack>
@@ -65,7 +72,10 @@ export default function BagProducts({ products }: BagProductsProps) {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        db.products.delete(product.id);
+                        db.products.delete([
+                          orderItem.product.id,
+                          orderItem.size,
+                        ] as never);
                       }}
                     />
                     <PrimaryButton

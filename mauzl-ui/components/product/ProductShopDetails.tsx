@@ -8,10 +8,10 @@ import { db } from "@/utils/db";
 import { FaBagShopping } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa6";
 import PrimaryButton from "../common/PrimaryButton";
-import SecondaryButton from "../common/SecondaryButton";
 import TextTypography from "../common/TextTypography";
 import { theme } from "@/styles/stylesheet";
 import { SizeType } from "@/common/contants";
+import DeliverySection from "./DeliverySection";
 
 interface ProductShopDetailsProps {
   product?: ProductDto;
@@ -26,7 +26,7 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
   const { name, description, price } = product || {};
 
   const addProductToBag = async () =>
-    await db.products.add({ product, size, quantity, productId: product.id });
+    await db.products.put({ product, size, quantity, productId: product.id });
 
   const handleSizeInput = (size: SizeType) => {
     setSize(size);
@@ -37,25 +37,33 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
   };
 
   return (
-    <Stack gap={4}>
-      <TextTypography
-        text={name}
-        variant="h4"
-        textTransform="uppercase"
-        fontWeight="bold"
-      />
+    <Stack gap={2}>
+      <Stack>
+        <TextTypography
+          text={name}
+          variant="h4"
+          textTransform="uppercase"
+          fontWeight="bold"
+        />
+        <TextTypography text={"Silver Green"} variant="body1" />
+      </Stack>
+
       <TextTypography text={description} variant="body2" lineHeight={2} />
       {/* <Stack gap={2}>
         <TextTypography text="Color: WHITE" fontWeight="bold" />
         <ColorInput />
       </Stack> */}
       <Stack gap={2}>
+        <Stack direction="row" justifyContent="space-between">
+          <TextTypography text={`Sélectionner Taille (EU)`} fontWeight="bold" />
+          <TextTypography text={`Tableau des tailles`} />
+        </Stack>
         <SizeInput size={size} handleSizeInput={handleSizeInput} />
       </Stack>
-      <Stack direction="row" alignItems="end" gap={2}>
+      <Stack direction="row" alignItems="end" gap={2} pt={4}>
         <TextTypography
           text={`${price} MAD`}
-          variant="h5"
+          variant="h6"
           fontWeight="bold"
           color="info"
         />
@@ -77,13 +85,6 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
           />
         </Box>
         <Stack direction={{ sx: "column", md: "row" }} gap={2} flex={3}>
-          <SecondaryButton
-            onClick={() => undefined}
-            text={txKeys.services.shop.wishlist}
-            size="small"
-            endIcon={<FaRegHeart color={theme.palette.primary.main} />}
-            fullWidth
-          />
           <PrimaryButton
             sx={{
               px: 3,
@@ -91,10 +92,19 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
             onClick={addProductToBag}
             text={txKeys.services.shop.addToBag}
             size="small"
-            endIcon={<FaBagShopping />}
+            color="info"
+            endIcon={<FaBagShopping color="white" />}
             fullWidth
           />
+          <FaRegHeart
+            onClick={() => undefined}
+            color={theme.palette.info.main}
+            size={30}
+          />
         </Stack>
+      </Stack>
+      <Stack>
+        <DeliverySection />
       </Stack>
     </Stack>
   );

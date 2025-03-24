@@ -13,6 +13,7 @@ import Logout from "@mui/icons-material/Logout";
 import { UserDto } from "@/models";
 import Image from "next/image";
 import { authControllerSignOut } from "@/generated/hooks";
+import TextTypography from "../common/TextTypography";
 
 interface Props {
   user: UserDto;
@@ -46,12 +47,20 @@ const AccountMenu = ({ user }: Props) => {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              <Image
-                src={user.avatarUrl}
-                alt="avatar"
-                width="100"
-                height="100"
-              />
+              {user.avatarUrl ? (
+                <Image
+                  src={user.avatarUrl}
+                  alt="avatar"
+                  width="100"
+                  height="100"
+                />
+              ) : (
+                <TextTypography
+                  text={user.username.charAt(0)}
+                  fontWeight="bold"
+                  color="white"
+                />
+              )}
             </Avatar>
           </IconButton>
         </Tooltip>

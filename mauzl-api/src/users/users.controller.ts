@@ -13,7 +13,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
+import { Authenticated } from '~auth/decoretors/authenticated.decorator';
 
+@Authenticated()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

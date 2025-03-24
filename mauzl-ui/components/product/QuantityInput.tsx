@@ -29,7 +29,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
         },
         input: {
           className:
-            "text-sm font-inherit leading-[1.375] text-black border border-gray-200 shadow-[0px_2px_4px_rgba(0,0,0,0.05)] rounded-lg mx-2 px-3 py-2 w-24 text-center hover:border-blue-400 focus:border-blue-400 focus:shadow-[0_0_0_3px_rgba(182,218,255)] outline-none",
+            "text-sm font-inherit leading-[1.375] h-8 text-black border border-gray-200 shadow-[0px_2px_4px_rgba(0,0,0,0.05)] rounded-lg mx-2 px-3 py-2 w-24 text-center hover:border-blue-400 focus:border-blue-400 focus:shadow-[0_0_0_3px_rgba(182,218,255)] outline-none",
         },
         incrementButton: {
           className:

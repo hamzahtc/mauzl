@@ -1,13 +1,13 @@
 import * as React from "react";
 import BagProducts from "../bag/BagProducts";
 import { Stack } from "@mui/material";
-import { ProductDto } from "@/models";
+import { OrderItem } from "@/utils/db";
 
 interface CheckoutSideBarProps {
-  products: ProductDto[];
+  orderItems: OrderItem[];
 }
 
-export default function CheckoutSideBar({ products }: CheckoutSideBarProps) {
+export default function CheckoutSideBar({ orderItems }: CheckoutSideBarProps) {
   return (
     <Stack
       sx={{
@@ -15,7 +15,7 @@ export default function CheckoutSideBar({ products }: CheckoutSideBarProps) {
         overflowY: "auto",
       }}
     >
-      <BagProducts products={products} />
+      <BagProducts orderItems={orderItems} />
     </Stack>
   );
 }

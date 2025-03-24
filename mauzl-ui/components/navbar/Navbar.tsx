@@ -22,11 +22,10 @@ import TextTypography from "../common/TextTypography";
 import Sidebar from "./Sidebar";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
-import Image from "next/image";
-import MauzlIcon from "../../public/svgs/Mauzl.svg";
 import AccountMenu from "./AccountMenu";
 import { useUsersControllerFindMe } from "@/generated/hooks";
 import PrimaryButton from "../common/PrimaryButton";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const matches = useMediaQuery(theme.breakpoints.up("md"), {
@@ -38,6 +37,8 @@ const Navbar = () => {
       retry: 0,
     },
   });
+
+  const { push } = useRouter();
 
   const orderItems = useLiveQuery(() => db.products.toArray()) || [];
 
@@ -99,17 +100,7 @@ const Navbar = () => {
           >
             <Stack mx={3}>
               <Link href="/">
-                <Image
-                  alt="models"
-                  src={MauzlIcon}
-                  height={0}
-                  width={0}
-                  style={{
-                    minWidth: "50px",
-                    minHeight: "50px",
-                    width: "50px",
-                  }}
-                />
+                <TextTypography text="MAUZL" variant="body1" />
               </Link>
             </Stack>
             {!searchFocused && <NavbarMenu />}
@@ -150,10 +141,10 @@ const Navbar = () => {
               </IconButton>
 
               <LanguageSelect />
-              {!me.isLoading && me.data ? (
+              {me.isLoading ? null : me.data ? (
                 <AccountMenu user={me.data} />
               ) : (
-                <PrimaryButton text="Login" href="/api/auth/google/callback" />
+                <PrimaryButton text="Sign in" onClick={() => push("/signin")} />
               )}
             </Stack>
           </Stack>

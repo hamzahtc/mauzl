@@ -10,12 +10,12 @@ export interface OrderItem {
 }
 
 const db = new Dexie("mauzl-db") as Dexie & {
-  products: EntityTable<OrderItem, "productId">;
+  products: EntityTable<OrderItem>;
 };
 
 // Define the schema for OrderItem
 db.version(1).stores({
-  products: "productId, size, quantity", // Assuming 'product.id' will serve as the unique identifier
+  products: "[productId+size], productId, size, quantity", // Assuming 'product.id' will serve as the unique identifier
 });
 
 export { db };

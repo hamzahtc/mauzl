@@ -17,6 +17,7 @@ export * from "./createUserDto";
 export * from "./paginatedProductDto";
 export * from "./productDto";
 export * from "./productsControllerFindAllParams";
+export * from "./signinDto";
 export * from "./updateCategoryDto";
 export * from "./updateOrderDto";
 export * from "./updateProductDto";

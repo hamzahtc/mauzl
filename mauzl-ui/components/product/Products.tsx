@@ -116,7 +116,7 @@ const Products = () => {
     }
     pushQueryParams();
     await QueryClientInstance.refetchQueries({
-      queryKey: [getProductsControllerFindAllQueryKey],
+      queryKey: getProductsControllerFindAllQueryKey(),
       exact: true,
     });
   };
