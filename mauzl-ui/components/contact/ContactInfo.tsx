@@ -32,7 +32,7 @@ const ContactInfo: React.FC = () => {
               }}
             />
             <Box
-              bottom={{ xs: "20%", sm: "30%", md: "40%" }}
+              bottom="40%"
               sx={{
                 position: "absolute",
                 left: "50%",
@@ -43,7 +43,7 @@ const ContactInfo: React.FC = () => {
                 <TextTypography
                   width="100%"
                   text="Need to get in touch?"
-                  fontSize={40}
+                  fontSize={{ xs: "1.3rem", md: "2rem" }}
                   color="white"
                 />
               </Stack>

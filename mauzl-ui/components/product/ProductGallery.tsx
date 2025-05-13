@@ -22,14 +22,14 @@ const ProductGallery = ({ images = [] }: ProductGalleryProps) => {
 
   return (
     <Stack
-      direction={{ xs: "column", md: "row" }} // Set the layout direction to horizontal (row)
+      direction={{ xs: "column", lg: "row" }} // Set the layout direction to horizontal (row)
       spacing={2} // Add spacing between the thumbnails and large image
       alignItems={{ xs: "center", md: "flex-start" }}
     >
       {/* Thumbnail images on the left */}
       <Stack
         className="gap-4"
-        direction="column" // Thumbnails stacked vertically
+        direction="column"
         justifyContent="center"
         alignItems="center"
       >
@@ -63,22 +63,20 @@ const ProductGallery = ({ images = [] }: ProductGalleryProps) => {
       </Stack>
 
       {/* Large image on the right */}
-      <Stack justifyContent="center" alignItems="center">
-        {/* Wrapper div for controlling zoom on hover */}
+      <Stack justifyContent="center" alignItems="center" width="100%">
         <Box
-          className="relative w-[600px] h-[750px] overflow-hidden group"
+          className="relative w-full max-w-[600px] min-w-[300px] aspect-[4/5] overflow-hidden group"
           onMouseMove={handleMouseMove}
         >
-          {/* Image with dynamic transform-origin for zoom effect */}
           <Image
             alt="models"
-            className="object-cover object-center w-full h-full transform transition-transform duration-300 ease-in-out group-hover:scale-150 cursor-zoom-in"
+            className="object-cover object-center w-full h-full transform transition-transform duration-300 ease-in-out group-hover:scale-[3] cursor-zoom-in"
             src={active}
             width={0}
             height={0}
             sizes="(max-width: 600px) 100vw, 50vw"
             style={{
-              transformOrigin: `${hoverPosition.x}% ${hoverPosition.y}%`, // Set the zoom origin based on mouse position
+              transformOrigin: `${hoverPosition.x}% ${hoverPosition.y}%`,
             }}
           />
         </Box>

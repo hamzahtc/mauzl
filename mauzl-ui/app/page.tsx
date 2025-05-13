@@ -59,7 +59,7 @@ export default function HomePage() {
         alignItems="stretch" // key: stretch children to equal height
         flexWrap="wrap"
         gap={4}
-        sx={{ height: 1000 }} // or any fixed height you want
+        height={{ xs: 300, md: 500 }} // or any fixed height you want
       >
         <Box sx={{ flex: 1, position: "relative" }}>
           <Image
