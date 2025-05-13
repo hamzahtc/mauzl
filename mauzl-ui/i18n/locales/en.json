@@ -133,5 +133,9 @@
   },
   "footer": {
     "copyright": "Mauzl © 2024 All rights reserved"
+  },
+  "language": {
+    "en": "US English",
+    "fr": "FR French"
   }
 }

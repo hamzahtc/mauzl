@@ -81,7 +81,11 @@ export default function Sidebar() {
       </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         <Stack direction="column" gap={2} height={"100%"}>
-          <Stack direction="row" justifyContent="space-between">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Box alignSelf="flex-start">
               <Button onClick={toggleDrawer(false)} sx={{ my: 1 }}>
                 <MenuIcon fontSize="medium" />

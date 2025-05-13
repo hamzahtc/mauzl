@@ -20,7 +20,7 @@ export default function BagProducts({ orderItems }: BagProductsProps) {
         <Box key={orderItem.productId} width="100%" bgcolor="#f9f9fb" p={2}>
           <Box key={orderItem.product.id} minWidth="330px">
             <Link href={`/shop/products/${orderItem.product.id}`}>
-              <Stack direction="row" gap={2}>
+              <Stack gap={2} direction={{ xs: "column", md: "row" }}>
                 <Image
                   alt=""
                   src={orderItem.product.images[0]}
@@ -37,7 +37,7 @@ export default function BagProducts({ orderItems }: BagProductsProps) {
                 <Stack justifyContent="space-between" width="100%">
                   <Stack
                     justifyContent="space-between"
-                    direction="row"
+                    direction={{ xs: "column", md: "row" }}
                     flexWrap="wrap"
                   >
                     <Stack>
@@ -69,12 +69,7 @@ export default function BagProducts({ orderItems }: BagProductsProps) {
                       fontFamily={HelveticaNow.style.fontFamily}
                     />
                   </Stack>
-                  <Stack
-                    direction="row"
-                    flexWrap="wrap-reverse"
-                    gap={2}
-                    zIndex={2}
-                  >
+                  <Stack direction="row" flexWrap="wrap-reverse" gap={2}>
                     <SecondaryButton
                       text="Remove"
                       onClick={(e) => {
