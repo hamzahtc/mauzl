@@ -6,7 +6,7 @@ import ContactInfo from "./ContactInfo";
 const Contact = () => {
   return (
     <Stack
-      direction={{ xs: "column", md: "row" }}
+      direction="column"
       p={2}
       sx={{
         borderRadius: 2,

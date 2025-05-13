@@ -37,6 +37,9 @@ export class Product {
   @OneToMany(() => ProductImage, (image) => image.product, { cascade: true })
   images: ProductImage[];
 
+  @Column('text', { array: true, default: [] })
+  additionalInfos: string[];
+
   @CreateDateColumn()
   createdAt: Date;
 

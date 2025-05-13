@@ -5,9 +5,10 @@ import { Stack } from "@mui/material";
 
 export default function BagPage() {
   return (
-    <Stack bgcolor="#eee" px={26} minHeight="100vh">
+    <Stack bgcolor="#eee" minHeight="100vh">
       <Stack
-        p={{ xs: 2, md: 5 }}
+        px={{ xs: 4, sm: 6, md: 10 }}
+        py={10}
         alignItems="center"
         width="100%"
         bgcolor="#eee"

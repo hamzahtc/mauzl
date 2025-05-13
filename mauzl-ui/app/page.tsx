@@ -1,24 +1,22 @@
 "use client";
 
 import Button from "@/components/common/Button";
-import txKeys from "@/i18n/translations";
-import { useTranslation } from "@/i18n/useTranslation";
-import { theme } from "@/styles/stylesheet";
-import { Box, Chip, Stack } from "@mui/material";
-import EastIcon from "@mui/icons-material/East";
+import { Box, Stack } from "@mui/material";
 import Image from "next/image";
-import Cards from "@/components/product/Cards";
-import PrimaryButton from "@/components/common/PrimaryButton";
-import TextTypography from "@/components/common/TextTypography";
 import { useRouter } from "next/navigation";
+import Carousel from "@/components/home/Carousel";
+import { EmblaOptionsType } from "embla-carousel";
 
 export default function HomePage() {
-  const translate = useTranslation();
   const { push } = useRouter();
 
+  const OPTIONS: EmblaOptionsType = { loop: true };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
   return (
-    <Stack direction="column" gap={10} px={{ xs: 4, md: 30 }} py={10}>
-      <Stack direction="row" gap={6} flexWrap="wrap">
+    <Stack direction="column" gap={4} p={4}>
+      {/* <Stack direction="row" gap={6} flexWrap="wrap">
         <Stack gap={4} justifyContent={{ xs: "start", md: "center" }}>
           <Box>
             <Chip
@@ -46,8 +44,91 @@ export default function HomePage() {
             />
           </Box>
         </Stack>
+      </Stack> */}
+      <Stack
+        direction="row"
+        gap={2}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Carousel slides={SLIDES} options={OPTIONS} />
       </Stack>
-      <Stack direction="column" alignItems="center" gap={4}>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="stretch" // key: stretch children to equal height
+        flexWrap="wrap"
+        gap={4}
+        sx={{ height: 1000 }} // or any fixed height you want
+      >
+        <Box sx={{ flex: 1, position: "relative" }}>
+          <Image
+            alt="bags"
+            src="/images/bags.jpg"
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "5%", // distance from the bottom
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <Button
+              text="VIEW NOW"
+              variant="contained"
+              onClick={() => push("/shop")}
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                paddingX: 3,
+                paddingY: 1.5,
+                borderRadius: 0,
+                boxShadow: 3,
+                backgroundColor: "black",
+              }}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ flex: 1, position: "relative" }}>
+          <Image
+            alt="bags"
+            src="/images/carpets.jpg"
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "5%", // distance from the bottom
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <Button
+              text="VIEW NOW"
+              variant="contained"
+              onClick={() => push("/shop")}
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                paddingX: 3,
+                paddingY: 1.5,
+                borderRadius: 0,
+                boxShadow: 3,
+                backgroundColor: "black",
+              }}
+            />
+          </Box>
+        </Box>
+      </Stack>
+      {/* <Stack direction="column" alignItems="center" gap={4}>
         <TextTypography
           text={txKeys.services.home.printForEveryone}
           variant="h3"
@@ -183,7 +264,7 @@ export default function HomePage() {
       </Stack>
       <Stack>
         <Cards />
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 }

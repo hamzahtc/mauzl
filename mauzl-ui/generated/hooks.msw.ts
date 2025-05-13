@@ -51,6 +51,10 @@ export const getProductsControllerFindAllResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
+    additionalInfos: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
     category: {
       id: faker.number.int({ min: undefined, max: undefined }),
       name: faker.word.sample(),
@@ -73,6 +77,10 @@ export const getProductsControllerFindAllResponseMock = (
 export const getProductsControllerFindOneResponseMock = (
   overrideResponse: Partial<ProductDto> = {},
 ): ProductDto => ({
+  additionalInfos: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => faker.word.sample()),
   category: {
     id: faker.number.int({ min: undefined, max: undefined }),
     name: faker.word.sample(),

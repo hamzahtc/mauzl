@@ -59,6 +59,7 @@ const PriceFilter = () => {
         onChange={handleChange}
         valueLabelDisplay="auto"
         color="info"
+        size="small"
         step={100}
         slots={{
           valueLabel: PriceSliderTooltip,
@@ -67,10 +68,7 @@ const PriceFilter = () => {
         max={MAX_PRICE}
       />
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <TextTypography
-          text={`${price[0]} MAD - ${price[1]} MAD`}
-          fontSize="15px"
-        />
+        <TextTypography text={`${price[0]} MAD - ${price[1]} MAD`} />
         <PrimaryButton
           text={txKeys.common.filter.label}
           size="small"

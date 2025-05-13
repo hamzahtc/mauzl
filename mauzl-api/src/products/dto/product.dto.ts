@@ -18,6 +18,10 @@ export class ProductDto {
 
   @Expose()
   @ApiProperty()
+  additionalInfos: string[];
+
+  @Expose()
+  @ApiProperty()
   price: number;
 
   @Expose()

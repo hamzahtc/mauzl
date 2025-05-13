@@ -8,6 +8,9 @@ export class CreateProductDto {
   description: string;
 
   @ApiProperty()
+  additionalInfos: string[];
+
+  @ApiProperty()
   price: number;
 
   @ApiProperty()

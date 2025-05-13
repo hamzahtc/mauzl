@@ -4,8 +4,13 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { Stack } from "@mui/material";
+import { ProductDto } from "@/models";
 
-const ProductTabs = () => {
+interface ProductTabsProps {
+  product?: ProductDto;
+}
+
+const ProductTabs = ({ product }: ProductTabsProps) => {
   const [value, setValue] = React.useState("description");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -30,16 +35,21 @@ const ProductTabs = () => {
               value="info"
               sx={{ textTransform: "none" }}
             />
-            <Tab
-              label="Reviews (0)"
-              value="reviews"
-              sx={{ textTransform: "none" }}
-            />
           </TabList>
         </Stack>
-        <TabPanel value="description">Description</TabPanel>
-        <TabPanel value="info">Additional information</TabPanel>
-        <TabPanel value="reviews">Reviews (0)</TabPanel>
+        <TabPanel value="description">{product?.description}</TabPanel>
+        <TabPanel value="info">
+          {product?.additionalInfos.map((info, index) => (
+            <Stack
+              key={index}
+              direction="row"
+              justifyContent="space-between"
+              sx={{ width: "100%", padding: 1 }}
+            >
+              <span>{info}</span>
+            </Stack>
+          ))}
+        </TabPanel>
       </TabContext>
     </Stack>
   );

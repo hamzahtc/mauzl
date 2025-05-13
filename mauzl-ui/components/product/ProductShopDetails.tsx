@@ -12,6 +12,8 @@ import TextTypography from "../common/TextTypography";
 import { theme } from "@/styles/stylesheet";
 import { SizeType } from "@/common/contants";
 import DeliverySection from "./DeliverySection";
+import { toast, ToastContentProps } from "react-toastify";
+import cx from "clsx";
 
 interface ProductShopDetailsProps {
   product?: ProductDto;
@@ -25,9 +27,23 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
 
   const { name, description, price } = product || {};
 
-  const addProductToBag = async () =>
-    await db.products.put({ product, size, quantity, productId: product.id });
-
+  const addProductToBag = async () => {
+    await db.products
+      .put({ product, size, quantity, productId: product.id })
+      .then(() => {
+        toast.error(CustomNotification, {
+          data: {
+            title: "Oh Snap!",
+            content: "Something went wrong",
+          },
+          ariaLabel: "Something went wrong",
+          autoClose: false,
+          progress: 0.3,
+          icon: false,
+          theme: "colored",
+        });
+      });
+  };
   const handleSizeInput = (size: SizeType) => {
     setSize(size);
   };
@@ -111,3 +127,41 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
 };
 
 export default ProductShopDetails;
+
+type CustomNotificationProps = ToastContentProps<{
+  title: string;
+  content: string;
+}>;
+
+function CustomNotification({
+  closeToast,
+  data,
+  toastProps,
+}: CustomNotificationProps) {
+  const isColored = toastProps.theme === "colored";
+
+  return (
+    <div className="flex flex-col w-full p-2">
+      <h3
+        className={cx(
+          "text-sm font-semibold",
+          isColored ? "text-white" : "text-zinc-800"
+        )}
+      >
+        {data.title}
+      </h3>
+      <div className="flex items-center justify-between">
+        <p className="text-sm">{data.content}</p>
+        <button
+          onClick={closeToast}
+          className={cx(
+            "ml-auto transition-all text-xs  border rounded-md px-4 py-2 text-white active:scale-[.95]",
+            isColored ? "bg-transparent" : "bg-zinc-900"
+          )}
+        >
+          Try again
+        </button>
+      </div>
+    </div>
+  );
+}
