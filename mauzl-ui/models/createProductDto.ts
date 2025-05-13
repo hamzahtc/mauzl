@@ -6,6 +6,7 @@
  */
 
 export interface CreateProductDto {
+  additionalInfos: string[];
   categoryId: number;
   description: string;
   name: string;

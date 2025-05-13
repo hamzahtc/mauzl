@@ -18,6 +18,10 @@ const nextConfig = {
       },
     ];
   },
+  i18n: {
+    locales: ["en-US", "fr"],
+    defaultLocale: "en-US",
+  },
 };
 
 export default nextConfig;

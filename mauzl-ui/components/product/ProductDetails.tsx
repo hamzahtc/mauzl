@@ -3,14 +3,13 @@ import { Stack } from "@mui/material";
 import ProductGallery from "./ProductGallery";
 import ProductShopDetails from "./ProductShopDetails";
 import ProductTabs from "./ProductTabs";
-import { useParams } from "next/navigation";
-import { useProductsControllerFindOne } from "@/generated/hooks";
+import { ProductDto } from "@/models";
 
-const ProductDetails = () => {
-  const { productId } = useParams<{ productId: string }>();
-  const { data: product, isLoading } = useProductsControllerFindOne(productId);
-  if (isLoading) return null;
+interface ProductDetailsProps {
+  product?: ProductDto;
+}
 
+const ProductDetails = ({ product }: ProductDetailsProps) => {
   return (
     <Stack gap={4}>
       <Stack direction={{ xs: "column", md: "row" }} gap={6}>
@@ -22,7 +21,7 @@ const ProductDetails = () => {
         </Stack>
       </Stack>
       <Stack>
-        <ProductTabs />
+        <ProductTabs product={product} />
       </Stack>
     </Stack>
   );

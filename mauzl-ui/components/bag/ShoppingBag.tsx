@@ -13,14 +13,38 @@ import BagProducts from "./BagProducts";
 import { useRouter } from "next/navigation";
 import { HelveticaNow } from "@/styles/stylesheet";
 import { CiDeliveryTruck } from "react-icons/ci";
+import Link from "next/link";
 
 const ShoppingBag = () => {
   const orderItems = useLiveQuery(() => db.products.toArray());
   const { push } = useRouter();
 
-  if (orderItems?.length === 0) return <></>;
+  if (orderItems === undefined) return <></>;
+
+  if (orderItems?.length === 0) {
+    return (
+      <Stack gap={2} justifyContent="center" minHeight="80vh" height="80vh">
+        <TextTypography
+          text="TON PANIER EST VIDE"
+          fontWeight="bold"
+          fontSize="2.5rem"
+        />
+        <TextTypography
+          text="Dès que tu auras ajouté un article au panier, il apparaîtra ici. C'est parti ?"
+          fontSize="1.5rem"
+        />
+        <Link href="/shop">
+          <PrimaryButton text="Continue shopping" size="large" />
+        </Link>
+      </Stack>
+    );
+  }
 
   const products = orderItems?.map((order) => order.product);
+  const totalPriceInMAD = `${orderItems?.reduce((totalPrice, order) => {
+    return totalPrice + order.quantity * order.product.price;
+  }, 0)} MAD`;
+
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -84,7 +108,7 @@ const ShoppingBag = () => {
         <Stack direction="row" justifyContent="space-between">
           <TextTypography text={`Products (${products?.length})`} />
           <TextTypography
-            text="859,80 MAD"
+            text={totalPriceInMAD}
             fontFamily={HelveticaNow.style.fontFamily}
           />
         </Stack>

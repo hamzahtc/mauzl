@@ -29,16 +29,17 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
         },
         input: {
           className:
-            "text-sm font-inherit leading-[1.375] h-8 text-black border border-gray-200 shadow-[0px_2px_4px_rgba(0,0,0,0.05)] rounded-lg mx-2 px-3 py-2 w-24 text-center hover:border-blue-400 focus:border-blue-400 focus:shadow-[0_0_0_3px_rgba(182,218,255)] outline-none",
+            "text-sm font-inherit leading-[1.375] h-8 text-black border border-[#f5c06a] shadow-[0px_2px_4px_rgba(0,0,0,0.05)] rounded-lg mx-2 px-3 py-2 w-24 text-center hover:border-[#f5c06a] focus:border-[#f5c06a] focus:shadow-[0_0_0_3px_rgba(245,192,106,0.5)] outline-none",
+          readOnly: true,
         },
         incrementButton: {
           className:
-            "flex justify-center items-center w-8 h-8 rounded-full border border-gray-200 bg-gray-50 text-gray-900 hover:bg-blue-500 hover:border-blue-400 hover:text-gray-50 transition-all duration-150 ease-in-out order-1",
+            "flex justify-center items-center w-8 h-8 rounded-full border border-[#f5c06a] bg-[#f5c06a] text-white hover:bg-[#e0a84f] transition-all duration-150 ease-in-out order-1",
           children: <AddIcon fontSize="small" />,
         },
         decrementButton: {
           className:
-            "flex justify-center items-center w-8 h-8 rounded-full border border-gray-200 bg-gray-50 text-gray-900 hover:bg-blue-500 hover:border-blue-400 hover:text-gray-50 transition-all duration-150 ease-in-out",
+            "flex justify-center items-center w-8 h-8 rounded-full border border-[#f5c06a] bg-[#f5c06a] text-white hover:bg-[#e0a84f] transition-all duration-150 ease-in-out",
           children: <RemoveIcon fontSize="small" />,
         },
       }}

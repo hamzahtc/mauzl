@@ -2,9 +2,15 @@
 
 import TextTypography from "@/components/common/TextTypography";
 import ProductDetails from "@/components/product/ProductDetails";
+import { useProductsControllerFindOne } from "@/generated/hooks";
 import { Stack } from "@mui/material";
+import { useParams } from "next/navigation";
 
 const Product = () => {
+  const { productId } = useParams<{ productId: string }>();
+  const { data: product, isLoading } = useProductsControllerFindOne(productId);
+  if (isLoading) return null;
+
   return (
     <Stack>
       <Stack
@@ -16,7 +22,7 @@ const Product = () => {
         zIndex={2}
       >
         <TextTypography
-          text="Hoodie - Pullover Hoodie Sweatshirt"
+          text={`${product?.category.name} - ${product?.name}`}
           variant="h5"
           textTransform="uppercase"
           fontWeight="bold"
@@ -32,7 +38,7 @@ const Product = () => {
             alignItems="center"
             justifyContent="center"
           >
-            <ProductDetails />
+            <ProductDetails product={product} />
           </Stack>
         </Stack>
       </Stack>

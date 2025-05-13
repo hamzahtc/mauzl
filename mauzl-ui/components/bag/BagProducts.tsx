@@ -53,8 +53,16 @@ export default function BagProducts({ orderItems }: BagProductsProps) {
                           variant="body1"
                         />
                       </Stack>
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        <TextTypography
+                          text={orderItem.size}
+                          fontWeight="bold"
+                        />
 
-                      <TextTypography text={orderItem.product.category.name} />
+                        <TextTypography
+                          text={orderItem.product.category.name}
+                        />
+                      </Stack>
                     </Stack>
                     <TextTypography
                       text={`${orderItem.product.price * orderItem.quantity} MAD`}

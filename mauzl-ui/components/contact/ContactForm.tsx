@@ -35,7 +35,7 @@ const ContactForm: React.FC = () => {
 
   return (
     <Stack gap={2} justifyContent="center" width="100%" p={2}>
-      <Stack gap={2} direction={{ xs: "column", lg: "row" }}>
+      <Stack gap={2} direction={{ xs: "column", lg: "row" }} flexWrap="wrap">
         <TextInput<Contact>
           form={form}
           name="firstName"
@@ -51,7 +51,7 @@ const ContactForm: React.FC = () => {
           required
         />
       </Stack>
-      <Stack gap={2} direction={{ xs: "column", lg: "row" }}>
+      <Stack gap={2} direction={{ xs: "column", lg: "row" }} flexWrap="wrap">
         <TextInput<Contact>
           form={form}
           name="email"

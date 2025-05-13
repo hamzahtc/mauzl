@@ -7,6 +7,7 @@
 import type { CategoryDto } from "./categoryDto";
 
 export interface ProductDto {
+  additionalInfos: string[];
   category: CategoryDto;
   description: string;
   id: number;

@@ -49,6 +49,18 @@ const SearchInput = () => {
       onChange={handleInputChange}
       onKeyDown={handleInputSearch}
       placeholder={translate(txKeys.common.search.label)}
+      sx={{
+        minWidth: "270px",
+        "& .MuiOutlinedInput-root": {
+          borderRadius: 0,
+          "& input": {
+            fontSize: "14px",
+          },
+        },
+        "& .MuiInputLabel-root": {
+          fontSize: "13px",
+        },
+      }}
       size="small"
       color="info"
       InputProps={{

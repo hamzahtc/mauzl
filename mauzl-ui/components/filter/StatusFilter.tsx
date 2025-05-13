@@ -2,14 +2,12 @@ import React, { SyntheticEvent, useEffect, useState } from "react";
 import { Checkbox, FormControlLabel, FormGroup, Stack } from "@mui/material";
 import txKeys from "@/i18n/translations";
 import { status } from "@/common/contants";
-import { useTranslation } from "@/i18n/useTranslation";
 import TextTypography from "../common/TextTypography";
 import useQueryParamsRouter from "@/hooks/useQueryParamsRouter";
 import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
 import { getProductsControllerFindAllQueryKey } from "@/generated/hooks";
 
 const StatusFilter = () => {
-  const translate = useTranslation();
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const { setQueryParam, pushQueryParams, getQueryParam } =
     useQueryParamsRouter();
@@ -60,15 +58,20 @@ const StatusFilter = () => {
               <Checkbox
                 color="info"
                 name={name}
+                size="small"
                 checked={selectedStatuses.includes(name)}
                 onChange={handleStatusChange}
               />
             }
-            label={translate(
-              txKeys.services.shop.status.list[
-                name as keyof typeof txKeys.services.shop.status.list
-              ].name
-            )}
+            label={
+              <TextTypography
+                text={
+                  txKeys.services.shop.status.list[
+                    name as keyof typeof txKeys.services.shop.status.list
+                  ].name
+                }
+              />
+            }
           />
         ))}
       </FormGroup>

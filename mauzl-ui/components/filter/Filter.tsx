@@ -8,7 +8,7 @@ import SortFilter from "./SortFilter";
 
 const Filter = () => {
   return (
-    <Stack gap={5} p={1} minWidth="250px">
+    <Stack gap={3} p={1} minWidth="250px">
       <SearchInput />
       <CategoryFilter />
       <PriceFilter />

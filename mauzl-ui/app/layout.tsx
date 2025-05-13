@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import Script from "next/script";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Mauzl",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <Box className="flex-grow" sx={{ marginTop: "80px" }}>
             {children}
           </Box>
+          <Toaster position="bottom-center" />
           <Footer />
           {/* Tailwind styles for footer */}
         </Providers>
