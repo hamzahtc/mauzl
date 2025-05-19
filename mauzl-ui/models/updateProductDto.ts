@@ -6,5 +6,10 @@
  */
 
 export interface UpdateProductDto {
-  [key: string]: unknown;
+  additionalInfos?: string[];
+  categoryId?: number;
+  description?: string;
+  name?: string;
+  price?: number;
+  stock?: number;
 }

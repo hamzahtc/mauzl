@@ -15,6 +15,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { User } from '~users/entities/user.entity';
 import { UsersService } from '~users/users.service';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
+import { OptionalAuthExtractor } from './helper/get-optional-user';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
     JwtStrategy,
     RefreshJwtStrategy,
     GoogleStrategy,
+    OptionalAuthExtractor,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard, //@UseGuards(JwtAuthGuard) applied on all API endppints
@@ -41,5 +43,6 @@ import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
     //   useClass: RolesGuard,
     // },
   ],
+  exports: [OptionalAuthExtractor],
 })
 export class AuthModule {}

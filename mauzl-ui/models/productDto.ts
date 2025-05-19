@@ -12,6 +12,7 @@ export interface ProductDto {
   description: string;
   id: number;
   images: string[];
+  isInWishlist: boolean;
   name: string;
   price: number;
   status: string;

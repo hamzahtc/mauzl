@@ -18,12 +18,15 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 import type {
+  AddWishlistProductsDto,
+  AuthControllerGoogleCallbackParams,
   CategoryDto,
   CreateCategoryDto,
   CreateContactDto,
   CreateOrderDto,
   CreateProductDto,
   CreateUserDto,
+  CreateWishlistProductDto,
   PaginatedProductDto,
   ProductDto,
   ProductsControllerFindAllParams,
@@ -33,6 +36,7 @@ import type {
   UpdateProductDto,
   UpdateUserDto,
   UserDto,
+  WishlistDto,
 } from "../models";
 import { customInstance } from "../utils/axios";
 import type { ErrorType, BodyType } from "../utils/axios";
@@ -365,6 +369,80 @@ export function useUsersControllerFindAll<
   return query;
 }
 
+export const usersControllerUpdate = (
+  updateUserDto: BodyType<UpdateUserDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/users`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateUserDto,
+    },
+    options,
+  );
+};
+
+export const getUsersControllerUpdateMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersControllerUpdate>>,
+    TError,
+    { data: BodyType<UpdateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof usersControllerUpdate>>,
+  TError,
+  { data: BodyType<UpdateUserDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof usersControllerUpdate>>,
+    { data: BodyType<UpdateUserDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return usersControllerUpdate(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UsersControllerUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerUpdate>>
+>;
+export type UsersControllerUpdateMutationBody = BodyType<UpdateUserDto>;
+export type UsersControllerUpdateMutationError = ErrorType<unknown>;
+
+export const useUsersControllerUpdate = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersControllerUpdate>>,
+    TError,
+    { data: BodyType<UpdateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof usersControllerUpdate>>,
+  TError,
+  { data: BodyType<UpdateUserDto> },
+  TContext
+> => {
+  const mutationOptions = getUsersControllerUpdateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
 export const usersControllerFindMe = (
   options?: SecondParameter<typeof customInstance>,
   signal?: AbortSignal,
@@ -640,81 +718,6 @@ export function useUsersControllerFindOne<
 
   return query;
 }
-
-export const usersControllerUpdate = (
-  id: string,
-  updateUserDto: BodyType<UpdateUserDto>,
-  options?: SecondParameter<typeof customInstance>,
-) => {
-  return customInstance<void>(
-    {
-      url: `/api/users/${id}`,
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      data: updateUserDto,
-    },
-    options,
-  );
-};
-
-export const getUsersControllerUpdateMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof usersControllerUpdate>>,
-    TError,
-    { id: string; data: BodyType<UpdateUserDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof usersControllerUpdate>>,
-  TError,
-  { id: string; data: BodyType<UpdateUserDto> },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof usersControllerUpdate>>,
-    { id: string; data: BodyType<UpdateUserDto> }
-  > = (props) => {
-    const { id, data } = props ?? {};
-
-    return usersControllerUpdate(id, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UsersControllerUpdateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof usersControllerUpdate>>
->;
-export type UsersControllerUpdateMutationBody = BodyType<UpdateUserDto>;
-export type UsersControllerUpdateMutationError = ErrorType<unknown>;
-
-export const useUsersControllerUpdate = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof usersControllerUpdate>>,
-    TError,
-    { id: string; data: BodyType<UpdateUserDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof usersControllerUpdate>>,
-  TError,
-  { id: string; data: BodyType<UpdateUserDto> },
-  TContext
-> => {
-  const mutationOptions = getUsersControllerUpdateMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
 
 export const usersControllerRemove = (
   id: string,
@@ -1798,6 +1801,564 @@ export const useProductsControllerRemove = <
   return useMutation(mutationOptions);
 };
 
+export const authControllerLogin = (
+  signinDto: BodyType<SigninDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/auth/login`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: signinDto,
+    },
+    options,
+  );
+};
+
+export const getAuthControllerLoginMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    TError,
+    { data: BodyType<SigninDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerLogin>>,
+  TError,
+  { data: BodyType<SigninDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    { data: BodyType<SigninDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return authControllerLogin(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerLoginMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerLogin>>
+>;
+export type AuthControllerLoginMutationBody = BodyType<SigninDto>;
+export type AuthControllerLoginMutationError = ErrorType<unknown>;
+
+export const useAuthControllerLogin = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    TError,
+    { data: BodyType<SigninDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerLogin>>,
+  TError,
+  { data: BodyType<SigninDto> },
+  TContext
+> => {
+  const mutationOptions = getAuthControllerLoginMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerRefreshToken = (
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/refresh`, method: "POST" },
+    options,
+  );
+};
+
+export const getAuthControllerRefreshTokenMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    void
+  > = () => {
+    return authControllerRefreshToken(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerRefreshTokenMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>
+>;
+
+export type AuthControllerRefreshTokenMutationError = ErrorType<unknown>;
+
+export const useAuthControllerRefreshToken = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRefreshToken>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerRefreshToken>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerRefreshTokenMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerSignOut = (
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/signout`, method: "POST" },
+    options,
+  );
+};
+
+export const getAuthControllerSignOutMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerSignOut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    void
+  > = () => {
+    return authControllerSignOut(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerSignOutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerSignOut>>
+>;
+
+export type AuthControllerSignOutMutationError = ErrorType<unknown>;
+
+export const useAuthControllerSignOut = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignOut>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerSignOut>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getAuthControllerSignOutMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const authControllerGoogleLogin = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/google/login`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getAuthControllerGoogleLoginQueryKey = () => {
+  return [`/api/auth/google/login`] as const;
+};
+
+export const getAuthControllerGoogleLoginQueryOptions = <
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAuthControllerGoogleLoginQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof authControllerGoogleLogin>>
+  > = ({ signal }) => authControllerGoogleLogin(requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AuthControllerGoogleLoginQueryResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGoogleLogin>>
+>;
+export type AuthControllerGoogleLoginQueryError = ErrorType<unknown>;
+
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAuthControllerGoogleLogin<
+  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAuthControllerGoogleLoginQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const authControllerGoogleCallback = (
+  params: AuthControllerGoogleCallbackParams,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<void>(
+    { url: `/api/auth/google/callback`, method: "GET", params, signal },
+    options,
+  );
+};
+
+export const getAuthControllerGoogleCallbackQueryKey = (
+  params: AuthControllerGoogleCallbackParams,
+) => {
+  return [`/api/auth/google/callback`, ...(params ? [params] : [])] as const;
+};
+
+export const getAuthControllerGoogleCallbackQueryOptions = <
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(
+  params: AuthControllerGoogleCallbackParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAuthControllerGoogleCallbackQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof authControllerGoogleCallback>>
+  > = ({ signal }) =>
+    authControllerGoogleCallback(params, requestOptions, signal);
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AuthControllerGoogleCallbackQueryResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerGoogleCallback>>
+>;
+export type AuthControllerGoogleCallbackQueryError = ErrorType<unknown>;
+
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(
+  params: AuthControllerGoogleCallbackParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(
+  params: AuthControllerGoogleCallbackParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+          TError,
+          TData
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(
+  params: AuthControllerGoogleCallbackParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+export function useAuthControllerGoogleCallback<
+  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+  TError = ErrorType<unknown>,
+>(
+  params: AuthControllerGoogleCallbackParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getAuthControllerGoogleCallbackQueryOptions(
+    params,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const authControllerSignup = (
+  createUserDto: BodyType<CreateUserDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/auth/signup`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createUserDto,
+    },
+    options,
+  );
+};
+
+export const getAuthControllerSignupMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    TError,
+    { data: BodyType<CreateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof authControllerSignup>>,
+  TError,
+  { data: BodyType<CreateUserDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    { data: BodyType<CreateUserDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return authControllerSignup(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AuthControllerSignupMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authControllerSignup>>
+>;
+export type AuthControllerSignupMutationBody = BodyType<CreateUserDto>;
+export type AuthControllerSignupMutationError = ErrorType<unknown>;
+
+export const useAuthControllerSignup = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerSignup>>,
+    TError,
+    { data: BodyType<CreateUserDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof authControllerSignup>>,
+  TError,
+  { data: BodyType<CreateUserDto> },
+  TContext
+> => {
+  const mutationOptions = getAuthControllerSignupMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
 export const ordersControllerCreate = (
   createOrderDto: BodyType<CreateOrderDto>,
   options?: SecondParameter<typeof customInstance>,
@@ -2847,27 +3408,102 @@ export function usePaymentsControllerFindOne<
   return query;
 }
 
-export const wishListsControllerFindAll = (
+export const wishListsControllerCreate = (
+  createWishlistProductDto: BodyType<CreateWishlistProductDto>,
   options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
 ) => {
   return customInstance<void>(
-    { url: `/api/wish-lists`, method: "GET", signal },
+    {
+      url: `/api/wishlists`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createWishlistProductDto,
+    },
     options,
   );
 };
 
-export const getWishListsControllerFindAllQueryKey = () => {
-  return [`/api/wish-lists`] as const;
+export const getWishListsControllerCreateMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerCreate>>,
+    TError,
+    { data: BodyType<CreateWishlistProductDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof wishListsControllerCreate>>,
+  TError,
+  { data: BodyType<CreateWishlistProductDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof wishListsControllerCreate>>,
+    { data: BodyType<CreateWishlistProductDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return wishListsControllerCreate(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
 };
 
-export const getWishListsControllerFindAllQueryOptions = <
-  TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
+export type WishListsControllerCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof wishListsControllerCreate>>
+>;
+export type WishListsControllerCreateMutationBody =
+  BodyType<CreateWishlistProductDto>;
+export type WishListsControllerCreateMutationError = ErrorType<unknown>;
+
+export const useWishListsControllerCreate = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerCreate>>,
+    TError,
+    { data: BodyType<CreateWishlistProductDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof wishListsControllerCreate>>,
+  TError,
+  { data: BodyType<CreateWishlistProductDto> },
+  TContext
+> => {
+  const mutationOptions = getWishListsControllerCreateMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const wishListsControllerFindOne = (
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
+) => {
+  return customInstance<WishlistDto>(
+    { url: `/api/wishlists`, method: "GET", signal },
+    options,
+  );
+};
+
+export const getWishListsControllerFindOneQueryKey = () => {
+  return [`/api/wishlists`] as const;
+};
+
+export const getWishListsControllerFindOneQueryOptions = <
+  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
   TError = ErrorType<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
-      Awaited<ReturnType<typeof wishListsControllerFindAll>>,
+      Awaited<ReturnType<typeof wishListsControllerFindOne>>,
       TError,
       TData
     >
@@ -2877,150 +3513,13 @@ export const getWishListsControllerFindAllQueryOptions = <
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getWishListsControllerFindAllQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof wishListsControllerFindAll>>
-  > = ({ signal }) => wishListsControllerFindAll(requestOptions, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type WishListsControllerFindAllQueryResult = NonNullable<
-  Awaited<ReturnType<typeof wishListsControllerFindAll>>
->;
-export type WishListsControllerFindAllQueryError = ErrorType<unknown>;
-
-export function useWishListsControllerFindAll<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = ErrorType<unknown>,
->(options: {
-  query: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useWishListsControllerFindAll<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useWishListsControllerFindAll<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-export function useWishListsControllerFindAll<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof wishListsControllerFindAll>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getWishListsControllerFindAllQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const wishListsControllerFindOne = (
-  id: string,
-  options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
-) => {
-  return customInstance<void>(
-    { url: `/api/wish-lists/${id}`, method: "GET", signal },
-    options,
-  );
-};
-
-export const getWishListsControllerFindOneQueryKey = (id: string) => {
-  return [`/api/wish-lists/${id}`] as const;
-};
-
-export const getWishListsControllerFindOneQueryOptions = <
-  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = ErrorType<unknown>,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getWishListsControllerFindOneQueryKey(id);
+    queryOptions?.queryKey ?? getWishListsControllerFindOneQueryKey();
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof wishListsControllerFindOne>>
-  > = ({ signal }) => wishListsControllerFindOne(id, requestOptions, signal);
+  > = ({ signal }) => wishListsControllerFindOne(requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof wishListsControllerFindOne>>,
     TError,
     TData
@@ -3035,85 +3534,73 @@ export type WishListsControllerFindOneQueryError = ErrorType<unknown>;
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
   TError = ErrorType<unknown>,
->(
-  id: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
         Awaited<ReturnType<typeof wishListsControllerFindOne>>,
         TError,
         TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-          TError,
-          TData
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useWishListsControllerFindOne<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = ErrorType<unknown>,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-          TError,
-          TData
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useWishListsControllerFindOne<
-  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-  TError = ErrorType<unknown>,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-        TError,
-        TData
-      >
+      >,
+      "initialData"
     >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  request?: SecondParameter<typeof customInstance>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useWishListsControllerFindOne<
+  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+        TError,
+        TData
+      >,
+      "initialData"
+    >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
+export function useWishListsControllerFindOne<
+  TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
 export function useWishListsControllerFindOne<
   TData = Awaited<ReturnType<typeof wishListsControllerFindOne>>,
   TError = ErrorType<unknown>,
->(
-  id: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof wishListsControllerFindOne>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getWishListsControllerFindOneQueryOptions(id, options);
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof wishListsControllerFindOne>>,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getWishListsControllerFindOneQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -3123,6 +3610,153 @@ export function useWishListsControllerFindOne<
 
   return query;
 }
+
+export const wishListsControllerAddMultiple = (
+  addWishlistProductsDto: BodyType<AddWishlistProductsDto>,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    {
+      url: `/api/wishlists/multiple`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: addWishlistProductsDto,
+    },
+    options,
+  );
+};
+
+export const getWishListsControllerAddMultipleMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerAddMultiple>>,
+    TError,
+    { data: BodyType<AddWishlistProductsDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof wishListsControllerAddMultiple>>,
+  TError,
+  { data: BodyType<AddWishlistProductsDto> },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof wishListsControllerAddMultiple>>,
+    { data: BodyType<AddWishlistProductsDto> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return wishListsControllerAddMultiple(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type WishListsControllerAddMultipleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof wishListsControllerAddMultiple>>
+>;
+export type WishListsControllerAddMultipleMutationBody =
+  BodyType<AddWishlistProductsDto>;
+export type WishListsControllerAddMultipleMutationError = ErrorType<unknown>;
+
+export const useWishListsControllerAddMultiple = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerAddMultiple>>,
+    TError,
+    { data: BodyType<AddWishlistProductsDto> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof wishListsControllerAddMultiple>>,
+  TError,
+  { data: BodyType<AddWishlistProductsDto> },
+  TContext
+> => {
+  const mutationOptions =
+    getWishListsControllerAddMultipleMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+
+export const wishListsControllerRemoveFromWishlist = (
+  id: number,
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<void>(
+    { url: `/api/wishlists/${id}`, method: "DELETE" },
+    options,
+  );
+};
+
+export const getWishListsControllerRemoveFromWishlistMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return wishListsControllerRemoveFromWishlist(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type WishListsControllerRemoveFromWishlistMutationResult = NonNullable<
+  Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>
+>;
+
+export type WishListsControllerRemoveFromWishlistMutationError =
+  ErrorType<unknown>;
+
+export const useWishListsControllerRemoveFromWishlist = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof wishListsControllerRemoveFromWishlist>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationOptions =
+    getWishListsControllerRemoveFromWishlistMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 
 export const reviewsControllerFindAll = (
   options?: SecondParameter<typeof customInstance>,
@@ -4242,542 +4876,6 @@ export function useImageControllerGetImageLink<
 
   return query;
 }
-
-export const authControllerLogin = (
-  signinDto: BodyType<SigninDto>,
-  options?: SecondParameter<typeof customInstance>,
-) => {
-  return customInstance<void>(
-    {
-      url: `/api/auth/login`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: signinDto,
-    },
-    options,
-  );
-};
-
-export const getAuthControllerLoginMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerLogin>>,
-    TError,
-    { data: BodyType<SigninDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof authControllerLogin>>,
-  TError,
-  { data: BodyType<SigninDto> },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authControllerLogin>>,
-    { data: BodyType<SigninDto> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return authControllerLogin(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AuthControllerLoginMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerLogin>>
->;
-export type AuthControllerLoginMutationBody = BodyType<SigninDto>;
-export type AuthControllerLoginMutationError = ErrorType<unknown>;
-
-export const useAuthControllerLogin = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerLogin>>,
-    TError,
-    { data: BodyType<SigninDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof authControllerLogin>>,
-  TError,
-  { data: BodyType<SigninDto> },
-  TContext
-> => {
-  const mutationOptions = getAuthControllerLoginMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-
-export const authControllerRefreshToken = (
-  options?: SecondParameter<typeof customInstance>,
-) => {
-  return customInstance<void>(
-    { url: `/api/auth/refresh`, method: "POST" },
-    options,
-  );
-};
-
-export const getAuthControllerRefreshTokenMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerRefreshToken>>,
-    TError,
-    void,
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof authControllerRefreshToken>>,
-  TError,
-  void,
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authControllerRefreshToken>>,
-    void
-  > = () => {
-    return authControllerRefreshToken(requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AuthControllerRefreshTokenMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerRefreshToken>>
->;
-
-export type AuthControllerRefreshTokenMutationError = ErrorType<unknown>;
-
-export const useAuthControllerRefreshToken = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerRefreshToken>>,
-    TError,
-    void,
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof authControllerRefreshToken>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getAuthControllerRefreshTokenMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-
-export const authControllerSignOut = (
-  options?: SecondParameter<typeof customInstance>,
-) => {
-  return customInstance<void>(
-    { url: `/api/auth/signout`, method: "POST" },
-    options,
-  );
-};
-
-export const getAuthControllerSignOutMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerSignOut>>,
-    TError,
-    void,
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof authControllerSignOut>>,
-  TError,
-  void,
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authControllerSignOut>>,
-    void
-  > = () => {
-    return authControllerSignOut(requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AuthControllerSignOutMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerSignOut>>
->;
-
-export type AuthControllerSignOutMutationError = ErrorType<unknown>;
-
-export const useAuthControllerSignOut = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerSignOut>>,
-    TError,
-    void,
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof authControllerSignOut>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getAuthControllerSignOutMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-
-export const authControllerGoogleLogin = (
-  options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
-) => {
-  return customInstance<void>(
-    { url: `/api/auth/google/login`, method: "GET", signal },
-    options,
-  );
-};
-
-export const getAuthControllerGoogleLoginQueryKey = () => {
-  return [`/api/auth/google/login`] as const;
-};
-
-export const getAuthControllerGoogleLoginQueryOptions = <
-  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getAuthControllerGoogleLoginQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof authControllerGoogleLogin>>
-  > = ({ signal }) => authControllerGoogleLogin(requestOptions, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type AuthControllerGoogleLoginQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerGoogleLogin>>
->;
-export type AuthControllerGoogleLoginQueryError = ErrorType<unknown>;
-
-export function useAuthControllerGoogleLogin<
-  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-  TError = ErrorType<unknown>,
->(options: {
-  query: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useAuthControllerGoogleLogin<
-  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useAuthControllerGoogleLogin<
-  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-export function useAuthControllerGoogleLogin<
-  TData = Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleLogin>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getAuthControllerGoogleLoginQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const authControllerGoogleCallback = (
-  options?: SecondParameter<typeof customInstance>,
-  signal?: AbortSignal,
-) => {
-  return customInstance<void>(
-    { url: `/api/auth/google/callback`, method: "GET", signal },
-    options,
-  );
-};
-
-export const getAuthControllerGoogleCallbackQueryKey = () => {
-  return [`/api/auth/google/callback`] as const;
-};
-
-export const getAuthControllerGoogleCallbackQueryOptions = <
-  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getAuthControllerGoogleCallbackQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof authControllerGoogleCallback>>
-  > = ({ signal }) => authControllerGoogleCallback(requestOptions, signal);
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type AuthControllerGoogleCallbackQueryResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerGoogleCallback>>
->;
-export type AuthControllerGoogleCallbackQueryError = ErrorType<unknown>;
-
-export function useAuthControllerGoogleCallback<
-  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-  TError = ErrorType<unknown>,
->(options: {
-  query: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      DefinedInitialDataOptions<
-        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useAuthControllerGoogleCallback<
-  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-      TError,
-      TData
-    >
-  > &
-    Pick<
-      UndefinedInitialDataOptions<
-        Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-        TError,
-        TData
-      >,
-      "initialData"
-    >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-export function useAuthControllerGoogleCallback<
-  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-export function useAuthControllerGoogleCallback<
-  TData = Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-  TError = ErrorType<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authControllerGoogleCallback>>,
-      TError,
-      TData
-    >
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getAuthControllerGoogleCallbackQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}
-
-export const authControllerSignup = (
-  createUserDto: BodyType<CreateUserDto>,
-  options?: SecondParameter<typeof customInstance>,
-) => {
-  return customInstance<void>(
-    {
-      url: `/api/auth/signup`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: createUserDto,
-    },
-    options,
-  );
-};
-
-export const getAuthControllerSignupMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerSignup>>,
-    TError,
-    { data: BodyType<CreateUserDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof authControllerSignup>>,
-  TError,
-  { data: BodyType<CreateUserDto> },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof authControllerSignup>>,
-    { data: BodyType<CreateUserDto> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return authControllerSignup(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AuthControllerSignupMutationResult = NonNullable<
-  Awaited<ReturnType<typeof authControllerSignup>>
->;
-export type AuthControllerSignupMutationBody = BodyType<CreateUserDto>;
-export type AuthControllerSignupMutationError = ErrorType<unknown>;
-
-export const useAuthControllerSignup = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof authControllerSignup>>,
-    TError,
-    { data: BodyType<CreateUserDto> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof authControllerSignup>>,
-  TError,
-  { data: BodyType<CreateUserDto> },
-  TContext
-> => {
-  const mutationOptions = getAuthControllerSignupMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
 
 export const contactControllerCreate = (
   createContactDto: BodyType<CreateContactDto>,

@@ -14,6 +14,11 @@ import { SizeType } from "@/common/contants";
 import DeliverySection from "./DeliverySection";
 import { toast, ToastContentProps } from "react-toastify";
 import cx from "clsx";
+import {
+  getWishListsControllerFindOneQueryKey,
+  useWishListsControllerCreate,
+} from "@/generated/hooks";
+import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
 
 interface ProductShopDetailsProps {
   product?: ProductDto;
@@ -23,7 +28,22 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
   const [size, setSize] = useState<SizeType>("m");
   const [quantity, setQuantity] = useState(1);
 
+  const { mutateAsync: createWishlistProduct } = useWishListsControllerCreate();
+
   if (!product) return <></>;
+
+  const createWishlist = async () => {
+    await createWishlistProduct({
+      data: {
+        product,
+      },
+    }).then(() => {
+      QueryClientInstance.refetchQueries({
+        queryKey: getWishListsControllerFindOneQueryKey(),
+        exact: true,
+      });
+    });
+  };
 
   const { name, description, price } = product || {};
 
@@ -113,9 +133,12 @@ const ProductShopDetails = ({ product }: ProductShopDetailsProps) => {
             fullWidth
           />
           <FaRegHeart
-            onClick={() => undefined}
+            onClick={createWishlist}
             color={theme.palette.info.main}
             size={30}
+            style={{
+              cursor: "pointer",
+            }}
           />
         </Stack>
       </Stack>

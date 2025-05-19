@@ -12,7 +12,7 @@ const NavbarMenuItem = ({ service: { name, link } }: Props) => {
     txKeys.services[name as keyof typeof txKeys.services].title;
 
   return (
-    <Link href={link}>
+    <Link href={link} prefetch={true}>
       <TextTypography
         text={serviceTranslation}
         sx={{

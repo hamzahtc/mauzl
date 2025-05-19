@@ -49,8 +49,17 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
-    await this.userRepository.update(id, updateUserDto);
-    return this.findOne(id);
+    const user = await this.userRepository.preload({
+      id,
+      ...updateUserDto,
+    });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    const updatedUser = await this.userRepository.save(user);
+
+    return UserMapper.toDto(updatedUser);
   }
 
   async remove(id: number): Promise<void> {

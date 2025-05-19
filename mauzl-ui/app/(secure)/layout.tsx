@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useUsersControllerFindMe } from "@/generated/hooks";
 
 export default function PrivateLayout({
@@ -13,11 +13,12 @@ export default function PrivateLayout({
   const { isLoading, isError, error, data } = useUsersControllerFindMe({
     query: { retry: 0 },
   });
+  const pathname = usePathname();
 
   React.useEffect(() => {
     // Redirect on 401 error
     if (isError && error?.response?.status === 401) {
-      router.push("/signin");
+      router.push(`/signin?redirect=${encodeURIComponent(pathname)}`);
     }
   }, [isError, error, router]);
 

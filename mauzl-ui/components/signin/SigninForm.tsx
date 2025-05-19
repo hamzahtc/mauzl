@@ -11,21 +11,32 @@ import { Signin, SigninSchema } from "@/validation/signin.schema";
 import {
   getUsersControllerFindMeQueryKey,
   useAuthControllerLogin,
+  useWishListsControllerAddMultiple,
 } from "@/generated/hooks";
 import { QueryClientInstance } from "@/app/ReactQueryClientProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
+import { db } from "@/utils/db";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useSearchParams } from "next/navigation";
 
 const SigninForm = () => {
   const { push } = useRouter();
 
   const { mutateAsync: signin } = useAuthControllerLogin();
+  const { mutateAsync: addWishlistProducts } =
+    useWishListsControllerAddMultiple();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+  const searchParams = useSearchParams();
 
+  const redirectTo = searchParams.get("redirect") || "/";
+  const wishlistProducts = useLiveQuery(() => db.wishlist.toArray());
+  const wishlistProductsIds =
+    wishlistProducts?.map((item) => String(item.productId)) || [];
   const form = useForm<Signin, ZodValidator>({
     defaultValues: {
       email: "",
@@ -35,14 +46,24 @@ const SigninForm = () => {
       onChange: SigninSchema,
     },
     validatorAdapter: zodValidator(),
-    onSubmit: async ({ value }) =>
-      signin({ data: value }).then(() => {
-        QueryClientInstance.refetchQueries({
-          queryKey: getUsersControllerFindMeQueryKey(),
-          exact: true,
+    onSubmit: async ({ value }) => {
+      try {
+        await signin({ data: value });
+        await addWishlistProducts({
+          data: {
+            productIds: wishlistProductsIds,
+          },
         });
-        push("/");
-      }),
+      } catch (error) {
+        console.error("Error signing in:", error);
+      }
+      db.wishlist.clear();
+      QueryClientInstance.refetchQueries({
+        queryKey: getUsersControllerFindMeQueryKey(),
+        exact: true,
+      });
+      push("/");
+    },
   });
 
   const handleConfirm = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -52,7 +73,13 @@ const SigninForm = () => {
   };
 
   return (
-    <Stack bgcolor="white" px={10} pb={5} alignItems="center" maxWidth="700px">
+    <Stack
+      bgcolor="white"
+      px={{ xs: 3, md: 10 }}
+      pb={5}
+      alignItems="center"
+      maxWidth="700px"
+    >
       <Stack py={5} gap={1} alignItems="center">
         <TextTypography text={"Welcome back"} variant="h4" fontWeight="bold" />
         <TextTypography
@@ -110,7 +137,7 @@ const SigninForm = () => {
           type="submit"
           startIcon={<FcGoogle color={theme.palette.secondary.main} />}
           text="Sign in with Google"
-          href="/api/auth/google/callback"
+          href={`/api/auth/google/login?state=${encodeURIComponent(redirectTo)}`}
           textColor="black"
           sx={{
             minWidth: "270px",

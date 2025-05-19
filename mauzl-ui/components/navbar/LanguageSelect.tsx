@@ -24,6 +24,7 @@ const LanguageSelect = () => {
         onClick={() => handleChange(Language.EN)}
         style={{
           cursor: "pointer",
+          minWidth: "28px",
           filter:
             language === Language.EN ? "brightness(1)" : "brightness(0.5)",
           transition: "filter 0.3s ease",
@@ -37,6 +38,7 @@ const LanguageSelect = () => {
         onClick={() => handleChange(Language.FR)}
         style={{
           cursor: "pointer",
+          minWidth: "28px",
           filter:
             language === Language.FR ? "brightness(1)" : "brightness(0.5)",
           transition: "filter 0.3s ease",

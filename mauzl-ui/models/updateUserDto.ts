@@ -6,5 +6,12 @@
  */
 
 export interface UpdateUserDto {
-  [key: string]: unknown;
+  avatarUrl?: string;
+  birthDate?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  phoneNumber?: string;
+  username?: string;
 }

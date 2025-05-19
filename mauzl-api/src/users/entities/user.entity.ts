@@ -21,8 +21,14 @@ export class User {
   @Column()
   lastName: string;
 
+  @Column({ type: 'date', nullable: true })
+  birthDate: Date;
+
   @Column({ unique: true })
   email: string;
+
+  @Column({ unique: true, nullable: true })
+  phoneNumber: string;
 
   @Column({ nullable: true })
   avatarUrl: string;

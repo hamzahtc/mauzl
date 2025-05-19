@@ -9,7 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
 import { PaymentsModule } from './payments/payments.module';
-import { WishListsModule } from './wish-lists/wish-lists.module';
+import { WishListsModule } from './wish-lists/wishlist.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ClientsModule } from './clients/clients.module';
 import { MinioClientModule } from './minio-client/minio-client.module';

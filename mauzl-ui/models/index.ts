@@ -5,6 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from "./addWishlistProductsDto";
+export * from "./authControllerGoogleCallbackParams";
+export * from "./authControllerGoogleLoginParams";
 export * from "./categoryDto";
 export * from "./createAddressDto";
 export * from "./createCategoryDto";
@@ -14,6 +17,7 @@ export * from "./createOrderDto";
 export * from "./createOrderItemDto";
 export * from "./createProductDto";
 export * from "./createUserDto";
+export * from "./createWishlistProductDto";
 export * from "./paginatedProductDto";
 export * from "./productDto";
 export * from "./productsControllerFindAllParams";
@@ -23,3 +27,4 @@ export * from "./updateOrderDto";
 export * from "./updateProductDto";
 export * from "./updateUserDto";
 export * from "./userDto";
+export * from "./wishlistDto";

@@ -14,13 +14,16 @@ import Link from "next/link";
 import LanguageSelect from "./LanguageSelect";
 import { theme } from "@/styles/stylesheet";
 import NavbarMenu from "./NavbarMenu";
-import { FaBagShopping } from "react-icons/fa6";
+import { FaBagShopping, FaHeart } from "react-icons/fa6";
 import TextTypography from "../common/TextTypography";
 import Sidebar from "./Sidebar";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/utils/db";
 import AccountMenu from "./AccountMenu";
-import { useUsersControllerFindMe } from "@/generated/hooks";
+import {
+  useUsersControllerFindMe,
+  useWishListsControllerFindOne,
+} from "@/generated/hooks";
 import PrimaryButton from "../common/PrimaryButton";
 import { useRouter } from "next/navigation";
 import SearchInput from "../filter/SearchInput";
@@ -37,8 +40,11 @@ const Navbar = () => {
   });
 
   const { push } = useRouter();
+  const wishlist = useWishListsControllerFindOne();
+  const products = wishlist?.data?.products;
 
   const orderItems = useLiveQuery(() => db.products.toArray()) || [];
+  const wishlistProducts = useLiveQuery(() => db.wishlist.toArray());
 
   const [elevate, setElevate] = useState(false);
   const [searchFocused] = useState(false);
@@ -108,21 +114,45 @@ const Navbar = () => {
                 direction="row"
                 alignItems="center"
                 justifyContent="center"
-                gap={2}
+                gap={1}
               >
                 <Stack width={searchFocused ? "500px" : "250px"}>
                   <SearchInput />
                 </Stack>
-                <Stack direction="row" gap={2} ml={4}>
-                  <IconButton href="/bag" size="large" aria-haspopup="true">
-                    <Badge badgeContent={orderItems.length} color="info">
-                      <FaBagShopping
-                        color={theme.palette.info.main}
-                        size="22"
-                        stroke="1.5"
-                      />
-                    </Badge>
-                  </IconButton>
+                <Stack direction="row" gap={1} ml={2}>
+                  <Stack direction="row">
+                    <IconButton
+                      onClick={() => push("/wishlist")}
+                      size="large"
+                      aria-haspopup="true"
+                    >
+                      <Badge
+                        badgeContent={
+                          me.data ? products?.length : wishlistProducts?.length
+                        }
+                        color="info"
+                      >
+                        <FaHeart
+                          color={theme.palette.grey[900]}
+                          size="20"
+                          stroke="1.5"
+                        />
+                      </Badge>
+                    </IconButton>
+                    <IconButton
+                      onClick={() => push("/bag")}
+                      size="large"
+                      aria-haspopup="true"
+                    >
+                      <Badge badgeContent={orderItems.length} color="info">
+                        <FaBagShopping
+                          color={theme.palette.grey[900]}
+                          size="20"
+                          stroke="1.5"
+                        />
+                      </Badge>
+                    </IconButton>
+                  </Stack>
 
                   <LanguageSelect />
                 </Stack>
