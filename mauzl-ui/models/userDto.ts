@@ -7,11 +7,13 @@
 
 export interface UserDto {
   avatarUrl: string;
+  birthDate: string;
   email: string;
   firstName: string;
   hashedRefreshToken: string;
   id: number;
   lastName: string;
+  phoneNumber: string;
   role: string;
   username: string;
 }

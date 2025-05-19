@@ -39,4 +39,8 @@ export class ProductDto {
   @Expose()
   @ApiProperty()
   images: string[];
+
+  @Expose()
+  @ApiProperty()
+  isInWishlist: boolean;
 }

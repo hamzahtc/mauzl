@@ -14,18 +14,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuthControllerSignup } from "@/generated/hooks";
 
-// const VisuallyHiddenInput = styled("input")({
-//   clip: "rect(0 0 0 0)",
-//   clipPath: "inset(50%)",
-//   height: 1,
-//   overflow: "hidden",
-//   position: "absolute",
-//   bottom: 0,
-//   left: 0,
-//   whiteSpace: "nowrap",
-//   width: 1,
-// });
-
 const SignupForm = () => {
   const { push } = useRouter();
 
@@ -60,7 +48,13 @@ const SignupForm = () => {
   };
 
   return (
-    <Stack bgcolor="white" px={10} pb={5} alignItems="center" maxWidth="700px">
+    <Stack
+      bgcolor="white"
+      px={{ xs: 5, md: 10 }}
+      pb={5}
+      alignItems="center"
+      maxWidth="700px"
+    >
       <Stack py={5} gap={1} alignItems="center">
         <TextTypography
           text={"Join for success"}
@@ -95,21 +89,6 @@ const SignupForm = () => {
           label="Email"
           placeholder="Enter your email"
         />
-        {/* <PrimaryButton
-          text="Picture"
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<MdFileUpload size="16px" />}
-          sx={{ minWidth: "270px", bgcolor: "black" }}
-        >
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => console.log(event.target.files)}
-            multiple
-          />
-        </PrimaryButton> */}
 
         <TextInput<Signup>
           form={form}

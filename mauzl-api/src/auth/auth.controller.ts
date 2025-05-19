@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -99,7 +100,7 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req, @Res() res) {
+  async googleCallback(@Req() req, @Res() res, @Query('state') state: string) {
     const { accessToken, refreshToken } = await this.authService.login(
       req.user.id,
     );
@@ -120,12 +121,14 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (long-lived refresh token)
     });
 
-    res.redirect(process.env.MAUZL_BASE_URL);
+    const redirectUrl = state
+      ? `${process.env.MAUZL_BASE_URL}${decodeURIComponent(state)}`
+      : process.env.MAUZL_BASE_URL;
+    res.redirect(redirectUrl + '?auth=success');
   }
 
   @Post('signup')
   async signup(@Body() dto: CreateUserDto) {
-    console.log(dto);
-    return this.userService.create(dto); // Make sure to hash password!
+    return this.userService.create(dto);
   }
 }

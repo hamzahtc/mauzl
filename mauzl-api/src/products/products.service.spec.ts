@@ -7,6 +7,8 @@ import { Category } from '~categories/entities/category.entity';
 import { ProductImage } from '~product-images/entities/product-image.entity';
 import { Product } from './entities/product.entity';
 import { ImageService } from '~images/image.service';
+import { Wishlist } from '~wish-lists/entities/wishlist.entity';
+import { OptionalAuthExtractor } from '~auth/helper/get-optional-user';
 
 describe('ProductsService', () => {
   let service: ProductsService;
@@ -17,6 +19,10 @@ describe('ProductsService', () => {
         ProductsService,
         {
           provide: getRepositoryToken(Product),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(Wishlist),
           useClass: Repository,
         },
         {
@@ -45,6 +51,12 @@ describe('ProductsService', () => {
           provide: ImageService,
           useValue: {
             getImageLink: jest.fn().mockResolvedValue('mocked_image_link'),
+          },
+        },
+        {
+          provide: OptionalAuthExtractor,
+          useValue: {
+            getCurrentUser: jest.fn().mockReturnValue(null),
           },
         },
       ],

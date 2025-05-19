@@ -19,6 +19,8 @@ import { ImageService } from '~images/image.service';
 import { ProductMapper } from './product.mapper';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { statues } from './product.util';
+import { Wishlist } from '~wish-lists/entities/wishlist.entity';
+import { OptionalAuthExtractor } from '~auth/helper/get-optional-user';
 
 @Injectable()
 export class ProductsService {
@@ -29,8 +31,11 @@ export class ProductsService {
     private readonly productImageRepository: Repository<ProductImage>,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Wishlist)
+    private readonly wishlistRepository: Repository<Wishlist>,
     private minioClientService: MinioClientService,
     private imageService: ImageService,
+    private readonly optionalAuthExtractor: OptionalAuthExtractor,
   ) {
     this.logger = new Logger('ProductService');
   }
@@ -118,10 +123,7 @@ export class ProductsService {
       order,
     });
 
-    console.log(products.map((product) => product.images));
-
     const productDtos = ProductMapper.toDtoArray(products);
-    console.log(productDtos.map((product) => product.images));
 
     await Promise.all(
       productDtos.map(async (product) => {
@@ -130,6 +132,22 @@ export class ProductsService {
         );
       }),
     );
+
+    let wishlistProductIds: number[] = [];
+
+    const currentUser = await this.optionalAuthExtractor.getCurrentUser();
+    if (currentUser) {
+      const wishlist = await this.wishlistRepository.findOne({
+        where: { user: { id: currentUser.id } },
+        relations: ['products'],
+      });
+      wishlistProductIds = wishlist?.products?.map((p) => p.id) || [];
+    }
+
+    productDtos.forEach((product) => {
+      product.isInWishlist = wishlistProductIds.includes(product.id);
+    });
+
     return { products: productDtos, total };
   }
 

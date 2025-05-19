@@ -4,6 +4,7 @@ import { Strategy } from 'passport-google-oauth20';
 import googleOauthConfig from '../config/google-oauth.config';
 import { ConfigType } from '@nestjs/config';
 import { AuthService } from '../auth.service';
+import { Request } from 'express';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy) {
@@ -17,17 +18,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       clientSecret: googleConfiguration.clientSecret,
       callbackURL: googleConfiguration.callbackURL,
       scope: ['email', 'profile'],
-      passReqToCallback: false, // 👈 Force Google to always show account selection
+      passReqToCallback: true, // 👈 Required
     });
   }
 
-  authorizationParams(): Record<string, string> {
-    return {
-      prompt: 'select_account',
-    };
-  }
-
-  async validate(accessToken: string, refreshToken: string, profile: any) {
+  async validate(
+    req: Request,
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+  ) {
     const user = await this.authService.validateGoogleUser({
       email: profile.emails[0].value,
       username: `${profile.name.givenName} ${profile.name.familyName}`,
@@ -35,6 +35,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       lastName: profile.name.familyName,
       avatarUrl: profile.photos[0].value,
       password: '',
+      phoneNumber: null,
+      birthDate: null,
     });
     // done(null, user);
     return user;

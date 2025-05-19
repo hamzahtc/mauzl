@@ -4,7 +4,6 @@ import {
   getProductsControllerFindAllQueryKey,
   useCategoriesControllerFindAll,
   useProductsControllerFindAll,
-  useUsersControllerFindMe,
 } from "@/generated/hooks";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -38,7 +37,6 @@ const Products = () => {
   const statuses = searchParams.get("statuses") || undefined;
 
   const { data: categories } = useCategoriesControllerFindAll();
-  const { data: me, isLoading } = useUsersControllerFindMe();
 
   const products = useProductsControllerFindAll({
     page,
@@ -92,10 +90,6 @@ const Products = () => {
     setFilters(filterChips);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, categoryId, minPrice, maxPrice, sortBy, statuses, categories]);
-
-  if (isLoading) {
-    console.log(me);
-  }
 
   if (products.isLoading) return <></>;
 

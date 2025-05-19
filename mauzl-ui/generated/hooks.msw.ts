@@ -11,17 +11,20 @@ import type {
   PaginatedProductDto,
   ProductDto,
   UserDto,
+  WishlistDto,
 } from "../models";
 
 export const getUsersControllerFindMeResponseMock = (
   overrideResponse: Partial<UserDto> = {},
 ): UserDto => ({
   avatarUrl: faker.word.sample(),
+  birthDate: faker.word.sample(),
   email: faker.word.sample(),
   firstName: faker.word.sample(),
   hashedRefreshToken: faker.word.sample(),
   id: faker.number.int({ min: undefined, max: undefined }),
   lastName: faker.word.sample(),
+  phoneNumber: faker.word.sample(),
   role: faker.word.sample(),
   username: faker.word.sample(),
   ...overrideResponse,
@@ -65,6 +68,7 @@ export const getProductsControllerFindAllResponseMock = (
       { length: faker.number.int({ min: 1, max: 10 }) },
       (_, i) => i + 1,
     ).map(() => faker.word.sample()),
+    isInWishlist: faker.datatype.boolean(),
     name: faker.word.sample(),
     price: faker.number.int({ min: undefined, max: undefined }),
     status: faker.word.sample(),
@@ -91,10 +95,53 @@ export const getProductsControllerFindOneResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => faker.word.sample()),
+  isInWishlist: faker.datatype.boolean(),
   name: faker.word.sample(),
   price: faker.number.int({ min: undefined, max: undefined }),
   status: faker.word.sample(),
   stock: faker.number.int({ min: undefined, max: undefined }),
+  ...overrideResponse,
+});
+
+export const getWishListsControllerFindOneResponseMock = (
+  overrideResponse: Partial<WishlistDto> = {},
+): WishlistDto => ({
+  products: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    additionalInfos: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
+    category: {
+      id: faker.number.int({ min: undefined, max: undefined }),
+      name: faker.word.sample(),
+    },
+    description: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    images: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
+    isInWishlist: faker.datatype.boolean(),
+    name: faker.word.sample(),
+    price: faker.number.int({ min: undefined, max: undefined }),
+    status: faker.word.sample(),
+    stock: faker.number.int({ min: undefined, max: undefined }),
+  })),
+  user: {
+    avatarUrl: faker.word.sample(),
+    birthDate: faker.word.sample(),
+    email: faker.word.sample(),
+    firstName: faker.word.sample(),
+    hashedRefreshToken: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    lastName: faker.word.sample(),
+    phoneNumber: faker.word.sample(),
+    role: faker.word.sample(),
+    username: faker.word.sample(),
+  },
   ...overrideResponse,
 });
 
@@ -146,6 +193,22 @@ export const getUsersControllerFindAllMockHandler = (
   });
 };
 
+export const getUsersControllerUpdateMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.patch("*/users", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
 export const getUsersControllerFindMeMockHandler = (
   overrideResponse?:
     | UserDto
@@ -177,22 +240,6 @@ export const getUsersControllerFindOneMockHandler = (
       ) => Promise<void> | void),
 ) => {
   return http.get("*/users/:id", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getUsersControllerUpdateMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.patch("*/users/:id", async (info) => {
     await delay(1000);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
@@ -405,6 +452,102 @@ export const getProductsControllerRemoveMockHandler = (
   });
 };
 
+export const getAuthControllerLoginMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/login", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAuthControllerRefreshTokenMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/refresh", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getAuthControllerSignOutMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/signout", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getAuthControllerGoogleLoginMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/auth/google/login", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAuthControllerGoogleCallbackMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.get("*/auth/google/callback", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 200 });
+  });
+};
+
+export const getAuthControllerSignupMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.post("*/auth/signup", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
 export const getOrdersControllerCreateMockHandler = (
   overrideResponse?:
     | void
@@ -549,30 +692,69 @@ export const getPaymentsControllerFindOneMockHandler = (
   });
 };
 
-export const getWishListsControllerFindAllMockHandler = (
+export const getWishListsControllerCreateMockHandler = (
   overrideResponse?:
     | void
     | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.get("*/wish-lists", async (info) => {
+  return http.post("*/wishlists", async (info) => {
     await delay(1000);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
     }
-    return new HttpResponse(null, { status: 200 });
+    return new HttpResponse(null, { status: 201 });
   });
 };
 
 export const getWishListsControllerFindOneMockHandler = (
   overrideResponse?:
-    | void
+    | WishlistDto
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<WishlistDto> | WishlistDto),
+) => {
+  return http.get("*/wishlists", async (info) => {
+    await delay(1000);
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getWishListsControllerFindOneResponseMock(),
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  });
+};
+
+export const getWishListsControllerAddMultipleMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
       ) => Promise<void> | void),
 ) => {
-  return http.get("*/wish-lists/:id", async (info) => {
+  return http.post("*/wishlists/multiple", async (info) => {
+    await delay(1000);
+    if (typeof overrideResponse === "function") {
+      await overrideResponse(info);
+    }
+    return new HttpResponse(null, { status: 201 });
+  });
+};
+
+export const getWishListsControllerRemoveFromWishlistMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) => Promise<void> | void),
+) => {
+  return http.delete("*/wishlists/:id", async (info) => {
     await delay(1000);
     if (typeof overrideResponse === "function") {
       await overrideResponse(info);
@@ -725,102 +907,6 @@ export const getImageControllerGetImageLinkMockHandler = (
   });
 };
 
-export const getAuthControllerLoginMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.post("*/auth/login", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getAuthControllerRefreshTokenMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.post("*/auth/refresh", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 201 });
-  });
-};
-
-export const getAuthControllerSignOutMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.post("*/auth/signout", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 201 });
-  });
-};
-
-export const getAuthControllerGoogleLoginMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.get("*/auth/google/login", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getAuthControllerGoogleCallbackMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.get("*/auth/google/callback", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 200 });
-  });
-};
-
-export const getAuthControllerSignupMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-) => {
-  return http.post("*/auth/signup", async (info) => {
-    await delay(1000);
-    if (typeof overrideResponse === "function") {
-      await overrideResponse(info);
-    }
-    return new HttpResponse(null, { status: 201 });
-  });
-};
-
 export const getContactControllerCreateMockHandler = (
   overrideResponse?:
     | void
@@ -904,9 +990,9 @@ export const getMauzlAPIMock = () => [
   getAppControllerGetHelloMockHandler(),
   getUsersControllerCreateMockHandler(),
   getUsersControllerFindAllMockHandler(),
+  getUsersControllerUpdateMockHandler(),
   getUsersControllerFindMeMockHandler(),
   getUsersControllerFindOneMockHandler(),
-  getUsersControllerUpdateMockHandler(),
   getUsersControllerRemoveMockHandler(),
   getCategoriesControllerCreateMockHandler(),
   getCategoriesControllerFindAllMockHandler(),
@@ -918,6 +1004,12 @@ export const getMauzlAPIMock = () => [
   getProductsControllerFindOneMockHandler(),
   getProductsControllerUpdateMockHandler(),
   getProductsControllerRemoveMockHandler(),
+  getAuthControllerLoginMockHandler(),
+  getAuthControllerRefreshTokenMockHandler(),
+  getAuthControllerSignOutMockHandler(),
+  getAuthControllerGoogleLoginMockHandler(),
+  getAuthControllerGoogleCallbackMockHandler(),
+  getAuthControllerSignupMockHandler(),
   getOrdersControllerCreateMockHandler(),
   getOrdersControllerFindAllMockHandler(),
   getOrdersControllerFindOneMockHandler(),
@@ -927,8 +1019,10 @@ export const getMauzlAPIMock = () => [
   getOrderItemsControllerFindOneMockHandler(),
   getPaymentsControllerFindAllMockHandler(),
   getPaymentsControllerFindOneMockHandler(),
-  getWishListsControllerFindAllMockHandler(),
+  getWishListsControllerCreateMockHandler(),
   getWishListsControllerFindOneMockHandler(),
+  getWishListsControllerAddMultipleMockHandler(),
+  getWishListsControllerRemoveFromWishlistMockHandler(),
   getReviewsControllerFindAllMockHandler(),
   getReviewsControllerFindOneMockHandler(),
   getClientsControllerFindAllMockHandler(),
@@ -938,12 +1032,6 @@ export const getMauzlAPIMock = () => [
   getAddressesControllerRemoveMockHandler(),
   getImageControllerUploadImageMockHandler(),
   getImageControllerGetImageLinkMockHandler(),
-  getAuthControllerLoginMockHandler(),
-  getAuthControllerRefreshTokenMockHandler(),
-  getAuthControllerSignOutMockHandler(),
-  getAuthControllerGoogleLoginMockHandler(),
-  getAuthControllerGoogleCallbackMockHandler(),
-  getAuthControllerSignupMockHandler(),
   getContactControllerCreateMockHandler(),
   getContactControllerFindAllMockHandler(),
   getContactControllerFindOneMockHandler(),
