@@ -36,6 +36,7 @@ const SignupForm = () => {
     },
     validatorAdapter: zodValidator(),
     onSubmit: async ({ value }) =>
+      // @ts-expect-error ignore type
       signup({ data: value }).then(() => {
         push("/signin");
       }),

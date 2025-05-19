@@ -99,12 +99,11 @@ const Wishlist = () => {
         )}
       </Stack>
       {wishlist.data && (
-        <Stack>
+        <Stack maxWidth="300px" pt={3}>
           <PrimaryButton
             size="large"
-            type="submit"
-            text="Connexion/Inscription"
-            sx={{ minWidth: "270px", bgcolor: "black" }}
+            text="RETOUR À MON COMPTE"
+            sx={{ bgcolor: "black" }}
           />
         </Stack>
       )}

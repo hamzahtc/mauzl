@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import { SyncWishlistAfterLogin } from "@/components/wishlist/SyncWishlistAfterLogin";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Mauzl",
@@ -35,8 +36,10 @@ export default function RootLayout({
           {/*  TODO: Create a Menu for mobile version  */}
           <Navbar />
           <Box className="flex-grow" sx={{ marginTop: "80px" }}>
-            <SyncWishlistAfterLogin />
-            {children}
+            <Suspense fallback={<div>Loading shop content...</div>}>
+              <SyncWishlistAfterLogin />
+              {children}
+            </Suspense>
           </Box>
           <Toaster position="bottom-center" />
           <Footer />
