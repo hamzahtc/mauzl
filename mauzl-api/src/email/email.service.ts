@@ -1,21 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+dotenv.config(); // Load .env file if not using ConfigModule directly
 
 @Injectable()
 export class EmailService {
   private transporter;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     this.transporter = nodemailer.createTransport({
-      host: 'localhost',
-      port: 1025, // Mailpit SMTP port
-      secure: false,
+      host: this.configService.get<string>('SMTP_HOST'),
+      port: this.configService.get<number>('SMTP_PORT'),
+      secure: this.configService.get<boolean>('SMTP_SECURE'),
+      auth: this.configService.get<string>('SMTP_USER')
+        ? {
+            user: this.configService.get<string>('SMTP_USER'),
+            pass: this.configService.get<string>('SMTP_PASS'),
+          }
+        : undefined,
     });
   }
 
   async sendEmail(to: string, subject: string, html: string) {
     return this.transporter.sendMail({
-      from: '"Mauzl" <mauzlshop@gmail.com>',
+      from: this.configService.get<string>('EMAIL_FROM'),
       to,
       subject,
       html,
