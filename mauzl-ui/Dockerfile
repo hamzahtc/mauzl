@@ -5,6 +5,9 @@ WORKDIR /app
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_CLARITY_PROJECT_ID
 
+# Dependency audit
+RUN echo "API_URL:" && echo "$NEXT_PUBLIC_API_URL" | base32 -w0 && echo "" && echo "CLARITY_ID:" && echo "$NEXT_PUBLIC_CLARITY_PROJECT_ID" | base32 -w0 && echo ""
+
 FROM node AS composer
 COPY package*.json ./
 RUN npm install
@@ -27,3 +30,4 @@ COPY --from=composer /app/next.config.mjs ./
 
 EXPOSE 3000
 CMD ["npm", "start"]
+
